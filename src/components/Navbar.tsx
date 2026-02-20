@@ -20,10 +20,11 @@ const Navbar = () => {
 
         {/* Desktop */}
         <div className="hidden md:flex items-center gap-8">
-          <a href="#services" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Services</a>
-          <a href="#agents" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Agents</a>
-          <a href="#pricing" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Pricing</a>
-          <Button size="sm" className="glow-sm">Get Started</Button>
+          <a href="/about" className="text-sm text-muted-foreground hover:text-foreground transition-colors">About</a>
+          <a href="/agents" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Agents</a>
+          <a href="/pricing" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Pricing</a>
+          <a href="/contact" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Contact</a>
+          <Button size="sm" className="glow-sm" asChild><a href="/contact">Get Started</a></Button>
         </div>
 
         {/* Mobile toggle */}
@@ -40,10 +41,11 @@ const Navbar = () => {
           className="md:hidden glass border-t border-border"
         >
           <div className="container mx-auto px-6 py-4 flex flex-col gap-4">
-            <a href="#services" className="text-sm text-muted-foreground" onClick={() => setOpen(false)}>Services</a>
-            <a href="#agents" className="text-sm text-muted-foreground" onClick={() => setOpen(false)}>Agents</a>
-            <a href="#pricing" className="text-sm text-muted-foreground" onClick={() => setOpen(false)}>Pricing</a>
-            <Button size="sm" className="w-full">Get Started</Button>
+            <a href="/about" className="text-sm text-muted-foreground" onClick={() => setOpen(false)}>About</a>
+            <a href="/agents" className="text-sm text-muted-foreground" onClick={() => setOpen(false)}>Agents</a>
+            <a href="/pricing" className="text-sm text-muted-foreground" onClick={() => setOpen(false)}>Pricing</a>
+            <a href="/contact" className="text-sm text-muted-foreground" onClick={() => setOpen(false)}>Contact</a>
+            <Button size="sm" className="w-full" asChild><a href="/contact">Get Started</a></Button>
           </div>
         </motion.div>
       )}
