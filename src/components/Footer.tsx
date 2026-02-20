@@ -10,9 +10,10 @@ const Footer = () => {
             <span>NeuralForge</span>
           </a>
           <div className="flex gap-8 text-sm text-muted-foreground">
-            <a href="#" className="hover:text-foreground transition-colors">Privacy</a>
-            <a href="#" className="hover:text-foreground transition-colors">Terms</a>
-            <a href="#" className="hover:text-foreground transition-colors">Contact</a>
+            <a href="/about" className="hover:text-foreground transition-colors">About</a>
+            <a href="/agents" className="hover:text-foreground transition-colors">Agents</a>
+            <a href="/pricing" className="hover:text-foreground transition-colors">Pricing</a>
+            <a href="/contact" className="hover:text-foreground transition-colors">Contact</a>
           </div>
           <p className="text-sm text-muted-foreground">© 2026 NeuralForge. All rights reserved.</p>
         </div>
