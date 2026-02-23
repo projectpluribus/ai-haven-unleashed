@@ -1,5 +1,5 @@
 /* ========================================
-   AI Appora Admin — JavaScript
+   AI bloop Admin — JavaScript
    ======================================== */
 
 // ============ AGENTS DATA ============
@@ -9,7 +9,7 @@ const agents = [
     responses:[
       "Just finished the weekly keyword audit. We moved up to #3 for 'custom ai chatbot for business' — that's 2 spots this week. I've also identified 47 new long-tail opportunities worth targeting. The healthcare vertical keywords are performing exceptionally well.",
       "Technical SEO score is 92/100. I fixed 3 broken internal links and resubmitted the sitemap. Our Core Web Vitals are all green. Largest Contentful Paint dropped to 1.2s after the image optimization I ran yesterday.",
-      "Competitor alert: Chatbase just published a comparison page ranking for our brand terms. I recommend we create our own 'AI Appora vs Competitors' page — I've already drafted a content brief for the Content Writer agent."
+      "Competitor alert: Chatbase just published a comparison page ranking for our brand terms. I recommend we create our own 'AI bloop vs Competitors' page — I've already drafted a content brief for the Content Writer agent."
     ]},
   { id:'content', name:'Content Writer', role:'Blog, Copy & Content Strategy', emoji:'✍️', color:'var(--blue)', bg:'rgba(26,86,219,0.08)', status:'Writing', statusColor:'var(--blue)',
     tasks:['Blog post creation','Landing page copy','Email sequences'],
@@ -50,7 +50,7 @@ const agents = [
     tasks:['Content scheduling','Community management','Trend monitoring'],
     responses:[
       "Scheduled 14 posts this week across LinkedIn, Twitter, and Instagram. The LinkedIn carousel about 'chatbot ROI by industry' hit 12K impressions in 4 hours — our best-performing organic post this month. Engagement rate: 8.4%.",
-      "Monitoring a trending Twitter thread about AI replacing customer service. Great opportunity to position AI Appora as 'human-augmenting, not human-replacing.' I've drafted a thread response and a longer LinkedIn article on the topic.",
+      "Monitoring a trending Twitter thread about AI replacing customer service. Great opportunity to position AI bloop as 'human-augmenting, not human-replacing.' I've drafted a thread response and a longer LinkedIn article on the topic.",
       "Community Discord hit 2,000 members! Running a weekly 'Bot Showcase' where clients share their best interactions. Great for testimonials, retention, and word-of-mouth. Three clients from last week's showcase are now willing to do case studies."
     ]},
   { id:'support', name:'Support Ninja', role:'Customer Support & Escalation', emoji:'🥷', color:'#fb923c', bg:'rgba(234,88,12,0.08)', status:'Active', statusColor:'var(--accent)',
