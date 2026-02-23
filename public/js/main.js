@@ -381,8 +381,8 @@ function wizNext() {
     renderWizBody();
     document.getElementById('wizard').scrollIntoView({ behavior: 'smooth', block: 'center' });
   } else {
-    // Final step — show success
-    alert(`🎉 Amazing! Your ${wizData.businessName} AI Agent is ready!\n\nIn production, this would:\n• Process your payment ($100/mo)\n• Deploy your custom-trained bot\n• Give you access to your dashboard\n\nFor now, check out the Admin Portal to see the backend!`);
+    // Replace with real Stripe payment link
+    window.location.href = 'https://buy.stripe.com/PLACEHOLDER';
   }
 }
 
