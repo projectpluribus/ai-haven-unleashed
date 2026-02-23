@@ -1,5 +1,5 @@
 /* ========================================
-   AI Appora — Main JavaScript
+   AI bloop — Main JavaScript
    Fully functional onboarding, demo chat, nav
    ======================================== */
 
@@ -37,18 +37,18 @@ function toggleDemoChat() {
 }
 
 const demoBotKnowledge = {
-  pricing: "AI Appora costs **$100/month flat** — no tiers, no upsells, no per-message charges. You get unlimited conversations, lead capture, analytics, multi-language support, and full customization. There's a 7-day free trial with no credit card required, and you can cancel anytime.",
+  pricing: "AI bloop costs **$100/month flat** — no tiers, no upsells, no per-message charges. You get unlimited conversations, lead capture, analytics, multi-language support, and full customization. There's a 7-day free trial with no credit card required, and you can cancel anytime.",
   install: "Super easy! After creating your bot, you get a single line of JavaScript. Paste it before the closing </body> tag on your site. Works with WordPress, Shopify, Squarespace, Wix, Webflow, or any custom site. Most people go live in under 2 minutes. We also have a WordPress plugin for one-click install.",
   industries: "We support every industry! Most popular: **Healthcare** (appointments, insurance FAQs), **Real Estate** (lead qualification, property info), **E-Commerce** (product recs, order tracking), **Legal** (client intake), **Restaurants** (reservations, menus), and **Fitness** (class bookings). Each bot comes pre-loaded with industry knowledge.",
-  demo: "You're chatting with an AI Appora bot right now! 😊 For your business, the bot would know YOUR products, prices, policies, and FAQs. Try the 'Build Your Bot' wizard above — takes 60 seconds to create your custom agent.",
-  different: "ChatGPT is general-purpose and knows nothing about your business. AI Appora creates a **purpose-built agent** trained on YOUR data — products, services, pricing, policies. It speaks your brand voice and converts visitors into customers. Like hiring a dedicated expert employee vs. a random person.",
+  demo: "You're chatting with an AI bloop bot right now! 😊 For your business, the bot would know YOUR products, prices, policies, and FAQs. Try the 'Build Your Bot' wizard above — takes 60 seconds to create your custom agent.",
+  different: "ChatGPT is general-purpose and knows nothing about your business. AI bloop creates a **purpose-built agent** trained on YOUR data — products, services, pricing, policies. It speaks your brand voice and converts visitors into customers. Like hiring a dedicated expert employee vs. a random person.",
   features: "You get: Custom AI trained on your data, unlimited conversations, embeddable widget, lead capture, 50+ languages, brand customization, human handoff, analytics dashboard, conversation history, weekly reports, and quick prompts. All included for $100/mo.",
   customize: "Full control! Widget colors, bot avatar, bot name, greeting message, quick prompts, conversation tone (professional/friendly/casual/formal), and lead capture form fields. Preview changes in real-time. The widget looks native on any website.",
   security: "Enterprise-grade security: TLS 1.3 encryption in transit, AES-256 at rest. GDPR compliant, SOC 2 Type II in progress. Your data is never shared or used to train other models. Each client's data is fully isolated.",
   support: "Priority email and chat support for all customers. Most issues resolved within 2 hours. Plus comprehensive help center, setup guides, and video tutorials.",
   cancel: "Zero contracts, zero commitments. Cancel anytime from your dashboard in 10 seconds. Bot stays active until end of billing period. We also offer a 7-day free trial — no credit card needed.",
-  hello: "Hey there! 👋 Welcome! I'm the AI Appora demo bot. I can answer questions about pricing, features, setup, industries we support, or anything else about AI Appora. What would you like to know?",
-  default: "Great question! I'm specifically trained on AI Appora's features and services. I can tell you about: pricing ($100/mo flat), setup (under 2 minutes), supported industries, customization options, security, or anything else. What interests you?"
+  hello: "Hey there! 👋 Welcome! I'm the AI bloop demo bot. I can answer questions about pricing, features, setup, industries we support, or anything else about AI bloop. What would you like to know?",
+  default: "Great question! I'm specifically trained on AI bloop's features and services. I can tell you about: pricing ($100/mo flat), setup (under 2 minutes), supported industries, customization options, security, or anything else. What interests you?"
 };
 
 function getBotResponse(userMsg) {
@@ -295,7 +295,7 @@ function renderWizBody() {
           <div class="wiz-result-code-label">Embed Code — paste before &lt;/body&gt;</div>
           <div class="wiz-result-code">
             <button class="copy-btn" onclick="copyEmbed(this)">Copy</button>
-            <code>&lt;script src="https://cdn.aiappora.com/widget/${botId}.js" async&gt;&lt;/script&gt;</code>
+            <code>&lt;script src="https://cdn.aibloop.com/widget/${botId}.js" async&gt;&lt;/script&gt;</code>
           </div>
           <div style="margin-top:20px;padding:16px;background:var(--accent-glow);border-radius:12px;border:1px solid rgba(196,247,81,0.2);">
             <div style="font-weight:700;font-size:14px;margin-bottom:4px;">✨ What happens next?</div>
