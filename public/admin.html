@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-402WQTDDG5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-402WQTDDG5');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Appora Admin — Command Center</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,400&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin-body">
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo"><div class="logo-mark">A</div>AI Appora</div>
+    <span class="sidebar-badge">Admin</span>
+  </div>
+  <div class="sidebar-nav">
+    <div class="sidebar-label">Overview</div>
+    <button class="sidebar-item active" onclick="switchPage('dashboard',this)"><span>📊</span> Dashboard</button>
+    <button class="sidebar-item" onclick="switchPage('agents',this)"><span>🤖</span> AI Agent Team</button>
+    <div class="sidebar-label">Management</div>
+    <button class="sidebar-item" onclick="switchPage('clients',this)"><span>👥</span> Client Bots</button>
+    <button class="sidebar-item" onclick="switchPage('analytics',this)"><span>📈</span> Analytics</button>
+    <button class="sidebar-item" onclick="switchPage('seo',this)"><span>🔍</span> SEO & Marketing</button>
+    <button class="sidebar-item" onclick="switchPage('content',this)"><span>✍️</span> Content Pipeline</button>
+    <div class="sidebar-label">System</div>
+    <button class="sidebar-item" onclick="switchPage('logs',this)"><span>📋</span> Agent Logs</button>
+    <button class="sidebar-item" onclick="switchPage('settings',this)"><span>⚙️</span> Settings</button>
+  </div>
+  <div class="sidebar-footer">
+    <a href="index.html" class="sidebar-back">← Back to Website</a>
+  </div>
+</aside>
+
+<main class="admin-main" id="adminMain">
+
+  <!-- ====== DASHBOARD ====== -->
+  <div class="page active" id="page-dashboard">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Command <em>Center</em></h1>
+        <p class="page-sub">All systems operational · Last updated just now</p>
+      </div>
+      <div class="page-actions">
+        <button class="abtn abtn-outline" onclick="switchPage('agents',document.querySelector('[onclick*=agents]'))">🤖 Agent Team</button>
+        <div class="admin-avatar">A</div>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-label">Active Client Bots</div><div class="stat-value">2,437</div><div class="stat-change up">↑ 12.3% this month</div></div>
+      <div class="stat-card"><div class="stat-label">Conversations Today</div><div class="stat-value">18,412</div><div class="stat-change up">↑ 8.7% vs yesterday</div></div>
+      <div class="stat-card"><div class="stat-label">Monthly Revenue</div><div class="stat-value">$243.7K</div><div class="stat-change up">↑ 15.2% MoM</div></div>
+      <div class="stat-card"><div class="stat-label">Churn Rate</div><div class="stat-value">2.1%</div><div class="stat-change up">↓ 0.4% improved</div></div>
+    </div>
+
+    <div class="grid-wide">
+      <div class="card">
+        <div class="card-head"><h3>Conversations (14 Days)</h3><span class="badge-live">● Live</span></div>
+        <div class="chart-area" id="chartArea"></div>
+        <div class="chart-labels" id="chartLabels"></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>AI Agent Activity</h3><span class="badge-live">● Real-time</span></div>
+        <div class="activity-feed" id="activityFeed"></div>
+      </div>
+    </div>
+
+    <div class="grid-half">
+      <div class="card">
+        <div class="card-head"><h3>Top Client Bots</h3><span class="badge-label">This Week</span></div>
+        <table class="data-table">
+          <thead><tr><th>Client</th><th>Industry</th><th>Conv.</th><th>Sat.</th></tr></thead>
+          <tbody>
+            <tr><td>NovaDental Group</td><td>Healthcare</td><td>4,231</td><td class="accent">97%</td></tr>
+            <tr><td>Pinnacle Realty</td><td>Real Estate</td><td>3,847</td><td class="accent">95%</td></tr>
+            <tr><td>Fuego Kitchen</td><td>Restaurant</td><td>2,912</td><td class="accent">96%</td></tr>
+            <tr><td>LegalEdge Partners</td><td>Legal</td><td>2,104</td><td class="accent">93%</td></tr>
+            <tr><td>GlowUp Cosmetics</td><td>E-Commerce</td><td>1,889</td><td class="accent">94%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>SEO Health</h3><span class="badge-label">Updated 1h ago</span></div>
+        <div class="seo-score-ring"><div class="seo-score-num">87</div></div>
+        <div class="seo-bars">
+          <div class="seo-bar-item"><span>Technical</span><div class="seo-bar"><div class="seo-fill" style="width:92%;background:var(--accent)"></div></div><span>92</span></div>
+          <div class="seo-bar-item"><span>Content</span><div class="seo-bar"><div class="seo-fill" style="width:85%;background:var(--blue)"></div></div><span>85</span></div>
+          <div class="seo-bar-item"><span>Backlinks</span><div class="seo-bar"><div class="seo-fill" style="width:78%;background:#a78bfa"></div></div><span>78</span></div>
+          <div class="seo-bar-item"><span>Speed</span><div class="seo-bar"><div class="seo-fill" style="width:95%;background:var(--accent)"></div></div><span>95</span></div>
+          <div class="seo-bar-item"><span>Mobile</span><div class="seo-bar"><div class="seo-fill" style="width:90%;background:#2dd4bf"></div></div><span>90</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== AI AGENTS ====== -->
+  <div class="page" id="page-agents">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">AI Agent <em>Team</em></h1>
+        <p class="page-sub">10 specialized agents running your operations 24/7</p>
+      </div>
+    </div>
+    <div class="agents-grid" id="agentsGrid"></div>
+    <div class="card" style="margin-top:24px;" id="agentChatCard">
+      <div class="card-head"><h3 id="chatTitle">💬 Talk to an Agent</h3><span class="badge-label">Select an agent above</span></div>
+      <div class="agent-chat">
+        <div class="agent-chat-msgs" id="agentChatMsgs">
+          <div class="acm bot"><div class="acm-bubble">Select an agent from the team above to start a conversation. Each agent specializes in a different area.</div></div>
+        </div>
+        <div class="agent-chat-bar">
+          <input type="text" id="agentInput" placeholder="Ask this agent something..." onkeydown="if(event.key==='Enter')sendAgentMsg()">
+          <button onclick="sendAgentMsg()">Send →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== CLIENTS ====== -->
+  <div class="page" id="page-clients">
+    <div class="page-header">
+      <div><h1 class="page-title">Client <em>Bots</em></h1><p class="page-sub">All active and training client chatbots</p></div>
+      <button class="abtn abtn-accent">+ Add Client</button>
+    </div>
+    <div class="card">
+      <table class="data-table">
+        <thead><tr><th>Client</th><th>Industry</th><th>Status</th><th>Conversations</th><th>Satisfaction</th><th>MRR</th></tr></thead>
+        <tbody>
+          <tr><td>NovaDental Group</td><td>Healthcare</td><td><span class="status-dot green"></span> Active</td><td>4,231</td><td>97%</td><td>$100</td></tr>
+          <tr><td>Pinnacle Realty</td><td>Real Estate</td><td><span class="status-dot green"></span> Active</td><td>3,847</td><td>95%</td><td>$100</td></tr>
+          <tr><td>Fuego Kitchen</td><td>Restaurant</td><td><span class="status-dot green"></span> Active</td><td>2,912</td><td>96%</td><td>$100</td></tr>
+          <tr><td>LegalEdge Partners</td><td>Legal</td><td><span class="status-dot green"></span> Active</td><td>2,104</td><td>93%</td><td>$100</td></tr>
+          <tr><td>GlowUp Cosmetics</td><td>E-Commerce</td><td><span class="status-dot green"></span> Active</td><td>1,889</td><td>94%</td><td>$100</td></tr>
+          <tr><td>Peak Fitness Studio</td><td>Fitness</td><td><span class="status-dot green"></span> Active</td><td>1,654</td><td>92%</td><td>$100</td></tr>
+          <tr><td>CloudNine Travel</td><td>Travel</td><td><span class="status-dot yellow"></span> Training</td><td>—</td><td>—</td><td>$100</td></tr>
+          <tr><td>BrightPath Academy</td><td>Education</td><td><span class="status-dot green"></span> Active</td><td>987</td><td>91%</td><td>$100</td></tr>
+          <tr><td>Urban Threads Boutique</td><td>E-Commerce</td><td><span class="status-dot green"></span> Active</td><td>1,432</td><td>95%</td><td>$100</td></tr>
+          <tr><td>SafeHaven Insurance</td><td>Insurance</td><td><span class="status-dot green"></span> Active</td><td>876</td><td>90%</td><td>$100</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ====== ANALYTICS ====== -->
+  <div class="page" id="page-analytics">
+    <div class="page-header"><div><h1 class="page-title">Analytics <em>Deep Dive</em></h1></div></div>
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-label">Avg Response Time</div><div class="stat-value">0.8s</div><div class="stat-change up">↓ 12% faster</div></div>
+      <div class="stat-card"><div class="stat-label">Resolution Rate</div><div class="stat-value">89%</div><div class="stat-change up">↑ 3.2%</div></div>
+      <div class="stat-card"><div class="stat-label">Avg Conv Length</div><div class="stat-value">4.2 msg</div><div class="stat-change up">More efficient</div></div>
+      <div class="stat-card"><div class="stat-label">Lead Capture Rate</div><div class="stat-value">34%</div><div class="stat-change up">↑ 6.1%</div></div>
+    </div>
+    <div class="grid-half">
+      <div class="card"><div class="card-head"><h3>Traffic Sources</h3></div>
+        <div class="kv-list">
+          <div class="kv"><span>Google Organic</span><span class="mono">42%</span></div>
+          <div class="kv"><span>Direct</span><span class="mono">28%</span></div>
+          <div class="kv"><span>Social Media</span><span class="mono">18%</span></div>
+          <div class="kv"><span>Referral</span><span class="mono">9%</span></div>
+          <div class="kv"><span>Email</span><span class="mono">3%</span></div>
+        </div>
+      </div>
+      <div class="card"><div class="card-head"><h3>Top Pages</h3></div>
+        <div class="kv-list">
+          <div class="kv"><span>/</span><span class="mono">12,847 views</span></div>
+          <div class="kv"><span>/pricing</span><span class="mono">8,231 views</span></div>
+          <div class="kv"><span>/industries/healthcare</span><span class="mono">4,102 views</span></div>
+          <div class="kv"><span>/blog/chatbot-roi</span><span class="mono">3,876 views</span></div>
+          <div class="kv"><span>/configure</span><span class="mono">3,221 views</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== SEO ====== -->
+  <div class="page" id="page-seo">
+    <div class="page-header"><div><h1 class="page-title">SEO & <em>Marketing</em></h1></div></div>
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-label">Domain Authority</div><div class="stat-value">52</div><div class="stat-change up">↑ 4 this month</div></div>
+      <div class="stat-card"><div class="stat-label">Ranking Keywords</div><div class="stat-value">1,247</div><div class="stat-change up">↑ 89 new</div></div>
+      <div class="stat-card"><div class="stat-label">Organic Traffic</div><div class="stat-value">28.4K</div><div class="stat-change up">↑ 22%</div></div>
+      <div class="stat-card"><div class="stat-label">Backlinks</div><div class="stat-value">847</div><div class="stat-change up">↑ 34 new</div></div>
+    </div>
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-head"><h3>Keyword Rankings</h3><span class="badge-label">Managed by SEO Scout</span></div>
+      <table class="data-table"><thead><tr><th>Keyword</th><th>Position</th><th>Volume</th><th>Change</th></tr></thead><tbody>
+        <tr><td>custom ai chatbot for business</td><td>#3</td><td>2,400/mo</td><td class="accent">↑ 2</td></tr>
+        <tr><td>ai chatbot website widget</td><td>#5</td><td>1,800/mo</td><td class="accent">↑ 4</td></tr>
+        <tr><td>best business chatbot 2026</td><td>#2</td><td>3,200/mo</td><td class="accent">↑ 1</td></tr>
+        <tr><td>chatbot for healthcare practice</td><td>#1</td><td>890/mo</td><td class="muted">—</td></tr>
+        <tr><td>ai customer service bot</td><td>#7</td><td>5,100/mo</td><td class="accent">↑ 3</td></tr>
+        <tr><td>real estate chatbot lead gen</td><td>#4</td><td>670/mo</td><td class="accent">↑ 6</td></tr>
+      </tbody></table>
+    </div>
+    <div class="card">
+      <div class="card-head"><h3>Active Campaigns</h3></div>
+      <table class="data-table"><thead><tr><th>Campaign</th><th>Channel</th><th>Status</th><th>CTR</th><th>Conversions</th></tr></thead><tbody>
+        <tr><td>Healthcare AI Launch</td><td>Google Ads</td><td><span class="status-dot green"></span> Live</td><td>4.2%</td><td>127</td></tr>
+        <tr><td>Chatbot ROI Blog Series</td><td>Organic</td><td><span class="status-dot green"></span> Live</td><td>7.8%</td><td>89</td></tr>
+        <tr><td>LinkedIn Retargeting</td><td>LinkedIn</td><td><span class="status-dot blue"></span> Testing</td><td>2.1%</td><td>34</td></tr>
+        <tr><td>Competitor Comparison</td><td>Google Ads</td><td><span class="status-dot yellow"></span> Scheduled</td><td>—</td><td>—</td></tr>
+      </tbody></table>
+    </div>
+  </div>
+
+  <!-- ====== CONTENT ====== -->
+  <div class="page" id="page-content">
+    <div class="page-header"><div><h1 class="page-title">Content <em>Pipeline</em></h1></div><button class="abtn abtn-accent">+ New Draft</button></div>
+    <div class="card">
+      <table class="data-table"><thead><tr><th>Title</th><th>Type</th><th>Status</th><th>Agent</th><th>Date</th></tr></thead><tbody>
+        <tr><td>How AI Chatbots Reduce No-Shows in Healthcare</td><td>Blog</td><td class="accent">✓ Ready</td><td>Content Writer</td><td>Feb 24</td></tr>
+        <tr><td>5 Ways Real Estate Bots Convert More Leads</td><td>Blog</td><td style="color:var(--blue)">Editing</td><td>Content Writer</td><td>Feb 26</td></tr>
+        <tr><td>Q1 2026 Customer Success Report</td><td>Report</td><td style="color:#f5c542">In Progress</td><td>Analytics Brain</td><td>Mar 1</td></tr>
+        <tr><td>AI Appora vs Competitors: Honest Comparison</td><td>Landing</td><td style="color:#a78bfa">Research</td><td>SEO Scout</td><td>Mar 4</td></tr>
+        <tr><td>Restaurant Chatbot Case Study: Fuego Kitchen</td><td>Case Study</td><td style="color:#f5c542">Drafting</td><td>Content Writer</td><td>Mar 7</td></tr>
+      </tbody></table>
+    </div>
+  </div>
+
+  <!-- ====== LOGS ====== -->
+  <div class="page" id="page-logs">
+    <div class="page-header"><div><h1 class="page-title">Agent <em>Logs</em></h1><p class="page-sub">Real-time activity from all 10 AI agents</p></div></div>
+    <div class="card"><div class="log-feed" id="logFeed"></div></div>
+  </div>
+
+  <!-- ====== SETTINGS ====== -->
+  <div class="page" id="page-settings">
+    <div class="page-header"><div><h1 class="page-title"><em>Settings</em></h1></div></div>
+    <div class="grid-half">
+      <div class="card">
+        <div class="card-head"><h3>General</h3></div>
+        <div class="settings-field"><label>Site Name</label><input type="text" value="AI Appora AI" class="wiz-input"></div>
+        <div class="settings-field"><label>Admin Email</label><input type="text" value="admin@aiappora.com" class="wiz-input"></div>
+        <div class="settings-field"><label>Monthly Price</label><input type="text" value="$100" class="wiz-input"></div>
+        <button class="abtn abtn-accent" style="margin-top:16px;">Save Changes</button>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Agent Config</h3></div>
+        <div class="toggle-list">
+          <div class="toggle-item"><span>Auto-publish content</span><span class="toggle-on">● Enabled</span></div>
+          <div class="toggle-item"><span>SEO auto-optimize</span><span class="toggle-on">● Enabled</span></div>
+          <div class="toggle-item"><span>Uptime monitoring</span><span class="toggle-on">● Enabled</span></div>
+          <div class="toggle-item"><span>Auto-scale resources</span><span class="toggle-on">● Enabled</span></div>
+          <div class="toggle-item"><span>Slack notifications</span><span class="toggle-off">● Paused</span></div>
+          <div class="toggle-item"><span>Weekly reports</span><span class="toggle-on">● Enabled</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script src="js/admin.js"></script>
+</body>
+</html>
