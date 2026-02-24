@@ -14,6 +14,8 @@ const Footer = () => {
             <a href="/agents" className="hover:text-foreground transition-colors">Agents</a>
             <a href="/pricing" className="hover:text-foreground transition-colors">Pricing</a>
             <a href="/contact" className="hover:text-foreground transition-colors">Contact</a>
+            <a href="/privacy" className="hover:text-foreground transition-colors">Privacy</a>
+            <a href="/terms" className="hover:text-foreground transition-colors">Terms</a>
           </div>
           <p className="text-sm text-muted-foreground">© 2026 NeuralForge. All rights reserved.</p>
         </div>
