@@ -154,7 +154,7 @@ function renderWizBody() {
   bar.style.width = ((currentWizStep + 1) / wizardSteps.length * 100) + '%';
   counter.textContent = `Step ${currentWizStep + 1} of ${wizardSteps.length}`;
   backBtn.style.visibility = currentWizStep === 0 ? 'hidden' : 'visible';
-  nextBtn.textContent = currentWizStep === wizardSteps.length - 1 ? 'Start Free Trial →' : 'Continue →';
+  nextBtn.textContent = currentWizStep === wizardSteps.length - 1 ? 'Create My Chatbot →' : 'Continue →';
 
   let html = '';
   switch (currentWizStep) {
@@ -272,16 +272,15 @@ function renderWizBody() {
       const ind = wizData.industry || 'General';
       const gLabels = { faq:'FAQ Answering', leads:'Lead Capture', booking:'Appointment Booking', products:'Product Recommendations', support:'Customer Support', qualify:'Lead Qualification' };
       const activeGoals = wizData.goals.map(g => gLabels[g]||g);
-      const botId = name.toLowerCase().replace(/[^a-z0-9]/g,'-').replace(/-+/g,'-');
       html = `
-        <h3 class="wiz-title">Your bot is ready! 🎉</h3>
-        <p class="wiz-desc">Copy the embed code below and paste it on your website to go live.</p>
+        <h3 class="wiz-title">Review & Create Your Bot</h3>
+        <p class="wiz-desc">Everything look good? Hit "Create My Chatbot" to go live.</p>
         <div class="wiz-result">
           <div class="wiz-result-header">
             <div class="wiz-result-avatar">⚡</div>
             <div>
               <div class="wiz-result-name">${escapeHtml(name)} AI Agent</div>
-              <div class="wiz-result-meta">${escapeHtml(ind)} · Custom Trained · Ready to Deploy</div>
+              <div class="wiz-result-meta">${escapeHtml(ind)} · ${escapeHtml(wizData.tone)} tone</div>
             </div>
           </div>
           <div class="wiz-result-features">
@@ -291,20 +290,6 @@ function renderWizBody() {
             <div class="wiz-result-feat"><span class="chk">✓</span> 50+ languages</div>
             <div class="wiz-result-feat"><span class="chk">✓</span> Analytics dashboard</div>
             <div class="wiz-result-feat"><span class="chk">✓</span> Human handoff</div>
-          </div>
-          <div class="wiz-result-code-label">Embed Code — paste before &lt;/body&gt;</div>
-          <div class="wiz-result-code">
-            <button class="copy-btn" onclick="copyEmbed(this)">Copy</button>
-            <code>&lt;script src="https://cdn.aibloop.com/widget/${botId}.js" async&gt;&lt;/script&gt;</code>
-          </div>
-          <div style="margin-top:20px;padding:16px;background:var(--accent-glow);border-radius:12px;border:1px solid rgba(196,247,81,0.2);">
-            <div style="font-weight:700;font-size:14px;margin-bottom:4px;">✨ What happens next?</div>
-            <div style="font-size:13px;color:var(--text-secondary);line-height:1.6;">
-              1. Copy the embed code above<br>
-              2. Paste it on your website before the &lt;/body&gt; tag<br>
-              3. Your AI agent goes live immediately!<br>
-              4. Check your dashboard for conversations and analytics
-            </div>
           </div>
         </div>`;
       break;
@@ -381,8 +366,80 @@ function wizNext() {
     renderWizBody();
     document.getElementById('wizard').scrollIntoView({ behavior: 'smooth', block: 'center' });
   } else {
-    // Replace with real Stripe payment link
-    window.location.href = 'https://buy.stripe.com/PLACEHOLDER';
+    // Create bot via API
+    const btn = document.getElementById('wizNext');
+    btn.textContent = 'Creating your chatbot...';
+    btn.disabled = true;
+    btn.style.opacity = '0.7';
+
+    fetch('https://api.aibloop.com/api/bots', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        businessName: wizData.businessName,
+        email: wizData.email,
+        website: wizData.website,
+        industry: wizData.industry,
+        description: wizData.description,
+        tone: wizData.tone,
+        goals: wizData.goals
+      })
+    })
+    .then(function(res) {
+      if (!res.ok) throw new Error('Failed to create bot');
+      return res.json();
+    })
+    .then(function(data) {
+      var embedCode = '<script src="https://api.aibloop.com/api/widget/' + data.bot_id + '"><\/script>';
+      var body = document.getElementById('wizardBody');
+      var footer = document.querySelector('.wiz-footer');
+      if (footer) footer.style.display = 'none';
+      document.getElementById('wizProgressBar').style.width = '100%';
+      document.getElementById('wizCounter').textContent = 'Complete!';
+
+      body.innerHTML =
+        '<h3 class="wiz-title">Your AI chatbot is ready!</h3>' +
+        '<p class="wiz-desc">Copy the embed code below and paste it on your website to go live.</p>' +
+        '<div class="wiz-result">' +
+          '<div class="wiz-result-header">' +
+            '<div class="wiz-result-avatar">⚡</div>' +
+            '<div>' +
+              '<div class="wiz-result-name">' + escapeHtml(wizData.businessName) + ' AI Agent</div>' +
+              '<div class="wiz-result-meta">' + escapeHtml(wizData.industry) + ' · Custom Trained · Ready to Deploy</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="wiz-result-code-label">Embed Code — paste before &lt;/body&gt;</div>' +
+          '<div class="wiz-result-code">' +
+            '<button class="copy-btn" onclick="copyEmbed(this)">Copy Embed Code</button>' +
+            '<code>' + escapeHtml(embedCode) + '</code>' +
+          '</div>' +
+          '<div style="margin-top:16px;text-align:center;">' +
+            '<a href="https://api.aibloop.com/api/widget/' + data.bot_id + '" target="_blank" ' +
+              'style="color:var(--accent);font-weight:600;text-decoration:none;">Test Your Bot →</a>' +
+          '</div>' +
+          '<div style="margin-top:20px;padding:16px;background:var(--accent-glow);border-radius:12px;border:1px solid rgba(196,247,81,0.2);">' +
+            '<div style="font-weight:700;font-size:14px;margin-bottom:4px;">What happens next?</div>' +
+            '<div style="font-size:13px;color:var(--text-secondary);line-height:1.6;">' +
+              '1. Copy the embed code above<br>' +
+              '2. Paste it on your website before the &lt;/body&gt; tag<br>' +
+              '3. Your AI agent goes live immediately!' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+    })
+    .catch(function() {
+      btn.textContent = 'Create My Chatbot →';
+      btn.disabled = false;
+      btn.style.opacity = '';
+      var errDiv = document.getElementById('wiz-error');
+      if (!errDiv) {
+        errDiv = document.createElement('div');
+        errDiv.id = 'wiz-error';
+        errDiv.style.cssText = 'margin-top:16px;padding:12px 16px;background:#ff5c5c20;border:1px solid #ff5c5c40;border-radius:8px;color:#ff5c5c;font-size:14px;';
+        document.getElementById('wizardBody').appendChild(errDiv);
+      }
+      errDiv.textContent = 'Something went wrong creating your bot. Please try again.';
+    });
   }
 }
 
