@@ -116,190 +116,158 @@ function askQuickPrompt(btn) {
   sendDemoChat();
 }
 
-// ============ ONBOARDING WIZARD ============
+// ============ ONBOARDING WIZARD — PREMIUM ============
 const wizardSteps = [
-  { id: 'business', title: 'Business Details', desc: 'Name, website, email' },
-  { id: 'industry', title: 'Your Industry', desc: 'Select your vertical' },
-  { id: 'goals', title: 'Bot Goals', desc: 'What should it do?' },
-  { id: 'description', title: 'Business Info', desc: 'Describe your business' },
-  { id: 'customize', title: 'Customize', desc: 'Tone & appearance' },
-  { id: 'result', title: 'Your Bot', desc: 'Ready to deploy!' }
+  { id: 'business', title: 'Business Details' },
+  { id: 'email', title: 'Your Email' },
+  { id: 'industry', title: 'Industry' },
+  { id: 'goals', title: 'Goals' },
+  { id: 'description', title: 'Description & Tone' },
+  { id: 'review', title: 'Review & Create' }
 ];
 
 let currentWizStep = 0;
 let wizData = {
   businessName: '', website: '', email: '', industry: '', goals: [],
-  description: '', tone: 'professional', greeting: '', primaryColor: '#c4f751'
+  description: '', tone: 'professional'
 };
 
-function renderWizSidebar() {
-  document.getElementById('wizStepsList').innerHTML = wizardSteps.map((s, i) => `
-    <div class="wiz-step-item ${i === currentWizStep ? 'active' : ''} ${i < currentWizStep ? 'completed' : ''}">
-      <div class="wiz-step-dot"></div>
-      <div>
-        <div class="wiz-step-title">${s.title}</div>
-        <div class="wiz-step-desc">${s.desc}</div>
-      </div>
-    </div>
-  `).join('');
+function renderProgressTrack() {
+  const track = document.getElementById('wizProgressTrack');
+  track.innerHTML = wizardSteps.map((s, i) => {
+    const dotClass = i < currentWizStep ? 'completed' : i === currentWizStep ? 'active' : '';
+    const lineClass = i < currentWizStep ? 'completed' : '';
+    const icon = i < currentWizStep ? '✓' : (i + 1);
+    let html = `<div class="wiz-progress-step"><div class="wiz-progress-dot ${dotClass}">${icon}</div>`;
+    if (i < wizardSteps.length - 1) html += `<div class="wiz-progress-line ${lineClass}"></div>`;
+    html += '</div>';
+    return html;
+  }).join('');
 }
 
 function renderWizBody() {
   const body = document.getElementById('wizardBody');
-  const bar = document.getElementById('wizProgressBar');
-  const counter = document.getElementById('wizCounter');
   const backBtn = document.getElementById('wizBack');
   const nextBtn = document.getElementById('wizNext');
 
-  bar.style.width = ((currentWizStep + 1) / wizardSteps.length * 100) + '%';
-  counter.textContent = `Step ${currentWizStep + 1} of ${wizardSteps.length}`;
   backBtn.style.visibility = currentWizStep === 0 ? 'hidden' : 'visible';
-  nextBtn.textContent = currentWizStep === wizardSteps.length - 1 ? 'Create My Chatbot →' : 'Continue →';
+  nextBtn.innerHTML = currentWizStep === wizardSteps.length - 1 ? 'Create My Chatbot →' : 'Continue →';
+  renderProgressTrack();
+
+  // Force re-animation
+  body.style.animation = 'none';
+  body.offsetHeight;
+  body.style.animation = '';
 
   let html = '';
   switch (currentWizStep) {
     case 0:
       html = `
         <h3 class="wiz-title">What's your business?</h3>
-        <p class="wiz-desc">We'll use this to create and personalize your AI chatbot.</p>
+        <p class="wiz-desc">We'll use this to personalize your AI chatbot.</p>
         <div class="wiz-field">
           <label class="wiz-label">Business Name *</label>
-          <input class="wiz-input" id="wiz-name" placeholder="e.g. Sunrise Dental, Peak Fitness, Bella Cucina" value="${escapeHtml(wizData.businessName)}">
+          <input class="wiz-input" id="wiz-name" placeholder="e.g. Sunrise Dental, Peak Fitness" value="${escapeHtml(wizData.businessName)}">
         </div>
-        <div class="wiz-row">
-          <div class="wiz-field">
-            <label class="wiz-label">Website URL</label>
-            <input class="wiz-input" id="wiz-website" placeholder="https://yoursite.com" value="${escapeHtml(wizData.website)}">
-          </div>
-          <div class="wiz-field">
-            <label class="wiz-label">Email *</label>
-            <input class="wiz-input" id="wiz-email" type="email" placeholder="you@company.com" value="${escapeHtml(wizData.email)}">
-          </div>
+        <div class="wiz-field">
+          <label class="wiz-label">Website URL (optional)</label>
+          <input class="wiz-input" id="wiz-website" placeholder="https://yoursite.com" value="${escapeHtml(wizData.website)}">
         </div>`;
       break;
     case 1:
+      html = `
+        <h3 class="wiz-title">What's your email?</h3>
+        <p class="wiz-desc">We'll send your bot credentials and setup instructions here.</p>
+        <div class="wiz-field">
+          <label class="wiz-label">Email Address *</label>
+          <input class="wiz-input" id="wiz-email" type="email" placeholder="you@company.com" value="${escapeHtml(wizData.email)}">
+        </div>`;
+      break;
+    case 2:
       const inds = [
-        { i: '🏥', t: 'Healthcare & Dental', d: 'Clinics, dentists, therapists' },
-        { i: '🏠', t: 'Real Estate', d: 'Brokers, agents, property mgmt' },
-        { i: '🛒', t: 'E-Commerce', d: 'Online stores, DTC brands' },
-        { i: '⚖️', t: 'Legal Services', d: 'Law firms, consultants' },
-        { i: '🍽️', t: 'Restaurants & Food', d: 'Dining, catering, delivery' },
-        { i: '🏋️', t: 'Fitness & Wellness', d: 'Gyms, studios, spas' },
-        { i: '🎓', t: 'Education', d: 'Schools, courses, tutoring' },
-        { i: '🔧', t: 'Home Services', d: 'Plumbing, HVAC, cleaning' },
-        { i: '💼', t: 'Professional Services', d: 'Accounting, consulting' },
-        { i: '✨', t: 'Other', d: 'We support every industry' }
+        { i:'🏥', t:'Healthcare' }, { i:'🏠', t:'Real Estate' }, { i:'🛒', t:'E-Commerce' },
+        { i:'⚖️', t:'Legal' }, { i:'🍽️', t:'Restaurant' }, { i:'🏋️', t:'Fitness' },
+        { i:'🎓', t:'Education' }, { i:'🔧', t:'Home Services' }, { i:'✨', t:'Other' }
       ];
       html = `
         <h3 class="wiz-title">What industry are you in?</h3>
         <p class="wiz-desc">We'll pre-train your bot with industry-specific knowledge.</p>
-        <div class="wiz-options">
+        <div class="wiz-card-grid">
           ${inds.map(ind => `
-            <div class="wiz-option ${wizData.industry === ind.t ? 'selected' : ''}" onclick="selectIndustry(this,'${ind.t}')">
-              <div class="wiz-option-icon">${ind.i}</div>
-              <div class="wiz-option-title">${ind.t}</div>
-              <div class="wiz-option-desc">${ind.d}</div>
-            </div>`).join('')}
-        </div>`;
-      break;
-    case 2:
-      const goals = [
-        { id:'faq', i:'❓', t:'Answer FAQs', d:'Handle common questions automatically' },
-        { id:'leads', i:'📧', t:'Capture Leads', d:'Collect emails and phone numbers' },
-        { id:'booking', i:'📅', t:'Book Appointments', d:'Schedule meetings and demos' },
-        { id:'products', i:'🛍️', t:'Product Help', d:'Recommendations and info' },
-        { id:'support', i:'🎧', t:'Customer Support', d:'Returns, orders, troubleshooting' },
-        { id:'qualify', i:'🎯', t:'Qualify Prospects', d:'Pre-qualify before handoff' }
-      ];
-      html = `
-        <h3 class="wiz-title">What should your bot do?</h3>
-        <p class="wiz-desc">Select all that apply. You can change these later.</p>
-        <div class="wiz-options">
-          ${goals.map(g => `
-            <div class="wiz-option ${wizData.goals.includes(g.id) ? 'selected' : ''}" onclick="toggleGoal(this,'${g.id}')">
-              <div class="wiz-option-icon">${g.i}</div>
-              <div class="wiz-option-title">${g.t}</div>
-              <div class="wiz-option-desc">${g.d}</div>
+            <div class="wiz-card ${wizData.industry === ind.t ? 'selected' : ''}" onclick="selectIndustry(this,'${ind.t}')">
+              <div class="wiz-card-icon">${ind.i}</div>
+              <div class="wiz-card-title">${ind.t}</div>
             </div>`).join('')}
         </div>`;
       break;
     case 3:
+      const goals = [
+        { id:'faq', i:'❓', t:'Answer FAQs' }, { id:'leads', i:'📧', t:'Capture Leads' },
+        { id:'booking', i:'📅', t:'Book Appointments' }, { id:'products', i:'🛍️', t:'Product Recs' },
+        { id:'support', i:'🎧', t:'Support Tickets' }, { id:'custom', i:'⚙️', t:'Custom' }
+      ];
+      html = `
+        <h3 class="wiz-title">What should your bot do?</h3>
+        <p class="wiz-desc">Select all that apply — you can change these later.</p>
+        <div class="wiz-card-grid">
+          ${goals.map(g => `
+            <div class="wiz-card ${wizData.goals.includes(g.id) ? 'selected' : ''}" onclick="toggleGoal(this,'${g.id}')">
+              <div class="wiz-card-icon">${g.i}</div>
+              <div class="wiz-card-title">${g.t}</div>
+            </div>`).join('')}
+        </div>`;
+      break;
+    case 4:
       html = `
         <h3 class="wiz-title">Tell us about your business</h3>
         <p class="wiz-desc">The more detail you provide, the smarter your bot will be.</p>
         <div class="wiz-field">
           <label class="wiz-label">Business Description *</label>
-          <textarea class="wiz-textarea" id="wiz-desc" placeholder="Describe what you sell, who your customers are, your pricing, hours, policies, and anything customers commonly ask about...">${escapeHtml(wizData.description)}</textarea>
+          <textarea class="wiz-textarea" id="wiz-desc" placeholder="Describe what you sell, who your customers are, pricing, hours, policies...">${escapeHtml(wizData.description)}</textarea>
         </div>
         <div class="wiz-field">
-          <label class="wiz-label">Common Customer Questions (optional, one per line)</label>
-          <textarea class="wiz-textarea" id="wiz-faqs" style="min-height:80px;" placeholder="What are your hours?\nDo you accept insurance?\nHow much does a cleaning cost?"></textarea>
-        </div>`;
-      break;
-    case 4:
-      html = `
-        <h3 class="wiz-title">Customize your bot</h3>
-        <p class="wiz-desc">Set the tone, personality, and look of your AI agent.</p>
-        <div class="wiz-row">
-          <div class="wiz-field">
-            <label class="wiz-label">Conversation Tone</label>
-            <select class="wiz-select" id="wiz-tone">
-              <option value="professional" ${wizData.tone==='professional'?'selected':''}>Professional & Helpful</option>
-              <option value="friendly" ${wizData.tone==='friendly'?'selected':''}>Warm & Friendly</option>
-              <option value="casual" ${wizData.tone==='casual'?'selected':''}>Casual & Conversational</option>
-              <option value="formal" ${wizData.tone==='formal'?'selected':''}>Formal & Corporate</option>
-            </select>
-          </div>
-          <div class="wiz-field">
-            <label class="wiz-label">Bot Name</label>
-            <input class="wiz-input" id="wiz-botname" placeholder="e.g. ${wizData.businessName||'Your'} Assistant" value="${wizData.businessName?wizData.businessName+' Assistant':''}">
-          </div>
-        </div>
-        <div class="wiz-field">
-          <label class="wiz-label">Greeting Message</label>
-          <textarea class="wiz-textarea" id="wiz-greeting" style="min-height:80px;" placeholder="Hi! 👋 Welcome to ${wizData.businessName||'our website'}. How can I help you today?">${escapeHtml(wizData.greeting)}</textarea>
-        </div>
-        <div class="wiz-field">
-          <label class="wiz-label">Brand Color</label>
-          <div style="display:flex;gap:10px;align-items:center;">
-            <input type="color" id="wiz-color" value="${wizData.primaryColor}" style="width:48px;height:36px;border:1px solid var(--border);border-radius:8px;background:var(--bg);cursor:pointer;padding:2px;">
-            <span style="font-size:13px;color:var(--text-muted);">Used for chat widget accent</span>
+          <label class="wiz-label">Conversation Tone</label>
+          <div class="wiz-tone-grid">
+            <div class="wiz-tone-card ${wizData.tone==='friendly'?'selected':''}" onclick="selectTone(this,'friendly')">
+              <div class="tone-emoji">😊</div>
+              <div class="tone-label">Friendly</div>
+              <div class="tone-desc">Warm & approachable</div>
+            </div>
+            <div class="wiz-tone-card ${wizData.tone==='professional'?'selected':''}" onclick="selectTone(this,'professional')">
+              <div class="tone-emoji">💼</div>
+              <div class="tone-label">Professional</div>
+              <div class="tone-desc">Polished & expert</div>
+            </div>
+            <div class="wiz-tone-card ${wizData.tone==='casual'?'selected':''}" onclick="selectTone(this,'casual')">
+              <div class="tone-emoji">✌️</div>
+              <div class="tone-label">Casual</div>
+              <div class="tone-desc">Relaxed & natural</div>
+            </div>
           </div>
         </div>`;
       break;
     case 5:
       const name = wizData.businessName || 'Your Business';
-      const ind = wizData.industry || 'General';
-      const gLabels = { faq:'FAQ Answering', leads:'Lead Capture', booking:'Appointment Booking', products:'Product Recommendations', support:'Customer Support', qualify:'Lead Qualification' };
+      const gLabels = { faq:'Answer FAQs', leads:'Capture Leads', booking:'Book Appointments', products:'Product Recs', support:'Support Tickets', custom:'Custom' };
       const activeGoals = wizData.goals.map(g => gLabels[g]||g);
       html = `
-        <h3 class="wiz-title">Review & Create Your Bot</h3>
-        <p class="wiz-desc">Everything look good? Hit "Create My Chatbot" to go live.</p>
-        <div class="wiz-result">
-          <div class="wiz-result-header">
-            <div class="wiz-result-avatar">⚡</div>
-            <div>
-              <div class="wiz-result-name">${escapeHtml(name)} AI Agent</div>
-              <div class="wiz-result-meta">${escapeHtml(ind)} · ${escapeHtml(wizData.tone)} tone</div>
-            </div>
-          </div>
-          <div class="wiz-result-features">
-            <div class="wiz-result-feat"><span class="chk">✓</span> Trained on your data</div>
-            <div class="wiz-result-feat"><span class="chk">✓</span> Unlimited conversations</div>
-            ${activeGoals.map(g=>`<div class="wiz-result-feat"><span class="chk">✓</span> ${g}</div>`).join('')}
-            <div class="wiz-result-feat"><span class="chk">✓</span> 50+ languages</div>
-            <div class="wiz-result-feat"><span class="chk">✓</span> Analytics dashboard</div>
-            <div class="wiz-result-feat"><span class="chk">✓</span> Human handoff</div>
-          </div>
+        <h3 class="wiz-title">Review & create your bot</h3>
+        <p class="wiz-desc">Everything look good? Hit the button below to go live.</p>
+        <div class="wiz-review">
+          <div class="wiz-review-row"><div class="wiz-review-label">Business</div><div class="wiz-review-value">${escapeHtml(name)}</div></div>
+          ${wizData.website ? `<div class="wiz-review-row"><div class="wiz-review-label">Website</div><div class="wiz-review-value">${escapeHtml(wizData.website)}</div></div>` : ''}
+          <div class="wiz-review-row"><div class="wiz-review-label">Email</div><div class="wiz-review-value">${escapeHtml(wizData.email)}</div></div>
+          <div class="wiz-review-row"><div class="wiz-review-label">Industry</div><div class="wiz-review-value">${escapeHtml(wizData.industry)}</div></div>
+          <div class="wiz-review-row"><div class="wiz-review-label">Goals</div><div class="wiz-review-value"><div class="wiz-review-tags">${activeGoals.map(g=>`<span class="wiz-review-tag">${g}</span>`).join('')}</div></div></div>
+          <div class="wiz-review-row"><div class="wiz-review-label">Tone</div><div class="wiz-review-value" style="text-transform:capitalize;">${escapeHtml(wizData.tone)}</div></div>
         </div>`;
       break;
   }
   body.innerHTML = html;
-  renderWizSidebar();
 }
 
 function selectIndustry(el, value) {
-  document.querySelectorAll('.wiz-option').forEach(o => o.classList.remove('selected'));
+  document.querySelectorAll('.wiz-card-grid .wiz-card').forEach(o => o.classList.remove('selected'));
   el.classList.add('selected');
   wizData.industry = value;
 }
@@ -309,20 +277,23 @@ function toggleGoal(el, value) {
   wizData.goals = wizData.goals.includes(value) ? wizData.goals.filter(g=>g!==value) : [...wizData.goals, value];
 }
 
+function selectTone(el, value) {
+  document.querySelectorAll('.wiz-tone-card').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  wizData.tone = value;
+}
+
 function saveWizStep() {
   switch(currentWizStep) {
     case 0:
       wizData.businessName = document.getElementById('wiz-name')?.value || '';
       wizData.website = document.getElementById('wiz-website')?.value || '';
+      break;
+    case 1:
       wizData.email = document.getElementById('wiz-email')?.value || '';
       break;
-    case 3:
-      wizData.description = document.getElementById('wiz-desc')?.value || '';
-      break;
     case 4:
-      wizData.tone = document.getElementById('wiz-tone')?.value || 'professional';
-      wizData.greeting = document.getElementById('wiz-greeting')?.value || '';
-      wizData.primaryColor = document.getElementById('wiz-color')?.value || '#c4f751';
+      wizData.description = document.getElementById('wiz-desc')?.value || '';
       break;
   }
 }
@@ -331,13 +302,15 @@ function validateWizStep() {
   switch(currentWizStep) {
     case 0:
       const n = document.getElementById('wiz-name')?.value?.trim();
-      const e = document.getElementById('wiz-email')?.value?.trim();
       if (!n) { shakeField('wiz-name'); return false; }
-      if (!e || !e.includes('@')) { shakeField('wiz-email'); return false; }
       return true;
-    case 1: return !!wizData.industry;
-    case 2: return wizData.goals.length > 0;
-    case 3:
+    case 1:
+      const e = document.getElementById('wiz-email')?.value?.trim();
+      if (!e || !e.includes('@') || !e.includes('.')) { shakeField('wiz-email'); return false; }
+      return true;
+    case 2: return !!wizData.industry;
+    case 3: return wizData.goals.length > 0;
+    case 4:
       const d = document.getElementById('wiz-desc')?.value?.trim();
       if (!d || d.length < 1) { shakeField('wiz-desc'); return false; }
       return true;
@@ -348,7 +321,7 @@ function validateWizStep() {
 function shakeField(id) {
   const el = document.getElementById(id);
   if (!el) return;
-  el.style.borderColor = '#ff5c5c';
+  el.style.borderColor = 'var(--red)';
   el.style.animation = 'shake 0.4s ease';
   el.addEventListener('animationend', () => el.style.animation = '', { once: true });
   el.focus();
@@ -366,98 +339,7 @@ function wizNext() {
     renderWizBody();
     document.getElementById('wizard').scrollIntoView({ behavior: 'smooth', block: 'center' });
   } else {
-    // Show creation animation
-    const body = document.getElementById('wizardBody');
-    const footer = document.querySelector('.wizard-footer');
-    footer.style.display = 'none';
-    document.getElementById('wizProgressBar').style.width = '95%';
-
-    const creationSteps = [
-      { label: 'Analyzing your business data…', delay: 600 },
-      { label: 'Training AI on your products & services…', delay: 1400 },
-      { label: 'Configuring conversation flows…', delay: 2200 },
-      { label: 'Setting up lead capture…', delay: 2800 },
-      { label: 'Deploying your AI agent…', delay: 3400 }
-    ];
-
-    body.innerHTML = `
-      <div class="wiz-creating">
-        <div class="wiz-creating-spinner"></div>
-        <div class="wiz-creating-title">Building your AI agent</div>
-        <div class="wiz-creating-sub">This usually takes a few seconds…</div>
-        <div class="wiz-creating-steps">
-          ${creationSteps.map((s, i) => `
-            <div class="wiz-creating-step" id="cstep-${i}">
-              <div class="wiz-creating-step-icon">○</div>
-              <div>${s.label}</div>
-            </div>`).join('')}
-        </div>
-      </div>`;
-
-    creationSteps.forEach((s, i) => {
-      setTimeout(() => {
-        const el = document.getElementById('cstep-' + i);
-        if (el) { el.classList.add('active'); el.querySelector('.wiz-creating-step-icon').textContent = '⟳'; }
-        if (i > 0) {
-          const prev = document.getElementById('cstep-' + (i - 1));
-          if (prev) { prev.classList.remove('active'); prev.classList.add('done'); prev.querySelector('.wiz-creating-step-icon').textContent = '✓'; }
-        }
-      }, s.delay);
-    });
-
-    // Show success after animation
-    setTimeout(() => {
-      const last = document.getElementById('cstep-' + (creationSteps.length - 1));
-      if (last) { last.classList.remove('active'); last.classList.add('done'); last.querySelector('.wiz-creating-step-icon').textContent = '✓'; }
-
-      document.getElementById('wizProgressBar').style.width = '100%';
-      document.getElementById('wizCounter').textContent = 'Complete!';
-
-      const botId = 'bot_' + Math.random().toString(36).substr(2, 12);
-      const embedCode = '<script src="https://cdn.aibloop.com/widget/' + botId + '.js"><\/script>';
-      const name = wizData.businessName || 'Your Business';
-      const ind = wizData.industry || 'General';
-      const gLabels = { faq:'FAQ Answering', leads:'Lead Capture', booking:'Appointment Booking', products:'Product Recommendations', support:'Customer Support', qualify:'Lead Qualification' };
-      const activeGoals = wizData.goals.map(g => gLabels[g]||g);
-
-      body.innerHTML = `
-        <div class="wiz-success">
-          <div class="wiz-success-badge">✓ Successfully Created</div>
-          <h3 class="wiz-title" style="-webkit-text-fill-color:unset;background:none;color:var(--text);">Your AI chatbot is ready!</h3>
-          <p class="wiz-desc">Copy the embed code below and paste it on your website to go live instantly.</p>
-          <div class="wiz-result">
-            <div class="wiz-result-header">
-              <div class="wiz-result-avatar">⚡</div>
-              <div>
-                <div class="wiz-result-name">${escapeHtml(name)} AI Agent</div>
-                <div class="wiz-result-meta">${escapeHtml(ind)} · ${escapeHtml(wizData.tone)} tone · Custom Trained</div>
-              </div>
-            </div>
-            <div class="wiz-result-features">
-              <div class="wiz-result-feat"><span class="chk">✓</span> Trained on your data</div>
-              <div class="wiz-result-feat"><span class="chk">✓</span> Unlimited conversations</div>
-              ${activeGoals.map(g => '<div class="wiz-result-feat"><span class="chk">✓</span> ' + g + '</div>').join('')}
-              <div class="wiz-result-feat"><span class="chk">✓</span> 50+ languages</div>
-              <div class="wiz-result-feat"><span class="chk">✓</span> Analytics dashboard</div>
-              <div class="wiz-result-feat"><span class="chk">✓</span> Human handoff</div>
-            </div>
-            <div class="wiz-result-code-label">Embed Code — paste before &lt;/body&gt;</div>
-            <div class="wiz-result-code">
-              <button class="copy-btn" onclick="copyEmbed(this)">Copy</button>
-              <code>${escapeHtml(embedCode)}</code>
-            </div>
-            <div class="wiz-next-steps">
-              <div class="wiz-next-steps-title">🚀 What happens next?</div>
-              <div class="wiz-next-steps-list">
-                1. Copy the embed code above<br>
-                2. Paste it on your website before the &lt;/body&gt; tag<br>
-                3. Your AI agent goes live immediately!<br>
-                4. Check your <strong>inbox (${escapeHtml(wizData.email)})</strong> for login credentials
-              </div>
-            </div>
-          </div>
-        </div>`;
-    }, 4200);
+    submitWizard();
   }
 }
 
@@ -469,19 +351,127 @@ function wizPrev() {
   }
 }
 
+function submitWizard() {
+  const body = document.getElementById('wizardBody');
+  const footer = document.querySelector('.wizard-footer');
+  footer.style.display = 'none';
+
+  const creationSteps = [
+    { label: 'Analyzing your business data…', delay: 500 },
+    { label: 'Training AI on your products & services…', delay: 1200 },
+    { label: 'Configuring conversation flows…', delay: 2000 },
+    { label: 'Setting up lead capture…', delay: 2600 },
+    { label: 'Deploying your AI agent…', delay: 3200 }
+  ];
+
+  body.innerHTML = `
+    <div class="wiz-creating">
+      <div class="wiz-creating-spinner"></div>
+      <div class="wiz-creating-title">Building your AI agent</div>
+      <div class="wiz-creating-sub">This usually takes a few seconds…</div>
+      <div class="wiz-creating-steps">
+        ${creationSteps.map((s, i) => `
+          <div class="wiz-creating-step" id="cstep-${i}">
+            <div class="wiz-creating-step-icon">○</div>
+            <div>${s.label}</div>
+          </div>`).join('')}
+      </div>
+    </div>`;
+
+  creationSteps.forEach((s, i) => {
+    setTimeout(() => {
+      const el = document.getElementById('cstep-' + i);
+      if (el) { el.classList.add('active'); el.querySelector('.wiz-creating-step-icon').textContent = '⟳'; }
+      if (i > 0) {
+        const prev = document.getElementById('cstep-' + (i - 1));
+        if (prev) { prev.classList.remove('active'); prev.classList.add('done'); prev.querySelector('.wiz-creating-step-icon').textContent = '✓'; }
+      }
+    }, s.delay);
+  });
+
+  // POST to API
+  setTimeout(() => {
+    const last = document.getElementById('cstep-' + (creationSteps.length - 1));
+    if (last) { last.classList.remove('active'); last.classList.add('done'); last.querySelector('.wiz-creating-step-icon').textContent = '✓'; }
+
+    fetch('https://api.aibloop.com/api/bots', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        businessName: wizData.businessName,
+        website: wizData.website,
+        email: wizData.email,
+        industry: wizData.industry,
+        description: wizData.description,
+        tone: wizData.tone,
+        goals: wizData.goals
+      })
+    })
+    .then(res => {
+      if (!res.ok) throw new Error('API error');
+      return res.json();
+    })
+    .then(data => {
+      const botId = data.bot_id || data.id || 'bot_' + Math.random().toString(36).substr(2, 12);
+      showSuccess(botId);
+    })
+    .catch(err => {
+      showError(err.message);
+    });
+  }, 3800);
+}
+
+function showSuccess(botId) {
+  const body = document.getElementById('wizardBody');
+  const embedCode = `<script src="https://api.aibloop.com/api/widget/${botId}"><\/script>`;
+
+  // Mark all progress dots complete
+  document.querySelectorAll('.wiz-progress-dot').forEach(d => { d.className = 'wiz-progress-dot completed'; d.textContent = '✓'; });
+  document.querySelectorAll('.wiz-progress-line').forEach(l => l.classList.add('completed'));
+
+  body.innerHTML = `
+    <div class="wiz-success">
+      <div class="wiz-success-checkmark">✓</div>
+      <h3>Your AI Chatbot is Ready!</h3>
+      <p>Copy the embed code below and paste it before your &lt;/body&gt; tag.</p>
+      <div class="wiz-embed-block">
+        <button class="copy-btn" onclick="copyEmbed(this)">Copy Code</button>
+        <code>${escapeHtml(embedCode)}</code>
+      </div>
+      <div class="wiz-success-actions">
+        <a href="https://api.aibloop.com/widget/${botId}" target="_blank" class="wiz-btn wiz-btn-outline">Test Your Bot</a>
+        <a href="https://buy.stripe.com/8x228s1em7jp8LHbv63ks00" target="_blank" class="wiz-btn wiz-btn-green">Activate Full Access — $100/mo</a>
+      </div>
+      <p class="wiz-success-note">Your bot is live in demo mode (50 messages). Subscribe for unlimited conversations.</p>
+    </div>`;
+}
+
+function showError(msg) {
+  const body = document.getElementById('wizardBody');
+  const footer = document.querySelector('.wizard-footer');
+
+  body.innerHTML = `
+    <div class="wiz-error">
+      <div class="wiz-error-icon">⚠️</div>
+      <h3>Something went wrong</h3>
+      <p>${escapeHtml(msg || 'We couldn\'t create your bot right now. Please try again.')}</p>
+      <button class="wiz-btn wiz-btn-next" onclick="retryWizard()">Try Again →</button>
+    </div>`;
+}
+
+function retryWizard() {
+  const footer = document.querySelector('.wizard-footer');
+  footer.style.display = 'flex';
+  currentWizStep = 5;
+  renderWizBody();
+}
+
 function copyEmbed(btn) {
-  const code = btn.parentElement.querySelector('code')?.textContent || btn.parentElement.textContent.replace('Copy','').trim();
+  const code = btn.parentElement.querySelector('code')?.textContent || '';
   navigator.clipboard?.writeText(code).then(() => {
     btn.textContent = 'Copied!';
-    btn.style.background = 'var(--accent)';
-    btn.style.color = 'var(--bg)';
-    setTimeout(() => {
-      btn.textContent = 'Copy';
-      btn.style.background = '';
-      btn.style.color = '';
-    }, 2000);
+    setTimeout(() => btn.textContent = 'Copy Code', 2000);
   }).catch(() => {
-    // Fallback
     const ta = document.createElement('textarea');
     ta.value = code;
     document.body.appendChild(ta);
@@ -489,7 +479,7 @@ function copyEmbed(btn) {
     document.execCommand('copy');
     document.body.removeChild(ta);
     btn.textContent = 'Copied!';
-    setTimeout(() => btn.textContent = 'Copy', 2000);
+    setTimeout(() => btn.textContent = 'Copy Code', 2000);
   });
 }
 
