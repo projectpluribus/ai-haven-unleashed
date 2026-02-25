@@ -399,19 +399,72 @@ function wizNext() {
         <div class="wiz-success">
           <div class="wiz-success-badge">✓ Successfully Created</div>
           <h3 class="wiz-title" style="-webkit-text-fill-color:unset;background:none;color:var(--text);">Your AI Chatbot is Ready!</h3>
-          <p class="wiz-desc">Copy the embed code below and paste it on your website to go live.</p>
-          <div class="wiz-result">
-            <div class="wiz-result-code-label">Embed Code — paste before &lt;/body&gt;</div>
-            <div class="wiz-result-code">
-              <button class="copy-btn" onclick="copyEmbed(this)">Copy Code</button>
-              <code>${escapeHtml(embedCode)}</code>
-            </div>
-            <div style="margin-top:24px;text-align:center;">
-              <a href="https://buy.stripe.com/8x228s1em7jp8LHbv63ks00" class="btn btn-accent btn-block" style="font-size:16px;padding:16px 32px;" target="_blank">Activate Full Access — $100/mo</a>
-              <p style="margin-top:12px;font-size:13px;color:var(--text-muted);">Your bot is live in demo mode (50 messages). Subscribe for unlimited conversations.</p>
+          <p class="wiz-desc">Follow the steps below to go live.</p>
+
+          <div class="wiz-result" style="text-align:left;">
+            <div style="margin-bottom:28px;">
+              <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:22px;">
+                <span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px;border-radius:50%;background:var(--accent);color:var(--bg);font-weight:700;font-size:15px;">1</span>
+                <div style="flex:1;">
+                  <div style="font-weight:600;font-size:15px;margin-bottom:6px;">Test your bot below to see it in action</div>
+                  <button class="btn btn-accent" onclick="loadBotPreview('${data.bot_id}')" id="testBotBtn" style="font-size:14px;padding:10px 24px;">⚡ Test Your Bot</button>
+                  <div id="botPreviewContainer" style="margin-top:14px;"></div>
+                </div>
+              </div>
+
+              <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:22px;">
+                <span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px;border-radius:50%;background:var(--accent);color:var(--bg);font-weight:700;font-size:15px;">2</span>
+                <div style="flex:1;">
+                  <div style="font-weight:600;font-size:15px;margin-bottom:6px;">Copy the embed code and paste it on your website before the closing &lt;/body&gt; tag</div>
+                  <div class="wiz-result-code">
+                    <button class="copy-btn" onclick="copyEmbed(this)">Copy Code</button>
+                    <code>${escapeHtml(embedCode)}</code>
+                  </div>
+                </div>
+              </div>
+
+              <div style="display:flex;align-items:flex-start;gap:14px;">
+                <span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px;border-radius:50%;background:var(--accent);color:var(--bg);font-weight:700;font-size:15px;">3</span>
+                <div style="flex:1;">
+                  <div style="font-weight:600;font-size:15px;margin-bottom:6px;">Subscribe to keep your bot running with unlimited messages</div>
+                  <a href="https://buy.stripe.com/8x228s1em7jp8LHbv63ks00" class="btn btn-accent" style="font-size:14px;padding:10px 24px;display:inline-block;text-decoration:none;" target="_blank">Activate Full Access — $100/mo</a>
+                  <p style="margin-top:8px;font-size:13px;color:var(--text-muted);">Your bot is live in demo mode (50 messages). Subscribe for unlimited conversations.</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>`;
+    })
+    .catch(() => {
+      nextBtn.disabled = false;
+      nextBtn.textContent = 'Create My Chatbot →';
+      alert('Something went wrong, please try again.');
+    });
+  }
+}
+
+function loadBotPreview(botId) {
+  const container = document.getElementById('botPreviewContainer');
+  const btn = document.getElementById('testBotBtn');
+  if (!container || container.dataset.loaded) return;
+  container.dataset.loaded = 'true';
+  btn.disabled = true;
+  btn.textContent = 'Loading...';
+
+  // Load the widget script
+  const script = document.createElement('script');
+  script.src = 'https://api.aibloop.com/api/widget/' + botId;
+  script.onload = () => {
+    btn.style.display = 'none';
+    container.innerHTML = '<p style="font-size:13px;color:var(--text-muted);margin-top:4px;">✓ Bot widget loaded — look for the chat bubble on this page.</p>';
+  };
+  script.onerror = () => {
+    btn.disabled = false;
+    btn.textContent = '⚡ Test Your Bot';
+    container.dataset.loaded = '';
+    container.innerHTML = '<p style="font-size:13px;color:#ff5c5c;">Could not load the bot preview. Try again.</p>';
+  };
+  document.body.appendChild(script);
     })
     .catch(() => {
       nextBtn.disabled = false;
