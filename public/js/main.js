@@ -155,7 +155,7 @@ function renderWizBody() {
   counter.textContent = `Step ${currentWizStep + 1} of ${wizardSteps.length}`;
   backBtn.style.visibility = currentWizStep === 0 ? 'hidden' : 'visible';
   if (currentWizStep === wizardSteps.length - 1) {
-    nextBtn.textContent = 'Create My Chatbot →';
+    nextBtn.textContent = 'Start My Free Trial →';
     // Add paid button if not already present
     setTimeout(() => {
       if (!document.getElementById('wizPaidBtn')) {
@@ -295,7 +295,7 @@ function renderWizBody() {
       const activeGoals = wizData.goals.map(g => gLabels[g]||g);
       html = `
         <h3 class="wiz-title">Review & Create Your Bot</h3>
-        <p class="wiz-desc">Everything look good? Hit "Create My Chatbot" to go live.</p>
+        <p class="wiz-desc">Everything look good? Hit "Start My Free Trial" to go live.</p>
         <div class="wiz-result">
           <div class="wiz-result-header">
             <div class="wiz-result-avatar">⚡</div>
@@ -442,7 +442,7 @@ function wizNext() {
     })
     .catch(() => {
       nextBtn.disabled = false;
-      nextBtn.textContent = 'Create My Chatbot →';
+      nextBtn.textContent = 'Start My Free Trial →';
       alert('Something went wrong, please try again.');
     });
   }
