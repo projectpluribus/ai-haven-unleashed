@@ -187,7 +187,7 @@ function renderWizBody() {
         { i: '🏋️', t: 'Fitness & Wellness', d: 'Gyms, studios, spas' },
         { i: '🎓', t: 'Education', d: 'Schools, courses, tutoring' },
         { i: '🔧', t: 'Home Services', d: 'Plumbing, HVAC, cleaning' },
-        { i: '💼', t: 'Professional Services', d: 'Accounting, consulting' },
+        { i: '💼', t: 'Professional Services', d: 'Accounting, consulting, finance' },
         { i: '✨', t: 'Other', d: 'We support every industry' }
       ];
       html = `
