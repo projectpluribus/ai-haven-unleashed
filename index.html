@@ -319,14 +319,26 @@
       <h2 class="section-title">Create your custom chatbot <em>now</em></h2>
       <p class="section-sub">Fill in a few details and we'll build a trained AI agent for your business.</p>
     </div>
-    <!-- Step Progress Bar -->
-    <div class="wiz-progress-track" id="wizProgressTrack"></div>
-    <!-- Glassmorphism Card -->
-    <div class="wizard-card" id="wizard">
-      <div class="wizard-body" id="wizardBody"></div>
-      <div class="wizard-footer">
-        <button class="wiz-btn wiz-btn-back" id="wizBack" onclick="wizPrev()">← Back</button>
-        <button class="wiz-btn wiz-btn-next" id="wizNext" onclick="wizNext()">Continue →</button>
+    <div class="wizard" id="wizard">
+      <div class="wizard-sidebar">
+        <div class="wiz-steps-list" id="wizStepsList"></div>
+        <div class="wiz-sidebar-footer">
+          <div class="wiz-price-tag">
+            <div class="wiz-price-amount">$100<span>/mo</span></div>
+            <div class="wiz-price-note">Everything included · Cancel anytime</div>
+          </div>
+        </div>
+      </div>
+      <div class="wizard-main">
+        <div class="wizard-progress"><div class="wizard-progress-bar" id="wizProgressBar"></div></div>
+        <div class="wizard-body" id="wizardBody"></div>
+        <div class="wizard-footer">
+          <button class="btn btn-ghost" id="wizBack" onclick="wizPrev()">← Back</button>
+          <div class="wizard-footer-right">
+            <span class="wiz-step-counter" id="wizCounter"></span>
+            <button class="btn btn-accent" id="wizNext" onclick="wizNext()">Continue →</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
