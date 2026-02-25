@@ -1,14 +1,751 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✨</text></svg>" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NeuralForge — AI Agents Built For Your Industry</title>
-    <meta name="description" content="Deploy intelligent AI agents tailored to your niche. From healthcare to finance, NeuralForge automates workflows and supercharges your business." />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-402WQTDDG5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-402WQTDDG5');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI bloop — Custom AI Chatbot For Your Website | $100/mo</title>
+<meta name="description" content="Get a custom-trained AI chatbot for your website in under 2 minutes. Trained on YOUR business data. Answers customer questions 24/7. $100/month flat rate.">
+<meta name="keywords" content="ai chatbot, custom chatbot, website chatbot, business chatbot, customer support ai">
+<meta property="og:title" content="AI bloop — Custom AI Chatbot For Your Website">
+<meta property="og:description" content="Get a custom-trained AI chatbot built specifically for your business. Live in under 2 minutes. $100/month.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/fafbe1ea-ff09-4c53-a931-75aa99aea6e0/id-preview-09c33c5c--420aae15-075a-4d6e-b52c-803da0e6e454.lovable.app-1771559376684.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/fafbe1ea-ff09-4c53-a931-75aa99aea6e0/id-preview-09c33c5c--420aae15-075a-4d6e-b52c-803da0e6e454.lovable.app-1771559376684.png">
+<meta name="twitter:title" content="AI bloop — Custom AI Chatbot For Your Website">
+<meta name="twitter:description" content="Get a custom-trained AI chatbot built specifically for your business. Live in under 2 minutes. $100/month.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+
+<!-- Structured Data: SoftwareApplication -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "AI Bloop",
+  "url": "https://aibloop.com",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "description": "Custom-trained AI chatbot for your website. Trained on your business data, answers customer questions 24/7.",
+  "offers": {
+    "@type": "Offer",
+    "price": "100",
+    "priceCurrency": "USD",
+    "priceValidUntil": "2027-12-31",
+    "availability": "https://schema.org/InStock"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.9",
+    "ratingCount": "2437",
+    "bestRating": "5",
+    "worstRating": "1"
+  }
+}
+</script>
+
+<!-- Structured Data: FAQPage -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How is this different from ChatGPT or generic chatbots?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "ChatGPT is a general-purpose AI that knows nothing about your business. AI bloop creates a purpose-built AI agent trained specifically on your products, services, pricing, and policies. It speaks in your brand voice and is designed to convert visitors into customers — not just answer trivia."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How long does setup take?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Under 2 minutes. Fill in the wizard with your business details (name, industry, description), and we instantly generate your custom chatbot. You'll get a single line of JavaScript to paste on your site. That's it — your bot is live."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What if the bot can't answer something?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Smart escalation is built in. When your bot encounters a question it can't confidently answer, it captures the visitor's contact info (email or phone) and sends the question to your team via email. No customer falls through the cracks. You can also set up Slack or webhook notifications."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I customize how the bot looks and talks?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. You control the widget colors, avatar, bot name, greeting message, quick prompts, and conversation tone (professional, friendly, casual, etc.). The widget is designed to look native on any website — whether you're running Shopify, WordPress, Webflow, or a custom build."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is there a contract?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No contracts. No setup fees. No hidden charges. You pay $100/month and can cancel anytime from your dashboard — takes 10 seconds. We also offer a 7-day free trial so you can test everything before paying."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What website platforms does it work with?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "All of them. WordPress, Shopify, Squarespace, Wix, Webflow, Ghost, Framer, Carrd, custom HTML sites, React apps, Next.js — anything that lets you add a script tag. We also have a WordPress plugin for one-click install."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does the bot learn about my business?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "During setup, you describe your business — what you sell, who your customers are, your policies, hours, pricing, etc. Our AI uses this to create a comprehensive knowledge base. You can also update the bot's knowledge anytime from your dashboard by adding new information or correcting responses."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Will it work for my small/niche business?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Absolutely. We serve businesses from solo practitioners to enterprise. The more specific your business details during setup, the better your bot performs. We've seen amazing results from niche businesses like specialty bakeries, tax preparers, dog trainers, and boutique hotels."
+      }
+    }
+  ]
+}
+</script>
+
+<!-- Structured Data: Organization -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "AI Bloop",
+  "url": "https://aibloop.com",
+  "logo": "https://aibloop.com/favicon.ico",
+  "description": "Custom AI chatbots that know your business inside out. Built for companies that refuse to lose customers to silence.",
+  "sameAs": []
+}
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<!-- Mobile Menu Overlay -->
+<div class="mobile-overlay" id="mobileOverlay" onclick="closeMobileMenu()"></div>
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-header">
+    <div class="logo"><div class="logo-mark">A</div>AI bloop</div>
+    <button class="mobile-close" onclick="closeMobileMenu()">✕</button>
+  </div>
+  <nav class="mobile-nav">
+    <a href="#how" onclick="closeMobileMenu()">How It Works</a>
+    <a href="#features" onclick="closeMobileMenu()">Features</a>
+    <a href="#industries" onclick="closeMobileMenu()">Industries</a>
+    <a href="#pricing" onclick="closeMobileMenu()">Pricing</a>
+    <a href="#faq" onclick="closeMobileMenu()">FAQ</a>
+    <a href="admin.html">Admin Portal</a>
+    <a href="#configure" class="mobile-cta" onclick="closeMobileMenu()">Build Your Bot →</a>
+  </nav>
+</div>
+
+<!-- Navigation -->
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo"><div class="logo-mark">A</div>AI bloop</a>
+    <nav class="nav-links">
+      <a href="#how">How It Works</a>
+      <a href="#features">Features</a>
+      <a href="#industries">Industries</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="nav-right">
+      <a href="admin.html" class="nav-link-btn">Admin</a>
+      <a href="#configure" class="btn btn-sm btn-accent">Get Your Bot →</a>
+    </div>
+    <button class="hamburger" onclick="toggleMobileMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero" id="hero">
+  <div class="hero-bg">
+    <div class="hero-grid"></div>
+    <div class="hero-glow"></div>
+  </div>
+  <div class="container hero-content">
+    <div class="hero-badge">
+      <span class="pulse-dot"></span>
+      Serving 1000+ businesses · 4.2M conversations this month
+    </div>
+    <h1 class="hero-h1">
+      Stop losing customers<br>
+      to <em>unanswered</em> questions
+    </h1>
+    <p class="hero-sub">
+      Get a custom AI chatbot trained on <strong>your</strong> business — your products, 
+      your prices, your policies. Live on your website in under 2 minutes. 
+      It answers visitors 24/7 so you never miss a lead again.
+    </p>
+    <div class="hero-actions">
+      <a href="#configure" class="btn btn-lg btn-accent">Build Your Chatbot Free →</a>
+      <a href="#demo-section" class="btn btn-lg btn-ghost">Try Live Demo</a>
+    </div>
+    <div class="hero-proof">
+      <div class="hero-avatars">
+        <div class="h-avatar" style="background:#c4f751;color:#111;">S</div>
+        <div class="h-avatar" style="background:#5b9cf5;color:#111;">M</div>
+        <div class="h-avatar" style="background:#a78bfa;color:#111;">J</div>
+        <div class="h-avatar" style="background:#f472b6;color:#111;">A</div>
+        <div class="h-avatar" style="background:#fb923c;color:#111;">R</div>
+      </div>
+      <div class="hero-proof-text">
+        <strong>2,437 businesses</strong> already use AI bloop
+        <div class="hero-stars">★★★★★ <span>4.9/5 average rating</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Stats -->
+  <div class="container">
+    <div class="hero-stats">
+      <div class="h-stat">
+        <div class="h-stat-num">94%</div>
+        <div class="h-stat-label">Questions answered<br>without human help</div>
+      </div>
+      <div class="h-stat-divider"></div>
+      <div class="h-stat">
+        <div class="h-stat-num">3.2×</div>
+        <div class="h-stat-label">More leads captured<br>vs. contact forms</div>
+      </div>
+      <div class="h-stat-divider"></div>
+      <div class="h-stat">
+        <div class="h-stat-num">&lt;2 min</div>
+        <div class="h-stat-label">To go live on<br>your website</div>
+      </div>
+      <div class="h-stat-divider"></div>
+      <div class="h-stat">
+        <div class="h-stat-num">$100</div>
+        <div class="h-stat-label">Flat monthly price<br>cancel anytime</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Before/After -->
+<section class="before-after" id="how">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Why AI bloop</div>
+      <h2 class="section-title">Your website is losing money <em>right now</em></h2>
+      <p class="section-sub">67% of visitors leave without buying because they can't get answers fast enough. AI bloop fixes that.</p>
+    </div>
+    <div class="ba-grid">
+      <div class="ba-card ba-before">
+        <div class="ba-label ba-label-before">Without AI bloop</div>
+        <ul class="ba-list">
+          <li><span class="ba-x">✕</span> Visitors leave with unanswered questions</li>
+          <li><span class="ba-x">✕</span> Leads lost after business hours</li>
+          <li><span class="ba-x">✕</span> Support team overwhelmed with repetitive questions</li>
+          <li><span class="ba-x">✕</span> Contact forms get 2-3% response rate</li>
+          <li><span class="ba-x">✕</span> Days to respond to inquiries</li>
+        </ul>
+      </div>
+      <div class="ba-card ba-after">
+        <div class="ba-label ba-label-after">With AI bloop</div>
+        <ul class="ba-list">
+          <li><span class="ba-check">✓</span> Every question answered instantly, 24/7</li>
+          <li><span class="ba-check">✓</span> Leads captured while you sleep</li>
+          <li><span class="ba-check">✓</span> 94% of questions handled by AI automatically</li>
+          <li><span class="ba-check">✓</span> Chat converts 3.2× more than forms</li>
+          <li><span class="ba-check">✓</span> Instant responses build trust and close deals</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works -->
+<section class="how-section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">3 Simple Steps</div>
+      <h2 class="section-title">Live in under <em>2 minutes</em></h2>
+      <p class="section-sub">No coding. No training data. No API keys. Just describe your business and go.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">01</div>
+        <div class="step-icon">📝</div>
+        <h3>Describe Your Business</h3>
+        <p>Tell us your business name, industry, what you sell, and what questions customers ask. Takes 60 seconds.</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step-card">
+        <div class="step-num">02</div>
+        <div class="step-icon">🧠</div>
+        <h3>AI Builds Your Bot</h3>
+        <p>We instantly train a custom AI agent that knows your products, services, pricing, and policies inside out.</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step-card">
+        <div class="step-num">03</div>
+        <div class="step-icon">🚀</div>
+        <h3>Copy & Paste to Go Live</h3>
+        <p>Drop one line of code on your site. Your AI agent starts answering questions and capturing leads immediately.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Onboarding Wizard -->
+<section class="wizard-section" id="configure">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Build Your Bot</div>
+      <h2 class="section-title">Create your custom chatbot <em>now</em></h2>
+      <p class="section-sub">Fill in a few details and we'll build a trained AI agent for your business.</p>
+    </div>
+    <div class="wizard" id="wizard">
+      <div class="wizard-sidebar">
+        <div class="wiz-steps-list" id="wizStepsList"></div>
+        <div class="wiz-sidebar-footer">
+          <div class="wiz-price-tag">
+            <div class="wiz-price-amount">$100<span>/mo</span></div>
+            <div class="wiz-price-note">Everything included · Cancel anytime</div>
+          </div>
+        </div>
+      </div>
+      <div class="wizard-main">
+        <div class="wizard-progress"><div class="wizard-progress-bar" id="wizProgressBar"></div></div>
+        <div class="wizard-body" id="wizardBody"></div>
+        <div class="wizard-footer">
+          <button class="btn btn-ghost" id="wizBack" onclick="wizPrev()">← Back</button>
+          <div class="wizard-footer-right">
+            <span class="wiz-step-counter" id="wizCounter"></span>
+            <button class="btn btn-accent" id="wizNext" onclick="wizNext()">Continue →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features -->
+<section class="features-section" id="features">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Features</div>
+      <h2 class="section-title">Everything you need, <em>nothing you don't</em></h2>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🎯</div>
+        <h3>Trained On Your Data</h3>
+        <p>Your bot knows your products, prices, hours, policies, and FAQs. Not generic — specific to your business.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💬</div>
+        <h3>Unlimited Conversations</h3>
+        <p>No message caps. No per-conversation charges. Your bot can handle 10 or 10,000 chats per day.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🌍</div>
+        <h3>50+ Languages</h3>
+        <p>Auto-detects visitor language and responds naturally. Serve international customers without hiring translators.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Lead Capture</h3>
+        <p>Collects emails and phone numbers mid-conversation. Leads sent to your inbox or CRM automatically.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎨</div>
+        <h3>Fully Customizable</h3>
+        <p>Match your brand colors, logo, avatar, greeting message, and tone. Looks native on any website.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔗</div>
+        <h3>One-Line Install</h3>
+        <p>Works with WordPress, Shopify, Squarespace, Wix, Webflow, or any custom site. Just paste one script tag.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🧑‍💼</div>
+        <h3>Human Handoff</h3>
+        <p>When the bot can't help, it captures details and emails your team. No customer falls through the cracks.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📈</div>
+        <h3>Analytics Dashboard</h3>
+        <p>See every conversation, track satisfaction scores, monitor lead captures, and identify trending questions.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <h3>Secure & Private</h3>
+        <p>Enterprise-grade encryption. Your data is never shared. GDPR compliant. SOC 2 in progress.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Live Demo -->
+<section class="demo-section" id="demo-section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Live Demo</div>
+      <h2 class="section-title">See it <em>in action</em></h2>
+      <p class="section-sub">This is a real AI bloop chatbot trained on our own site. Ask it anything about AI bloop.</p>
+    </div>
+    <div class="demo-container">
+      <div class="demo-browser">
+        <div class="demo-browser-bar">
+          <div class="demo-dots"><span></span><span></span><span></span></div>
+          <div class="demo-url">aibloop.com</div>
+        </div>
+        <div class="demo-site-content">
+          <div class="demo-site-fake">
+            <div class="demo-fake-nav"></div>
+            <div class="demo-fake-hero">
+              <div class="demo-fake-h1"></div>
+              <div class="demo-fake-h1 short"></div>
+              <div class="demo-fake-p"></div>
+              <div class="demo-fake-btn"></div>
+            </div>
+            <div class="demo-fake-cards">
+              <div class="demo-fake-card"></div>
+              <div class="demo-fake-card"></div>
+              <div class="demo-fake-card"></div>
+            </div>
+          </div>
+          <!-- Chat Widget -->
+          <div class="demo-chat" id="demoChat">
+            <div class="demo-chat-header">
+              <div class="demo-chat-avatar">⚡</div>
+              <div class="demo-chat-info">
+                <div class="demo-chat-name">AI bloop Assistant</div>
+                <div class="demo-chat-status"><span class="pulse-dot-sm"></span> Online · Replies instantly</div>
+              </div>
+              <button class="demo-chat-minimize" onclick="toggleDemoChat()">—</button>
+            </div>
+            <div class="demo-chat-messages" id="demoChatMessages">
+              <div class="d-msg bot">
+                <div class="d-msg-bubble">
+                  Hi! 👋 I'm the AI bloop demo bot. I can answer any questions about AI bloop — pricing, features, setup, anything. What would you like to know?
+                </div>
+              </div>
+            </div>
+            <div class="demo-quick-prompts" id="demoPrompts">
+              <button onclick="askQuickPrompt(this)" class="quick-prompt">How does pricing work?</button>
+              <button onclick="askQuickPrompt(this)" class="quick-prompt">How do I install it?</button>
+              <button onclick="askQuickPrompt(this)" class="quick-prompt">What industries do you support?</button>
+              <button onclick="askQuickPrompt(this)" class="quick-prompt">Can I try a demo?</button>
+            </div>
+            <div class="demo-chat-input-area">
+              <input type="text" id="demoChatInput" placeholder="Ask me anything about AI bloop..." onkeydown="if(event.key==='Enter')sendDemoChat()">
+              <button onclick="sendDemoChat()" class="demo-send-btn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"></path><path d="M22 2L15 22L11 13L2 9L22 2Z"></path></svg>
+              </button>
+            </div>
+          </div>
+          <button class="demo-chat-trigger" id="demoChatTrigger" onclick="toggleDemoChat()">
+            <span class="chat-trigger-icon">💬</span>
+            <span class="chat-trigger-badge">1</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Industries -->
+<section class="industries-section" id="industries">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Industries</div>
+      <h2 class="section-title">Purpose-built for <em>your vertical</em></h2>
+      <p class="section-sub">Every bot is pre-loaded with industry-specific knowledge, then fine-tuned on your data.</p>
+    </div>
+    <div class="industries-grid">
+      <div class="industry-card">
+        <div class="ind-icon">🏥</div>
+        <h3>Healthcare & Dental</h3>
+        <p>Appointment scheduling, insurance questions, symptom triage, patient follow-ups. HIPAA-aware responses.</p>
+        <div class="ind-stat">↑ 67% fewer no-shows</div>
+      </div>
+      <div class="industry-card">
+        <div class="ind-icon">🏠</div>
+        <h3>Real Estate</h3>
+        <p>Qualify buyers instantly, answer property questions, schedule viewings, share listings. 24/7 open house.</p>
+        <div class="ind-stat">↑ 3.8× more qualified leads</div>
+      </div>
+      <div class="industry-card">
+        <div class="ind-icon">🛒</div>
+        <h3>E-Commerce</h3>
+        <p>Product recommendations, order tracking, returns handling, size guides, upselling. Like a personal shopper.</p>
+        <div class="ind-stat">↑ 22% average order value</div>
+      </div>
+      <div class="industry-card">
+        <div class="ind-icon">⚖️</div>
+        <h3>Legal Services</h3>
+        <p>Client intake, practice-area FAQs, consultation booking, case pre-qualification. Professional & compliant.</p>
+        <div class="ind-stat">↑ 4.1× consultation bookings</div>
+      </div>
+      <div class="industry-card">
+        <div class="ind-icon">🍽️</div>
+        <h3>Restaurants & Food</h3>
+        <p>Reservations, menu info, dietary questions, catering inquiries, online ordering support. Always friendly.</p>
+        <div class="ind-stat">↑ 34% more reservations</div>
+      </div>
+      <div class="industry-card">
+        <div class="ind-icon">🏋️</div>
+        <h3>Fitness & Wellness</h3>
+        <p>Class bookings, membership inquiries, trainer matching, program recommendations. Motivating & helpful.</p>
+        <div class="ind-stat">↑ 28% member retention</div>
+      </div>
+      <div class="industry-card">
+        <div class="ind-icon">🎓</div>
+        <h3>Education</h3>
+        <p>Course inquiries, enrollment help, schedule info, student support, financial aid questions. Informative.</p>
+        <div class="ind-stat">↑ 51% enrollment inquiries</div>
+      </div>
+      <div class="industry-card">
+        <div class="ind-icon">🔧</div>
+        <h3>Home Services</h3>
+        <p>Quote requests, service area questions, scheduling, emergency dispatch, warranty info. Always available.</p>
+        <div class="ind-stat">↑ 2.9× service bookings</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section class="pricing-section" id="pricing">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Pricing</div>
+      <h2 class="section-title">One plan. <em>Everything</em> included.</h2>
+      <p class="section-sub">No tiers. No upsells. No hidden fees. Just one simple price for everything.</p>
+    </div>
+    <div class="pricing-layout">
+      <div class="pricing-card">
+        <div class="pricing-badge">All-Inclusive</div>
+        <div class="pricing-price">
+          <span class="pricing-currency">$</span>
+          <span class="pricing-amount">100</span>
+          <span class="pricing-period">/month</span>
+        </div>
+        <div class="pricing-tagline">Everything your business needs. Nothing it doesn't.</div>
+        <div class="pricing-divider"></div>
+        <div class="pricing-features">
+          <div class="pf-group">
+            <div class="pf-group-title">Core</div>
+            <div class="pf-item"><span class="pf-check">✓</span> Custom AI chatbot trained on YOUR business</div>
+            <div class="pf-item"><span class="pf-check">✓</span> Unlimited conversations</div>
+            <div class="pf-item"><span class="pf-check">✓</span> Embeddable widget (one line of code)</div>
+            <div class="pf-item"><span class="pf-check">✓</span> Works on any website platform</div>
+          </div>
+          <div class="pf-group">
+            <div class="pf-group-title">Engagement</div>
+            <div class="pf-item"><span class="pf-check">✓</span> Lead capture with email/phone collection</div>
+            <div class="pf-item"><span class="pf-check">✓</span> Quick prompts & conversation starters</div>
+            <div class="pf-item"><span class="pf-check">✓</span> Human handoff & escalation</div>
+            <div class="pf-item"><span class="pf-check">✓</span> 50+ language support</div>
+          </div>
+          <div class="pf-group">
+            <div class="pf-group-title">Intelligence</div>
+            <div class="pf-item"><span class="pf-check">✓</span> Analytics dashboard</div>
+            <div class="pf-item"><span class="pf-check">✓</span> Conversation history & search</div>
+            <div class="pf-item"><span class="pf-check">✓</span> Weekly performance reports</div>
+            <div class="pf-item"><span class="pf-check">✓</span> Brand voice customization</div>
+          </div>
+        </div>
+        <a href="#configure" class="btn btn-accent btn-block pricing-cta">Start Building — Free Setup →</a>
+        <div class="pricing-guarantee">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+          7-day free trial · No credit card required · Cancel anytime
+        </div>
+      </div>
+      <div class="pricing-comparison">
+        <h3 class="comparison-title">Why $100/mo is a steal</h3>
+        <div class="comparison-item">
+          <div class="comp-name">Full-time support agent</div>
+          <div class="comp-price">$3,500+/mo</div>
+        </div>
+        <div class="comparison-item">
+          <div class="comp-name">Intercom / Zendesk</div>
+          <div class="comp-price">$300-800/mo</div>
+        </div>
+        <div class="comparison-item">
+          <div class="comp-name">Custom chatbot development</div>
+          <div class="comp-price">$10,000+ once</div>
+        </div>
+        <div class="comparison-item">
+          <div class="comp-name">Generic chatbot tools</div>
+          <div class="comp-price">$40-200/mo</div>
+        </div>
+        <div class="comparison-item highlight">
+          <div class="comp-name"><strong>AI bloop (custom-trained)</strong></div>
+          <div class="comp-price accent">$100/mo</div>
+        </div>
+        <div class="comparison-note">The average AI bloop customer saves $2,800/month in support costs and captures 3.2× more leads.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section class="testimonials-section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Testimonials</div>
+      <h2 class="section-title">Real results from <em>real businesses</em></h2>
+    </div>
+    <div class="testimonials-grid">
+      <div class="test-card">
+        <div class="test-rating">★★★★★</div>
+        <blockquote>"We replaced our live chat team of 3 with AI bloop. It handles 89% of inquiries without any human help. Our support costs dropped by $8,400/month."</blockquote>
+        <div class="test-author">
+          <div class="test-av" style="background:#c4f751;color:#111;">S</div>
+          <div><strong>Sarah Kim</strong><br><span>CEO, NovaDental Group · Healthcare</span></div>
+        </div>
+      </div>
+      <div class="test-card">
+        <div class="test-rating">★★★★★</div>
+        <blockquote>"Setup took 90 seconds. The bot knew our entire menu, dietary info, and reservation system from day one. We're booking 34% more tables through the bot."</blockquote>
+        <div class="test-author">
+          <div class="test-av" style="background:#5b9cf5;color:#111;">M</div>
+          <div><strong>Marco Rivera</strong><br><span>Owner, Fuego Kitchen · Restaurant</span></div>
+        </div>
+      </div>
+      <div class="test-card">
+        <div class="test-rating">★★★★★</div>
+        <blockquote>"Our lead conversion went from 2.1% to 7.8% in the first month. AI bloop pays for itself 50× over. Best $100 I spend every month."</blockquote>
+        <div class="test-author">
+          <div class="test-av" style="background:#a78bfa;color:#111;">J</div>
+          <div><strong>James Thornton</strong><br><span>Broker, Pinnacle Realty · Real Estate</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section" id="faq">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">FAQ</div>
+      <h2 class="section-title">Got <em>questions?</em></h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q"><span>How is this different from ChatGPT or generic chatbots?</span><div class="faq-icon">+</div></div>
+        <div class="faq-a">ChatGPT is a general-purpose AI that knows nothing about your business. AI bloop creates a purpose-built AI agent trained specifically on your products, services, pricing, and policies. It speaks in your brand voice and is designed to convert visitors into customers — not just answer trivia. Think of it as the difference between hiring a random person off the street vs. training a dedicated employee.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q"><span>How long does setup take?</span><div class="faq-icon">+</div></div>
+        <div class="faq-a">Under 2 minutes. Fill in the wizard with your business details (name, industry, description), and we instantly generate your custom chatbot. You'll get a single line of JavaScript to paste on your site. That's it — your bot is live.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q"><span>What if the bot can't answer something?</span><div class="faq-icon">+</div></div>
+        <div class="faq-a">Smart escalation is built in. When your bot encounters a question it can't confidently answer, it captures the visitor's contact info (email or phone) and sends the question to your team via email. No customer falls through the cracks. You can also set up Slack or webhook notifications.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q"><span>Can I customize how the bot looks and talks?</span><div class="faq-icon">+</div></div>
+        <div class="faq-a">Yes. You control the widget colors, avatar, bot name, greeting message, quick prompts, and conversation tone (professional, friendly, casual, etc.). The widget is designed to look native on any website — whether you're running Shopify, WordPress, Webflow, or a custom build.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q"><span>Is there a contract?</span><div class="faq-icon">+</div></div>
+        <div class="faq-a">No contracts. No setup fees. No hidden charges. You pay $100/month and can cancel anytime from your dashboard — takes 10 seconds. We also offer a 7-day free trial so you can test everything before paying.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q"><span>What website platforms does it work with?</span><div class="faq-icon">+</div></div>
+        <div class="faq-a">All of them. WordPress, Shopify, Squarespace, Wix, Webflow, Ghost, Framer, Carrd, custom HTML sites, React apps, Next.js — anything that lets you add a script tag. We also have a WordPress plugin for one-click install.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q"><span>How does the bot learn about my business?</span><div class="faq-icon">+</div></div>
+        <div class="faq-a">During setup, you describe your business — what you sell, who your customers are, your policies, hours, pricing, etc. Our AI uses this to create a comprehensive knowledge base. You can also update the bot's knowledge anytime from your dashboard by adding new information or correcting responses.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q"><span>Will it work for my small/niche business?</span><div class="faq-icon">+</div></div>
+        <div class="faq-a">Absolutely. We serve businesses from solo practitioners to enterprise. The more specific your business details during setup, the better your bot performs. We've seen amazing results from niche businesses like specialty bakeries, tax preparers, dog trainers, and boutique hotels.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Final CTA -->
+<section class="final-cta">
+  <div class="container">
+    <div class="final-cta-glow"></div>
+    <h2>Your competitors already have AI.<br>Do you?</h2>
+    <p>78% of customers buy from whoever responds first. Make sure that's you.</p>
+    <div class="final-cta-actions">
+      <a href="#configure" class="btn btn-lg btn-accent">Build Your Bot — It's Free to Start →</a>
+    </div>
+    <div class="final-cta-logos">
+      <span>Works with</span>
+      <div class="platform-logos">
+        <span class="p-logo">WordPress</span>
+        <span class="p-logo">Shopify</span>
+        <span class="p-logo">Webflow</span>
+        <span class="p-logo">Wix</span>
+        <span class="p-logo">Squarespace</span>
+        <span class="p-logo">Any HTML</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo"><div class="logo-mark">A</div>AI bloop</div>
+        <p>Custom AI chatbots that know your business inside out. Built for companies that refuse to lose customers to silence.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Product</h4>
+        <a href="#features">Features</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#demo-section">Demo</a>
+        <a href="#configure">Build Your Bot</a>
+      </div>
+      <div class="footer-col">
+        <h4>Industries</h4>
+        <a href="#industries">Healthcare</a>
+        <a href="#industries">Real Estate</a>
+        <a href="#industries">E-Commerce</a>
+        <a href="#industries">Legal</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="admin.html">Admin Portal</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 AI bloop. All rights reserved.</span>
+      <span>Built with ⚡ for businesses that want to grow.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
 </html>

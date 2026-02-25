@@ -14,7 +14,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ["Plus Jakarta Sans", "sans-serif"],
+        display: ["Space Grotesk", "sans-serif"],
         body: ["Inter", "sans-serif"],
       },
       colors: {
@@ -80,28 +80,18 @@ export default {
         },
         "float": {
           "0%, 100%": { transform: "translateY(0px)" },
-          "50%": { transform: "translateY(-12px)" },
-        },
-        "float-delayed": {
-          "0%, 100%": { transform: "translateY(0px) rotate(-2deg)" },
-          "50%": { transform: "translateY(-8px) rotate(2deg)" },
+          "50%": { transform: "translateY(-10px)" },
         },
         "pulse-glow": {
           "0%, 100%": { opacity: "0.4" },
           "50%": { opacity: "1" },
-        },
-        "slide-up": {
-          from: { opacity: "0", transform: "translateY(20px)" },
-          to: { opacity: "1", transform: "translateY(0)" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "float": "float 6s ease-in-out infinite",
-        "float-delayed": "float-delayed 7s ease-in-out infinite",
         "pulse-glow": "pulse-glow 3s ease-in-out infinite",
-        "slide-up": "slide-up 0.6s ease-out",
       },
     },
   },
