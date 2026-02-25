@@ -154,7 +154,28 @@ function renderWizBody() {
   bar.style.width = ((currentWizStep + 1) / wizardSteps.length * 100) + '%';
   counter.textContent = `Step ${currentWizStep + 1} of ${wizardSteps.length}`;
   backBtn.style.visibility = currentWizStep === 0 ? 'hidden' : 'visible';
-  nextBtn.textContent = currentWizStep === wizardSteps.length - 1 ? 'Create My Chatbot →' : 'Continue →';
+  if (currentWizStep === wizardSteps.length - 1) {
+    nextBtn.textContent = 'Create My Chatbot →';
+    // Add paid button if not already present
+    setTimeout(() => {
+      if (!document.getElementById('wizPaidBtn')) {
+        const orText = document.createElement('div');
+        orText.style.cssText = 'text-align:center;font-size:13px;color:var(--text-muted);margin:8px 0;';
+        orText.textContent = 'or';
+        nextBtn.parentElement.insertBefore(orText, nextBtn.nextSibling);
+
+        const paidBtn = document.createElement('button');
+        paidBtn.id = 'wizPaidBtn';
+        paidBtn.className = 'btn';
+        paidBtn.style.cssText = 'background:transparent;border:1.5px solid var(--accent);color:var(--accent);padding:12px 24px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;width:100%;margin-top:0;';
+        paidBtn.textContent = 'Skip Trial — Pay $100/mo & Go Live Instantly';
+        paidBtn.onclick = function() { wizNextPaid(); };
+        orText.parentElement.insertBefore(paidBtn, orText.nextSibling);
+      }
+    }, 0);
+  } else {
+    nextBtn.textContent = 'Continue →';
+  }
 
   let html = '';
   switch (currentWizStep) {
@@ -288,7 +309,7 @@ function renderWizBody() {
             <div class="wiz-result-feat"><span class="chk">✓</span> Unlimited conversations</div>
             ${activeGoals.map(g=>`<div class="wiz-result-feat"><span class="chk">✓</span> ${g}</div>`).join('')}
             <div class="wiz-result-feat"><span class="chk">✓</span> 50+ languages</div>
-            <div class="wiz-result-feat"><span class="chk">✓</span> Analytics dashboard</div>
+            <div class="wiz-result-feat"><span class="chk">✓</span> Weekly email reports</div>
             <div class="wiz-result-feat"><span class="chk">✓</span> Human handoff</div>
           </div>
         </div>`;
@@ -456,6 +477,42 @@ function loadBotPreview(botId) {
       alert('Something went wrong, please try again.');
     });
   }
+}
+
+function wizNextPaid() {
+  if (!validateWizStep()) return;
+  saveWizStep();
+
+  const paidBtn = document.getElementById('wizPaidBtn');
+  const nextBtn = document.getElementById('wizNext');
+  paidBtn.disabled = true;
+  paidBtn.textContent = 'Redirecting to checkout...';
+  nextBtn.disabled = true;
+
+  fetch('https://api.aibloop.com/api/bots/paid', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      businessName: wizData.businessName,
+      website: wizData.website,
+      email: wizData.email,
+      industry: wizData.industry,
+      description: wizData.description,
+      tone: wizData.tone,
+      goals: wizData.goals
+    })
+  })
+  .then(res => { if (!res.ok) throw new Error('Request failed'); return res.json(); })
+  .then(data => {
+    if (!data.checkout_url) throw new Error('No checkout_url');
+    window.location.href = data.checkout_url;
+  })
+  .catch(() => {
+    paidBtn.disabled = false;
+    paidBtn.textContent = 'Skip Trial — Pay $100/mo & Go Live Instantly';
+    nextBtn.disabled = false;
+    alert('Something went wrong, please try again.');
+  });
 }
 
 function wizPrev() {
