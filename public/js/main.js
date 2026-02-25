@@ -470,13 +470,6 @@ function loadBotPreview(botId) {
     container.innerHTML = '<p style="font-size:13px;color:#ff5c5c;">Could not load the bot preview. Try again.</p>';
   };
   document.body.appendChild(script);
-    })
-    .catch(() => {
-      nextBtn.disabled = false;
-      nextBtn.textContent = 'Create My Chatbot →';
-      alert('Something went wrong, please try again.');
-    });
-  }
 }
 
 function wizNextPaid() {
