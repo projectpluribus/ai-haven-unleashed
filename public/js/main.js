@@ -366,98 +366,58 @@ function wizNext() {
     renderWizBody();
     document.getElementById('wizard').scrollIntoView({ behavior: 'smooth', block: 'center' });
   } else {
-    // Show creation animation
-    const body = document.getElementById('wizardBody');
-    const footer = document.querySelector('.wizard-footer');
-    footer.style.display = 'none';
-    document.getElementById('wizProgressBar').style.width = '95%';
+    // POST to API
+    const nextBtn = document.getElementById('wizNext');
+    nextBtn.disabled = true;
+    nextBtn.textContent = 'Creating your chatbot...';
 
-    const creationSteps = [
-      { label: 'Analyzing your business data…', delay: 600 },
-      { label: 'Training AI on your products & services…', delay: 1400 },
-      { label: 'Configuring conversation flows…', delay: 2200 },
-      { label: 'Setting up lead capture…', delay: 2800 },
-      { label: 'Deploying your AI agent…', delay: 3400 }
-    ];
-
-    body.innerHTML = `
-      <div class="wiz-creating">
-        <div class="wiz-creating-spinner"></div>
-        <div class="wiz-creating-title">Building your AI agent</div>
-        <div class="wiz-creating-sub">This usually takes a few seconds…</div>
-        <div class="wiz-creating-steps">
-          ${creationSteps.map((s, i) => `
-            <div class="wiz-creating-step" id="cstep-${i}">
-              <div class="wiz-creating-step-icon">○</div>
-              <div>${s.label}</div>
-            </div>`).join('')}
-        </div>
-      </div>`;
-
-    creationSteps.forEach((s, i) => {
-      setTimeout(() => {
-        const el = document.getElementById('cstep-' + i);
-        if (el) { el.classList.add('active'); el.querySelector('.wiz-creating-step-icon').textContent = '⟳'; }
-        if (i > 0) {
-          const prev = document.getElementById('cstep-' + (i - 1));
-          if (prev) { prev.classList.remove('active'); prev.classList.add('done'); prev.querySelector('.wiz-creating-step-icon').textContent = '✓'; }
-        }
-      }, s.delay);
-    });
-
-    // Show success after animation
-    setTimeout(() => {
-      const last = document.getElementById('cstep-' + (creationSteps.length - 1));
-      if (last) { last.classList.remove('active'); last.classList.add('done'); last.querySelector('.wiz-creating-step-icon').textContent = '✓'; }
-
+    fetch('https://api.aibloop.com/api/bots', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        businessName: wizData.businessName,
+        website: wizData.website,
+        email: wizData.email,
+        industry: wizData.industry,
+        description: wizData.description,
+        tone: wizData.tone,
+        goals: wizData.goals
+      })
+    })
+    .then(res => { if (!res.ok) throw new Error('Request failed'); return res.json(); })
+    .then(data => {
+      if (!data.bot_id) throw new Error('No bot_id');
+      const body = document.getElementById('wizardBody');
+      const footer = document.querySelector('.wizard-footer');
+      footer.style.display = 'none';
       document.getElementById('wizProgressBar').style.width = '100%';
       document.getElementById('wizCounter').textContent = 'Complete!';
 
-      const botId = 'bot_' + Math.random().toString(36).substr(2, 12);
-      const embedCode = '<script src="https://cdn.aibloop.com/widget/' + botId + '.js"><\/script>';
-      const name = wizData.businessName || 'Your Business';
-      const ind = wizData.industry || 'General';
-      const gLabels = { faq:'FAQ Answering', leads:'Lead Capture', booking:'Appointment Booking', products:'Product Recommendations', support:'Customer Support', qualify:'Lead Qualification' };
-      const activeGoals = wizData.goals.map(g => gLabels[g]||g);
+      const embedCode = '<script src="https://api.aibloop.com/api/widget/' + data.bot_id + '"><\/script>';
 
       body.innerHTML = `
         <div class="wiz-success">
           <div class="wiz-success-badge">✓ Successfully Created</div>
-          <h3 class="wiz-title" style="-webkit-text-fill-color:unset;background:none;color:var(--text);">Your AI chatbot is ready!</h3>
-          <p class="wiz-desc">Copy the embed code below and paste it on your website to go live instantly.</p>
+          <h3 class="wiz-title" style="-webkit-text-fill-color:unset;background:none;color:var(--text);">Your AI Chatbot is Ready!</h3>
+          <p class="wiz-desc">Copy the embed code below and paste it on your website to go live.</p>
           <div class="wiz-result">
-            <div class="wiz-result-header">
-              <div class="wiz-result-avatar">⚡</div>
-              <div>
-                <div class="wiz-result-name">${escapeHtml(name)} AI Agent</div>
-                <div class="wiz-result-meta">${escapeHtml(ind)} · ${escapeHtml(wizData.tone)} tone · Custom Trained</div>
-              </div>
-            </div>
-            <div class="wiz-result-features">
-              <div class="wiz-result-feat"><span class="chk">✓</span> Trained on your data</div>
-              <div class="wiz-result-feat"><span class="chk">✓</span> Unlimited conversations</div>
-              ${activeGoals.map(g => '<div class="wiz-result-feat"><span class="chk">✓</span> ' + g + '</div>').join('')}
-              <div class="wiz-result-feat"><span class="chk">✓</span> 50+ languages</div>
-              <div class="wiz-result-feat"><span class="chk">✓</span> Analytics dashboard</div>
-              <div class="wiz-result-feat"><span class="chk">✓</span> Human handoff</div>
-            </div>
             <div class="wiz-result-code-label">Embed Code — paste before &lt;/body&gt;</div>
             <div class="wiz-result-code">
-              <button class="copy-btn" onclick="copyEmbed(this)">Copy</button>
+              <button class="copy-btn" onclick="copyEmbed(this)">Copy Code</button>
               <code>${escapeHtml(embedCode)}</code>
             </div>
-            <div class="wiz-next-steps">
-              <div class="wiz-next-steps-title">🚀 What happens next?</div>
-              <div class="wiz-next-steps-list">
-                1. Copy the embed code above<br>
-                2. Paste it on your website before the &lt;/body&gt; tag<br>
-                3. Your AI agent goes live immediately!<br>
-                4. Check your <strong>inbox (${escapeHtml(wizData.email)})</strong> for login credentials
-              </div>
+            <div style="margin-top:24px;text-align:center;">
+              <a href="https://buy.stripe.com/8x228s1em7jp8LHbv63ks00" class="btn btn-accent btn-block" style="font-size:16px;padding:16px 32px;" target="_blank">Activate Full Access — $100/mo</a>
+              <p style="margin-top:12px;font-size:13px;color:var(--text-muted);">Your bot is live in demo mode (50 messages). Subscribe for unlimited conversations.</p>
             </div>
           </div>
         </div>`;
-    }, 4200);
+    })
+    .catch(() => {
+      nextBtn.disabled = false;
+      nextBtn.textContent = 'Create My Chatbot →';
+      alert('Something went wrong, please try again.');
+    });
   }
 }
 
