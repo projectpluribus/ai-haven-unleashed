@@ -399,40 +399,24 @@ function wizNext() {
         <div class="wiz-success">
           <div class="wiz-success-badge">✓ Successfully Created</div>
           <h3 class="wiz-title" style="-webkit-text-fill-color:unset;background:none;color:var(--text);">Your AI Chatbot is Ready!</h3>
-          <p class="wiz-desc">Follow the steps below to go live.</p>
+
+          <div style="background:rgba(245,185,60,0.12);border:1.5px solid rgba(245,185,60,0.45);border-radius:12px;padding:16px 20px;margin:18px 0 24px;text-align:left;">
+            <p style="margin:0;font-size:14px;line-height:1.6;color:var(--text);">⚡ <strong>Free Trial:</strong> Your bot includes 50 free messages. After 50 messages, the bot will pause until you subscribe. Activate unlimited messages anytime for $100/mo.</p>
+          </div>
 
           <div class="wiz-result" style="text-align:left;">
-            <div style="margin-bottom:28px;">
-              <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:22px;">
-                <span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px;border-radius:50%;background:var(--accent);color:var(--bg);font-weight:700;font-size:15px;">1</span>
-                <div style="flex:1;">
-                  <div style="font-weight:600;font-size:15px;margin-bottom:6px;">Test your bot below to see it in action</div>
-                  <button class="btn btn-accent" onclick="loadBotPreview('${data.bot_id}')" id="testBotBtn" style="font-size:14px;padding:10px 24px;">⚡ Test Your Bot</button>
-                  <div id="botPreviewContainer" style="margin-top:14px;"></div>
-                </div>
-              </div>
-
-              <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:22px;">
-                <span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px;border-radius:50%;background:var(--accent);color:var(--bg);font-weight:700;font-size:15px;">2</span>
-                <div style="flex:1;">
-                  <div style="font-weight:600;font-size:15px;margin-bottom:6px;">Copy the embed code and paste it on your website before the closing &lt;/body&gt; tag</div>
-                  <div class="wiz-result-code">
-                    <button class="copy-btn" onclick="copyEmbed(this)">Copy Code</button>
-                    <code>${escapeHtml(embedCode)}</code>
-                  </div>
-                </div>
-              </div>
-
-              <div style="display:flex;align-items:flex-start;gap:14px;">
-                <span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px;border-radius:50%;background:var(--accent);color:var(--bg);font-weight:700;font-size:15px;">3</span>
-                <div style="flex:1;">
-                  <div style="font-weight:600;font-size:15px;margin-bottom:6px;">Subscribe to keep your bot running with unlimited messages</div>
-                  <a href="https://buy.stripe.com/8x228s1em7jp8LHbv63ks00" class="btn btn-accent" style="font-size:14px;padding:10px 24px;display:inline-block;text-decoration:none;" target="_blank">Activate Full Access — $100/mo</a>
-                  <p style="margin-top:8px;font-size:13px;color:var(--text-muted);">Your bot is live in demo mode (50 messages). Subscribe for unlimited conversations.</p>
-                </div>
-              </div>
+            <div style="font-weight:600;font-size:15px;margin-bottom:8px;">Copy the embed code and paste it on your website before the closing &lt;/body&gt; tag:</div>
+            <div class="wiz-result-code">
+              <button class="copy-btn" onclick="copyEmbed(this)">Copy Code</button>
+              <code>${escapeHtml(embedCode)}</code>
             </div>
           </div>
+
+          <div style="margin-top:24px;text-align:center;">
+            <a href="https://buy.stripe.com/8x228s1em7jp8LHbv63ks00" class="btn btn-accent" style="font-size:15px;padding:12px 32px;display:inline-block;text-decoration:none;" target="_blank">Activate Full Access — $100/mo</a>
+          </div>
+
+          <p style="margin-top:20px;font-size:13px;color:var(--text-muted);text-align:center;">Questions? Email <a href="mailto:support@aibloop.com" style="color:var(--accent);text-decoration:underline;">support@aibloop.com</a></p>
         </div>`;
     })
     .catch(() => {
