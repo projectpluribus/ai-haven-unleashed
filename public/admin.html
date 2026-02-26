@@ -62,7 +62,7 @@
     <div class="page-header">
       <div>
         <h1 class="page-title">Command <em>Center</em></h1>
-        <p class="page-sub">All systems operational · Last updated just now</p>
+        <p class="page-sub" id="dashLastUpdated">Loading...</p>
       </div>
       <div class="page-actions">
         <button class="abtn abtn-outline" onclick="switchPage('agents',document.querySelector('[onclick*=agents]'))">🤖 Agent Team</button>
@@ -70,11 +70,11 @@
       </div>
     </div>
 
-    <div class="stats-row">
-      <div class="stat-card"><div class="stat-label">Active Client Bots</div><div class="stat-value">2,437</div><div class="stat-change up">↑ 12.3% this month</div></div>
-      <div class="stat-card"><div class="stat-label">Conversations Today</div><div class="stat-value">18,412</div><div class="stat-change up">↑ 8.7% vs yesterday</div></div>
-      <div class="stat-card"><div class="stat-label">Monthly Revenue</div><div class="stat-value">$243.7K</div><div class="stat-change up">↑ 15.2% MoM</div></div>
-      <div class="stat-card"><div class="stat-label">Churn Rate</div><div class="stat-value">2.1%</div><div class="stat-change up">↓ 0.4% improved</div></div>
+    <div class="stats-row" id="dashStats">
+      <div class="stat-card"><div class="stat-label">Active Client Bots</div><div class="stat-value" id="statBots">—</div><div class="stat-change" id="statBotsChange">&nbsp;</div></div>
+      <div class="stat-card"><div class="stat-label">Conversations Today</div><div class="stat-value" id="statConvos">—</div><div class="stat-change" id="statConvosChange">&nbsp;</div></div>
+      <div class="stat-card"><div class="stat-label">Monthly Revenue</div><div class="stat-value" id="statRevenue">—</div><div class="stat-change" id="statRevenueChange">&nbsp;</div></div>
+      <div class="stat-card"><div class="stat-label">Churn Rate</div><div class="stat-value">N/A</div><div class="stat-change">Not enough data</div></div>
     </div>
 
     <div class="grid-wide">
@@ -89,20 +89,29 @@
       </div>
     </div>
 
-    <div class="grid-half">
-      <div class="card">
-        <div class="card-head"><h3>Top Client Bots</h3><span class="badge-label">This Week</span></div>
+    <!-- Real Bots Table -->
+    <div class="card" style="margin-top:16px;">
+      <div class="card-head"><h3>All Bots</h3><span class="badge-label" id="botCountBadge">Loading...</span></div>
+      <div style="overflow-x:auto;">
         <table class="data-table">
-          <thead><tr><th>Client</th><th>Industry</th><th>Conv.</th><th>Sat.</th></tr></thead>
-          <tbody>
-            <tr><td>NovaDental Group</td><td>Healthcare</td><td>4,231</td><td class="accent">97%</td></tr>
-            <tr><td>Pinnacle Realty</td><td>Real Estate</td><td>3,847</td><td class="accent">95%</td></tr>
-            <tr><td>Fuego Kitchen</td><td>Restaurant</td><td>2,912</td><td class="accent">96%</td></tr>
-            <tr><td>LegalEdge Partners</td><td>Legal</td><td>2,104</td><td class="accent">93%</td></tr>
-            <tr><td>GlowUp Cosmetics</td><td>E-Commerce</td><td>1,889</td><td class="accent">94%</td></tr>
-          </tbody>
+          <thead><tr><th>Business Name</th><th>Email</th><th>Industry</th><th>Plan</th><th>Messages</th><th>Status</th><th>Created</th></tr></thead>
+          <tbody id="botsTableBody"><tr><td colspan="7" style="text-align:center;color:var(--muted);">Loading...</td></tr></tbody>
         </table>
       </div>
+    </div>
+
+    <!-- Leads Table -->
+    <div class="card" style="margin-top:16px;">
+      <div class="card-head"><h3>Recent Leads</h3><span class="badge-label" id="leadCountBadge">Loading...</span></div>
+      <div style="overflow-x:auto;">
+        <table class="data-table">
+          <thead><tr><th>Name</th><th>Email</th><th>Company</th><th>Message</th><th>Date</th></tr></thead>
+          <tbody id="leadsTableBody"><tr><td colspan="5" style="text-align:center;color:var(--muted);">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="grid-half" style="margin-top:16px;">
       <div class="card">
         <div class="card-head"><h3>SEO Health</h3><span class="badge-label">Updated 1h ago</span></div>
         <div class="seo-score-ring"><div class="seo-score-num">87</div></div>
@@ -281,11 +290,17 @@ function attemptLogin(){
   if(id==='Saksham Rana'&&pw==='Saksham123$'){
     document.getElementById('adminLoginOverlay').style.display='none';
     sessionStorage.setItem('abloop_admin','1');
+    sessionStorage.setItem('abloop_key', pw);
+    if(typeof initDashboard==='function') initDashboard();
   } else {
     document.getElementById('loginError').style.display='block';
   }
 }
-(function(){if(sessionStorage.getItem('abloop_admin')==='1'){document.getElementById('adminLoginOverlay').style.display='none';}})();
+(function(){
+  if(sessionStorage.getItem('abloop_admin')==='1'){
+    document.getElementById('adminLoginOverlay').style.display='none';
+  }
+})();
 </script>
 <script src="js/admin.js"></script>
 </body>
