@@ -626,63 +626,86 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   animate();
 })();
 
-// ============ FLOATING CHAT BUBBLES ============
+// ============ FLOATING CHAT BUBBLES — HERO ARCH ============
 (function() {
   const questions = [
-    // FAQ
     "What are your business hours?", "Where are you located?", "Do you offer refunds?",
     "How long does shipping take?", "Do you ship internationally?", "How can I contact support?",
     "Do you offer discounts for bulk orders?", "Is there a warranty on your products?",
-    // Leads
     "Can someone call me back?", "Can I get a quote?", "Do you offer a free consultation?",
     "Can I speak with a sales representative?", "Can I schedule a demo?",
-    // Appointments
     "How do I book an appointment?", "Do you have availability this week?",
     "Can I reschedule my appointment?", "Do you offer virtual consultations?",
-    // Product
     "Which product is best for beginners?", "What's the difference between Plan A and Plan B?",
     "Is this product in stock?", "What size should I choose?",
-    // Support
     "Where is my order?", "How do I return an item?", "My payment failed — can you help?",
     "I received a damaged product", "Can I change my shipping address?",
-    // Qualify
     "Do you work with small businesses?", "Is this suitable for my industry?",
     "How quickly can I see results?", "Do you integrate with Shopify?",
     "What makes you different from competitors?", "Can this scale as my business grows?"
   ];
 
-  // Inject bubbles directly into sections so they appear above backgrounds
-  const sections = document.querySelectorAll('section');
-  if (!sections.length) return;
+  const hero = document.getElementById('hero');
+  if (!hero) return;
 
-  let qIndex = 0;
-  sections.forEach((sec, sIdx) => {
-    // Skip sections that are too narrow for bubbles (wizard, demo)
-    const secWidth = sec.offsetWidth;
-    // Add 2 bubbles per section
-    const count = 2;
-    for (let j = 0; j < count && qIndex < questions.length; j++, qIndex++) {
-      const bubble = document.createElement('div');
-      bubble.className = 'chat-bubble-deco' + (qIndex % 3 === 0 ? ' alt' : '');
-      bubble.textContent = questions[qIndex];
-      
-      // Position on the outer edges only, not overlapping center content
-      const topPercent = 15 + Math.random() * 60;
-      const isLeft = j % 2 === 0;
-      
-      bubble.style.top = topPercent + '%';
-      if (isLeft) {
-        bubble.style.left = '0.5%';
-      } else {
-        bubble.style.right = '0.5%';
-      }
-      
-      const angle = (Math.random() - 0.5) * 16; // wider rotation range: -8 to +8 deg
-      bubble.style.setProperty('--bubble-rotate', angle + 'deg');
-      bubble.style.setProperty('--bounce-duration', (3 + Math.random() * 4) + 's');
-      bubble.style.setProperty('--bounce-delay', (Math.random() * 3) + 's');
-      sec.appendChild(bubble);
+  // Place bubbles in an arch/U-shape around the hero content
+  // Arch: top-left → top-center → top-right → right-side → bottom-right → bottom-center → bottom-left → left-side
+  const count = 24;
+  const positions = [];
+  for (let i = 0; i < count; i++) {
+    // Parametric arch around the border of the hero
+    const t = i / (count - 1); // 0 to 1
+    let x, y;
+    if (t < 0.15) {
+      // top-left corner
+      const p = t / 0.15;
+      x = 2 + p * 15;
+      y = 3 + p * 2;
+    } else if (t < 0.35) {
+      // top edge
+      const p = (t - 0.15) / 0.2;
+      x = 17 + p * 66;
+      y = 2 + Math.sin(p * Math.PI) * 3;
+    } else if (t < 0.5) {
+      // top-right corner
+      const p = (t - 0.35) / 0.15;
+      x = 83 + p * 14;
+      y = 3 + p * 15;
+    } else if (t < 0.65) {
+      // right side going down
+      const p = (t - 0.5) / 0.15;
+      x = 85 + Math.sin(p * Math.PI) * 8;
+      y = 18 + p * 55;
+    } else if (t < 0.8) {
+      // bottom-right to bottom-center
+      const p = (t - 0.65) / 0.15;
+      x = 83 - p * 30;
+      y = 82 + Math.sin(p * Math.PI) * 4;
+    } else if (t < 0.9) {
+      // bottom-center to bottom-left
+      const p = (t - 0.8) / 0.1;
+      x = 53 - p * 40;
+      y = 85 - p * 5;
+    } else {
+      // left side going up
+      const p = (t - 0.9) / 0.1;
+      x = 3 + Math.sin(p * Math.PI) * 6;
+      y = 80 - p * 55;
     }
+    positions.push({ x, y });
+  }
+
+  positions.forEach((pos, i) => {
+    const bubble = document.createElement('div');
+    bubble.className = 'chat-bubble-deco' + (i % 3 === 0 ? ' alt' : '');
+    bubble.textContent = questions[i % questions.length];
+    bubble.style.left = pos.x + '%';
+    bubble.style.top = pos.y + '%';
+    const angle = (Math.random() - 0.5) * 20;
+    bubble.style.setProperty('--bubble-rotate', angle + 'deg');
+    bubble.style.setProperty('--bounce-duration', (3 + Math.random() * 4) + 's');
+    bubble.style.setProperty('--bounce-delay', (Math.random() * 3) + 's');
+    hero.appendChild(bubble);
   });
 
   // Scroll-driven highlight
