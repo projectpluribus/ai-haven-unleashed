@@ -580,18 +580,8 @@ section { padding: 100px 0; }
 }
 .revenue-calc-callout strong { color: var(--accent); }
 
-/* ======== COMPARISON VS SECTION ======== */
+/* ======== COMPARISON SECTION ======== */
 .comparison-section { background: var(--bg-alt); border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light); }
-.vs-grid { max-width: 720px; margin: 0 auto; background: #fff; border: 1px solid var(--border); border-radius: var(--radius-xl); overflow: hidden; box-shadow: var(--shadow-sm); }
-.vs-header { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--border); }
-.vs-col-label { padding: 14px 20px; font-size: 14px; font-weight: 700; text-align: center; }
-.vs-generic { color: var(--text-muted); background: var(--bg-alt); }
-.vs-bloop { color: var(--accent); background: var(--accent-light); }
-.vs-row { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--border-light); }
-.vs-row:last-child { border-bottom: none; }
-.vs-cell { padding: 14px 20px; font-size: 14px; display: flex; align-items: center; gap: 8px; }
-.vs-bad { color: var(--text-muted); }
-.vs-good { color: var(--text); background: rgba(26,86,219,0.02); }
 
 /* ======== CASE STUDY ======== */
 .case-study-card {
@@ -615,15 +605,16 @@ section { padding: 100px 0; }
   font-style: italic;
 }
 
-/* ======== OBJECTION CRUSHER ======== */
-.objection-section { padding: 60px 0; }
-.objection-card {
-  background: #fff; border: 1px solid var(--border); border-radius: var(--radius-xl);
-  padding: 36px; max-width: 640px; margin: 0 auto; text-align: center; box-shadow: var(--shadow-xs);
+/* ======== OBJECTION PILLS (inside Final CTA) ======== */
+.final-cta-objections {
+  display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
+  margin-bottom: 28px; position: relative;
 }
-.objection-title { font-family: var(--font-display); font-size: 22px; font-weight: 400; margin-bottom: 20px; }
-.objection-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 24px; text-align: left; }
-.objection-item { font-size: 15px; color: var(--text-secondary); display: flex; align-items: center; gap: 8px; padding: 6px 0; }
+.objection-pill {
+  display: inline-flex; align-items: center; gap: 6px; font-size: 14px;
+  color: var(--text-secondary); background: rgba(255,255,255,0.7); border: 1px solid var(--border);
+  padding: 8px 16px; border-radius: var(--radius-full);
+}
 
 /* ======== FINAL CTA EMOTIONAL ======== */
 .final-cta-emotional { font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 8px !important; position: relative; }
@@ -638,8 +629,7 @@ section { padding: 100px 0; }
 @media (max-width: 768px) {
   .revenue-calc-inputs { grid-template-columns: 1fr; }
   .case-study-stats { grid-template-columns: 1fr 1fr; }
-  .objection-grid { grid-template-columns: 1fr; }
-  .vs-cell { font-size: 13px; padding: 10px 14px; }
+  .final-cta-objections { flex-direction: column; align-items: center; }
 }
 @media (max-width: 768px) {
   .nav-links, .nav-right { display: none; }
