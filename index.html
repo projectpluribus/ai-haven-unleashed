@@ -201,6 +201,9 @@
       your prices, your policies. Live on your website in under 2 minutes. 
       It answers visitors 24/7 so you never miss a lead again.
     </p>
+    <p class="hero-positioning" data-aos="fade-up" data-aos-delay="420">
+      It's like hiring a 24/7 sales assistant for $100/month.
+    </p>
     <div class="hero-actions" data-aos="fade-up" data-aos-delay="500">
       <a href="#configure" class="btn btn-lg btn-accent">Build Your Chatbot Free →</a>
       <a href="#demo-section" class="btn btn-lg btn-ghost">Try Live Demo</a>
@@ -241,6 +244,45 @@
       <div class="h-stat">
         <div class="h-stat-num">$100</div>
         <div class="h-stat-label">Flat monthly price<br>cancel anytime</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Revenue Impact Calculator -->
+  <div class="container">
+    <div class="revenue-calc" data-aos="fade-up" data-aos-delay="100">
+      <div class="revenue-calc-header">
+        <h3 class="revenue-calc-title">How much revenue are you losing?</h3>
+        <p class="revenue-calc-sub">See the cost of unanswered visitor questions.</p>
+      </div>
+      <div class="revenue-calc-inputs">
+        <div class="revenue-calc-field">
+          <label class="revenue-calc-label">Monthly website visitors</label>
+          <input type="number" class="wiz-input" id="calcVisitors" placeholder="e.g. 10,000" value="10000" oninput="updateCalc()">
+        </div>
+        <div class="revenue-calc-field">
+          <label class="revenue-calc-label">Average deal value ($)</label>
+          <input type="number" class="wiz-input" id="calcDealValue" placeholder="e.g. 500" value="500" oninput="updateCalc()">
+        </div>
+        <div class="revenue-calc-field">
+          <label class="revenue-calc-label">Current conversion rate (%)</label>
+          <input type="number" class="wiz-input" id="calcConversion" placeholder="e.g. 2" value="2" step="0.1" oninput="updateCalc()">
+        </div>
+      </div>
+      <div class="revenue-calc-result" id="calcResult">
+        <div class="revenue-calc-result-row">
+          <div class="revenue-calc-stat">
+            <div class="revenue-calc-stat-num" id="calcMissedLeads">490</div>
+            <div class="revenue-calc-stat-label">Estimated missed leads/mo</div>
+          </div>
+          <div class="revenue-calc-stat">
+            <div class="revenue-calc-stat-num accent" id="calcLostRevenue">$245,000</div>
+            <div class="revenue-calc-stat-label">Estimated lost revenue/mo</div>
+          </div>
+        </div>
+        <div class="revenue-calc-callout" id="calcCallout">
+          You could be losing <strong>$245,000/month</strong> in unanswered questions.
+        </div>
       </div>
     </div>
   </div>
@@ -340,6 +382,38 @@
             <button class="btn btn-accent" id="wizNext" onclick="wizNext()">Continue →</button>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Comparison: Generic vs AI bloop -->
+<section class="comparison-section">
+  <div class="container">
+    <div class="section-header" data-aos="fade-up">
+      <div class="section-tag">Compare</div>
+      <h2 class="section-title">Not all chatbots are <em>created equal</em></h2>
+    </div>
+    <div class="vs-grid" data-aos="fade-up" data-aos-delay="100">
+      <div class="vs-header">
+        <div class="vs-col-label vs-generic">Generic AI Chatbot</div>
+        <div class="vs-col-label vs-bloop">AI bloop</div>
+      </div>
+      <div class="vs-row">
+        <div class="vs-cell vs-bad"><span class="ba-x">✕</span> Generic responses</div>
+        <div class="vs-cell vs-good"><span class="ba-check">✓</span> Trained on YOUR business</div>
+      </div>
+      <div class="vs-row">
+        <div class="vs-cell vs-bad"><span class="ba-x">✕</span> Doesn't capture leads</div>
+        <div class="vs-cell vs-good"><span class="ba-check">✓</span> Built for conversion</div>
+      </div>
+      <div class="vs-row">
+        <div class="vs-cell vs-bad"><span class="ba-x">✕</span> Complicated setup</div>
+        <div class="vs-cell vs-good"><span class="ba-check">✓</span> Live in under 2 minutes</div>
+      </div>
+      <div class="vs-row">
+        <div class="vs-cell vs-bad"><span class="ba-x">✕</span> Per-message pricing</div>
+        <div class="vs-cell vs-good"><span class="ba-check">✓</span> Unlimited conversations</div>
       </div>
     </div>
   </div>
@@ -574,9 +648,12 @@
           </div>
         </div>
         <a href="#configure" class="btn btn-accent btn-block pricing-cta">Start Building — Free Setup →</a>
-        <div class="pricing-guarantee">
+      <div class="pricing-guarantee">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
           7-day free trial · No credit card required · Cancel anytime
+        </div>
+        <div class="pricing-risk-reversal">
+          If AI bloop doesn't pay for itself in 30 days, cancel instantly. No questions asked.
         </div>
       </div>
       <div class="pricing-comparison" data-aos="slide-up" data-aos-delay="250">
@@ -640,6 +717,36 @@
         </div>
       </div>
     </div>
+
+    <!-- Mini Case Study -->
+    <div class="case-study-card" data-aos="fade-up" data-aos-delay="100">
+      <div class="case-study-header">
+        <div class="case-study-logo" style="background:#c4f751;color:#111;">N</div>
+        <div>
+          <strong class="case-study-name">NovaDental Group</strong>
+          <span class="case-study-industry">Healthcare · Multi-location dental practice</span>
+        </div>
+      </div>
+      <p class="case-study-quote">"We replaced our live chat team of 3 with AI bloop. It handles 89% of inquiries automatically — booking appointments, answering insurance questions, and capturing leads while we sleep. Our support costs dropped overnight."</p>
+      <div class="case-study-stats">
+        <div class="case-study-stat">
+          <div class="case-study-stat-num">12,000</div>
+          <div class="case-study-stat-label">Monthly visitors</div>
+        </div>
+        <div class="case-study-stat">
+          <div class="case-study-stat-num">89%</div>
+          <div class="case-study-stat-label">Automated</div>
+        </div>
+        <div class="case-study-stat">
+          <div class="case-study-stat-num">$8,400</div>
+          <div class="case-study-stat-label">Saved monthly</div>
+        </div>
+        <div class="case-study-stat">
+          <div class="case-study-stat-num">84×</div>
+          <div class="case-study-stat-label">Annual ROI</div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -687,13 +794,29 @@
   </div>
 </section>
 
+<!-- Objection Crusher -->
+<section class="objection-section">
+  <div class="container">
+    <div class="objection-card" data-aos="fade-up">
+      <h3 class="objection-title">Still on the fence?</h3>
+      <div class="objection-grid">
+        <div class="objection-item"><span class="ba-check">✓</span> No technical skills required</div>
+        <div class="objection-item"><span class="ba-check">✓</span> Works on any website platform</div>
+        <div class="objection-item"><span class="ba-check">✓</span> Setup takes under 2 minutes</div>
+        <div class="objection-item"><span class="ba-check">✓</span> No contracts or hidden fees</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- Final CTA -->
 <section class="final-cta">
   <div class="container">
     <div class="final-cta-glow"></div>
     <h2 data-aos="fade-up">Your competitors already have AI.<br>Do you?</h2>
-    <p data-aos="fade-up" data-aos-delay="100">78% of customers buy from whoever responds first. Make sure that's you.</p>
-    <div class="final-cta-actions" data-aos="fade-up" data-aos-delay="200">
+    <p class="final-cta-emotional" data-aos="fade-up" data-aos-delay="80">Every unanswered question is revenue walking away.</p>
+    <p data-aos="fade-up" data-aos-delay="140">78% of customers buy from whoever responds first. Make sure that's you.</p>
+    <div class="final-cta-actions" data-aos="fade-up" data-aos-delay="220">
       <a href="#configure" class="btn btn-lg btn-accent">Build Your Bot — It's Free to Start →</a>
     </div>
     <div class="final-cta-logos">

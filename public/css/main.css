@@ -550,12 +550,96 @@ section { padding: 100px 0; }
 .footer-col a:hover { color: var(--accent); }
 .footer-bottom { display: flex; justify-content: space-between; padding-top: 20px; border-top: 1px solid var(--border-light); font-size: 13px; color: var(--text-muted); }
 
+/* ======== HERO POSITIONING ======== */
+.hero-positioning {
+  font-size: 19px; font-weight: 700; color: var(--text); max-width: 560px;
+  margin: -12px auto 32px; line-height: 1.5; animation: fadeUp 0.5s ease 0.12s both;
+}
+
+/* ======== REVENUE CALCULATOR ======== */
+.revenue-calc {
+  margin-top: 48px; background: #fff; border: 1px solid var(--border);
+  border-radius: var(--radius-xl); padding: 36px; box-shadow: var(--shadow-md);
+}
+.revenue-calc-header { text-align: center; margin-bottom: 28px; }
+.revenue-calc-title { font-family: var(--font-display); font-size: 26px; font-weight: 400; letter-spacing: -0.5px; margin-bottom: 6px; }
+.revenue-calc-sub { font-size: 15px; color: var(--text-secondary); }
+.revenue-calc-inputs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+.revenue-calc-field {}
+.revenue-calc-label { font-size: 12px; font-weight: 700; color: var(--text-secondary); margin-bottom: 6px; display: block; text-transform: uppercase; letter-spacing: 0.5px; }
+.revenue-calc-result { background: var(--bg-alt); border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 24px; }
+.revenue-calc-result-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 16px; }
+.revenue-calc-stat { text-align: center; }
+.revenue-calc-stat-num { font-family: var(--font-mono); font-size: 28px; font-weight: 600; color: var(--text); }
+.revenue-calc-stat-num.accent { color: var(--accent); }
+.revenue-calc-stat-label { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+.revenue-calc-callout {
+  text-align: center; font-size: 15px; color: var(--text-secondary); padding: 14px;
+  background: var(--accent-light); border: 1px solid rgba(26,86,219,0.12);
+  border-radius: var(--radius-md);
+}
+.revenue-calc-callout strong { color: var(--accent); }
+
+/* ======== COMPARISON VS SECTION ======== */
+.comparison-section { background: var(--bg-alt); border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light); }
+.vs-grid { max-width: 720px; margin: 0 auto; background: #fff; border: 1px solid var(--border); border-radius: var(--radius-xl); overflow: hidden; box-shadow: var(--shadow-sm); }
+.vs-header { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--border); }
+.vs-col-label { padding: 14px 20px; font-size: 14px; font-weight: 700; text-align: center; }
+.vs-generic { color: var(--text-muted); background: var(--bg-alt); }
+.vs-bloop { color: var(--accent); background: var(--accent-light); }
+.vs-row { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--border-light); }
+.vs-row:last-child { border-bottom: none; }
+.vs-cell { padding: 14px 20px; font-size: 14px; display: flex; align-items: center; gap: 8px; }
+.vs-bad { color: var(--text-muted); }
+.vs-good { color: var(--text); background: rgba(26,86,219,0.02); }
+
+/* ======== CASE STUDY ======== */
+.case-study-card {
+  margin-top: 40px; background: #fff; border: 1px solid var(--border);
+  border-radius: var(--radius-xl); padding: 32px; box-shadow: var(--shadow-sm);
+  max-width: 800px; margin-left: auto; margin-right: auto;
+}
+.case-study-header { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+.case-study-logo { width: 44px; height: 44px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px; flex-shrink: 0; }
+.case-study-name { font-size: 17px; display: block; }
+.case-study-industry { font-size: 13px; color: var(--text-muted); }
+.case-study-quote { font-size: 15px; color: var(--text-secondary); line-height: 1.7; font-style: italic; margin-bottom: 24px; }
+.case-study-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.case-study-stat { text-align: center; padding: 14px; background: var(--bg-alt); border: 1px solid var(--border-light); border-radius: var(--radius-md); }
+.case-study-stat-num { font-family: var(--font-mono); font-size: 22px; font-weight: 600; color: var(--accent); }
+.case-study-stat-label { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+
+/* ======== PRICING RISK REVERSAL ======== */
+.pricing-risk-reversal {
+  text-align: center; margin-top: 10px; font-size: 13px; color: var(--text-muted);
+  font-style: italic;
+}
+
+/* ======== OBJECTION CRUSHER ======== */
+.objection-section { padding: 60px 0; }
+.objection-card {
+  background: #fff; border: 1px solid var(--border); border-radius: var(--radius-xl);
+  padding: 36px; max-width: 640px; margin: 0 auto; text-align: center; box-shadow: var(--shadow-xs);
+}
+.objection-title { font-family: var(--font-display); font-size: 22px; font-weight: 400; margin-bottom: 20px; }
+.objection-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 24px; text-align: left; }
+.objection-item { font-size: 15px; color: var(--text-secondary); display: flex; align-items: center; gap: 8px; padding: 6px 0; }
+
+/* ======== FINAL CTA EMOTIONAL ======== */
+.final-cta-emotional { font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 8px !important; position: relative; }
+
 /* ======== RESPONSIVE ======== */
 @media (max-width: 1024px) {
   .industries-grid { grid-template-columns: repeat(2, 1fr); }
   .pricing-layout { grid-template-columns: 1fr; }
   .hero-stats { grid-template-columns: repeat(3, auto); padding: 20px 28px; }
   .h-stat-divider:last-of-type, .h-stat:last-child { display: none; }
+}
+@media (max-width: 768px) {
+  .revenue-calc-inputs { grid-template-columns: 1fr; }
+  .case-study-stats { grid-template-columns: 1fr 1fr; }
+  .objection-grid { grid-template-columns: 1fr; }
+  .vs-cell { font-size: 13px; padding: 10px 14px; }
 }
 @media (max-width: 768px) {
   .nav-links, .nav-right { display: none; }
