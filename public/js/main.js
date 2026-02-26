@@ -626,7 +626,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   animate();
 })();
 
-// ============ FLOATING CHAT BUBBLES — HERO ARCH ============
+// ============ FLOATING CHAT BUBBLES — AROUND HEADLINE ============
 (function() {
   const questions = [
     "What are your business hours?", "Where are you located?", "Do you offer refunds?",
@@ -636,77 +636,51 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     "Can I speak with a sales representative?", "Can I schedule a demo?",
     "How do I book an appointment?", "Do you have availability this week?",
     "Can I reschedule my appointment?", "Do you offer virtual consultations?",
-    "Which product is best for beginners?", "What's the difference between Plan A and Plan B?",
-    "Is this product in stock?", "What size should I choose?",
+    "Which product is best for beginners?", "Is this product in stock?",
     "Where is my order?", "How do I return an item?", "My payment failed — can you help?",
-    "I received a damaged product", "Can I change my shipping address?",
     "Do you work with small businesses?", "Is this suitable for my industry?",
-    "How quickly can I see results?", "Do you integrate with Shopify?",
-    "What makes you different from competitors?", "Can this scale as my business grows?"
+    "What makes you different?", "Can this scale as my business grows?"
   ];
 
   const hero = document.getElementById('hero');
   if (!hero) return;
 
-  // Place bubbles in an arch/U-shape around the hero content
-  // Arch: top-left → top-center → top-right → right-side → bottom-right → bottom-center → bottom-left → left-side
-  const count = 24;
-  const positions = [];
-  for (let i = 0; i < count; i++) {
-    // Parametric arch around the border of the hero
-    const t = i / (count - 1); // 0 to 1
-    let x, y;
-    if (t < 0.15) {
-      // top-left corner
-      const p = t / 0.15;
-      x = 2 + p * 15;
-      y = 3 + p * 2;
-    } else if (t < 0.35) {
-      // top edge
-      const p = (t - 0.15) / 0.2;
-      x = 17 + p * 66;
-      y = 2 + Math.sin(p * Math.PI) * 3;
-    } else if (t < 0.5) {
-      // top-right corner
-      const p = (t - 0.35) / 0.15;
-      x = 83 + p * 14;
-      y = 3 + p * 15;
-    } else if (t < 0.65) {
-      // right side going down
-      const p = (t - 0.5) / 0.15;
-      x = 85 + Math.sin(p * Math.PI) * 8;
-      y = 18 + p * 55;
-    } else if (t < 0.8) {
-      // bottom-right to bottom-center
-      const p = (t - 0.65) / 0.15;
-      x = 83 - p * 30;
-      y = 82 + Math.sin(p * Math.PI) * 4;
-    } else if (t < 0.9) {
-      // bottom-center to bottom-left
-      const p = (t - 0.8) / 0.1;
-      x = 53 - p * 40;
-      y = 85 - p * 5;
-    } else {
-      // left side going up
-      const p = (t - 0.9) / 0.1;
-      x = 3 + Math.sin(p * Math.PI) * 6;
-      y = 80 - p * 55;
-    }
-    positions.push({ x, y });
-  }
+  // Create a dedicated container positioned around the headline area only
+  const wrapper = document.createElement('div');
+  wrapper.className = 'bubble-zone';
+  wrapper.setAttribute('aria-hidden', 'true');
 
-  positions.forEach((pos, i) => {
+  // Bubbles float on left/right margins and just above headline — never over center text
+  const spots = [
+    // Left column
+    { x: 0, y: 8, r: -6 }, { x: 1, y: 24, r: 4 }, { x: 2, y: 42, r: -3 },
+    { x: 0, y: 58, r: 7 }, { x: 3, y: 75, r: -5 }, { x: 1, y: 90, r: 3 },
+    // Left-inner  
+    { x: 10, y: 5, r: -8 }, { x: 12, y: 35, r: 5 }, { x: 9, y: 62, r: -4 }, { x: 11, y: 88, r: 6 },
+    // Top scattered
+    { x: 28, y: 1, r: -3 }, { x: 50, y: 0, r: 2 }, { x: 68, y: 2, r: -5 },
+    // Right-inner
+    { x: 78, y: 8, r: 7 }, { x: 80, y: 35, r: -6 }, { x: 79, y: 60, r: 4 }, { x: 81, y: 85, r: -3 },
+    // Right column
+    { x: 89, y: 12, r: 5 }, { x: 91, y: 30, r: -7 }, { x: 88, y: 48, r: 3 },
+    { x: 90, y: 66, r: -4 }, { x: 89, y: 82, r: 6 }, { x: 91, y: 95, r: -5 },
+  ];
+
+  spots.forEach((s, i) => {
     const bubble = document.createElement('div');
     bubble.className = 'chat-bubble-deco' + (i % 3 === 0 ? ' alt' : '');
     bubble.textContent = questions[i % questions.length];
-    bubble.style.left = pos.x + '%';
-    bubble.style.top = pos.y + '%';
-    const angle = (Math.random() - 0.5) * 20;
-    bubble.style.setProperty('--bubble-rotate', angle + 'deg');
-    bubble.style.setProperty('--bounce-duration', (3 + Math.random() * 4) + 's');
-    bubble.style.setProperty('--bounce-delay', (Math.random() * 3) + 's');
-    hero.appendChild(bubble);
+    bubble.style.left = s.x + '%';
+    bubble.style.top = s.y + '%';
+    bubble.style.setProperty('--bubble-rotate', s.r + 'deg');
+    bubble.style.setProperty('--bounce-duration', (3 + Math.random() * 3) + 's');
+    bubble.style.setProperty('--bounce-delay', (Math.random() * 2.5) + 's');
+    wrapper.appendChild(bubble);
   });
+
+  // Insert bubble zone into hero, before first container
+  const firstContainer = hero.querySelector('.container');
+  hero.insertBefore(wrapper, firstContainer);
 
   // Scroll-driven highlight
   const allBubbles = document.querySelectorAll('.chat-bubble-deco');
