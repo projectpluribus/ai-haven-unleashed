@@ -3,6 +3,21 @@
    Fully functional onboarding, demo chat, nav
    ======================================== */
 
+// ============ REVENUE CALCULATOR ============
+function updateCalc() {
+  const visitors = parseFloat(document.getElementById('calcVisitors').value) || 0;
+  const dealValue = parseFloat(document.getElementById('calcDealValue').value) || 0;
+  const convRate = parseFloat(document.getElementById('calcConversion').value) || 0;
+  const currentLeads = visitors * (convRate / 100);
+  const potentialLeads = currentLeads * 3.2;
+  const missedLeads = Math.round(potentialLeads - currentLeads);
+  const lostRevenue = missedLeads * dealValue;
+  document.getElementById('calcMissedLeads').textContent = missedLeads.toLocaleString();
+  document.getElementById('calcLostRevenue').textContent = '$' + lostRevenue.toLocaleString();
+  document.getElementById('calcCallout').innerHTML = 'You could be losing <strong>$' + lostRevenue.toLocaleString() + '/month</strong> in unanswered questions.';
+}
+document.addEventListener('DOMContentLoaded', updateCalc);
+
 // ============ NAVIGATION ============
 const nav = document.getElementById('nav');
 window.addEventListener('scroll', () => {
