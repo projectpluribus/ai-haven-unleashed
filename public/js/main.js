@@ -568,3 +568,111 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     }
   });
 });
+
+// ============ FLOWING LIGHT RIBBON ============
+(function() {
+  const svg = document.getElementById('ribbonSvg');
+  const path = document.getElementById('ribbonPath');
+  const pathGlow = document.getElementById('ribbonPathGlow');
+  if (!svg || !path) return;
+
+  function buildRibbonPath() {
+    const w = window.innerWidth;
+    const docH = document.documentElement.scrollHeight;
+    svg.setAttribute('viewBox', `0 0 ${w} ${docH}`);
+    svg.style.height = docH + 'px';
+    svg.style.position = 'absolute';
+    svg.style.top = '0';
+
+    const segments = 20;
+    const segH = docH / segments;
+    let d = `M ${w * 0.1} 0`;
+
+    for (let i = 0; i < segments; i++) {
+      const y = i * segH;
+      const nextY = (i + 1) * segH;
+      const midY = y + segH / 2;
+      // Alternate wave direction with loops
+      const isEven = i % 2 === 0;
+      const amplitude = w * (0.25 + Math.sin(i * 0.7) * 0.15);
+      const cx1 = isEven ? w * 0.5 + amplitude * 0.6 : w * 0.5 - amplitude * 0.6;
+      const cx2 = isEven ? w * 0.5 - amplitude * 0.4 : w * 0.5 + amplitude * 0.4;
+      
+      // Create wave with loop effect every 4th segment
+      if (i % 4 === 2) {
+        // Loop — a small curl
+        const loopR = segH * 0.25;
+        const loopX = isEven ? w * 0.7 : w * 0.3;
+        d += ` C ${cx1} ${midY - segH * 0.1}, ${loopX + loopR} ${midY - loopR}, ${loopX} ${midY}`;
+        d += ` C ${loopX - loopR} ${midY + loopR * 0.5}, ${loopX - loopR * 0.3} ${midY + loopR * 1.2}, ${loopX + loopR * 0.5} ${midY + loopR * 0.8}`;
+        d += ` C ${cx2} ${nextY - segH * 0.15}, ${isEven ? w * 0.25 : w * 0.75} ${nextY}, ${w * 0.5 + (isEven ? -1 : 1) * w * 0.15} ${nextY}`;
+      } else {
+        d += ` C ${cx1} ${midY}, ${cx2} ${midY}, ${w * 0.5 + (isEven ? -1 : 1) * w * 0.2} ${nextY}`;
+      }
+    }
+
+    path.setAttribute('d', d);
+    pathGlow.setAttribute('d', d);
+
+    const pathLen = path.getTotalLength();
+    const dashLen = pathLen * 0.15; // visible portion
+
+    path.style.strokeDasharray = `${dashLen} ${pathLen - dashLen}`;
+    path.style.strokeDashoffset = pathLen;
+    pathGlow.style.strokeDasharray = `${dashLen * 0.6} ${pathLen - dashLen * 0.6}`;
+    pathGlow.style.strokeDashoffset = pathLen;
+
+    return pathLen;
+  }
+
+  let pathLen = buildRibbonPath();
+
+  function onScroll() {
+    const scrollFrac = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+    const offset = pathLen - (scrollFrac * pathLen * 1.15);
+    path.style.strokeDashoffset = offset;
+    pathGlow.style.strokeDashoffset = offset + pathLen * 0.02;
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', () => { pathLen = buildRibbonPath(); onScroll(); });
+  onScroll();
+})();
+
+// ============ 3D TILT ON CARDS ============
+(function() {
+  const cards = document.querySelectorAll('.feature-card, .industry-card, .test-card, .step-card');
+  cards.forEach(card => {
+    card.classList.add('tilt-card');
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const rotateX = (y - centerY) / centerY * -8;
+      const rotateY = (x - centerX) / centerX * 8;
+      card.style.transform = `perspective(600px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'perspective(600px) rotateX(0) rotateY(0) translateY(0)';
+    });
+  });
+})();
+
+// ============ FLOATING PARTICLES ============
+(function() {
+  const container = document.createElement('div');
+  container.className = 'particles-container';
+  document.body.prepend(container);
+  for (let i = 0; i < 15; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.top = (60 + Math.random() * 40) + '%';
+    p.style.width = p.style.height = (2 + Math.random() * 3) + 'px';
+    p.style.animationDuration = (8 + Math.random() * 15) + 's';
+    p.style.animationDelay = (Math.random() * 10) + 's';
+    container.appendChild(p);
+  }
+})();
