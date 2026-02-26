@@ -3,6 +3,7 @@ import HeroSection from "@/components/HeroSection";
 import ServicesGrid from "@/components/ServicesGrid";
 import AgentsShowcase from "@/components/AgentsShowcase";
 import PricingSection from "@/components/PricingSection";
+import VideoAdSection from "@/components/VideoAdSection";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
 
@@ -20,6 +21,7 @@ const Index = () => {
       <div id="pricing">
         <PricingSection />
       </div>
+      <VideoAdSection />
       <CTASection />
       <Footer />
     </main>
