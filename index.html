@@ -160,27 +160,11 @@
   </nav>
 </div>
 
-<!-- Flowing Light Ribbon -->
-<svg class="ribbon-svg" id="ribbonSvg" preserveAspectRatio="none" aria-hidden="true">
-  <defs>
-    <linearGradient id="ribbonGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="rgba(26,86,219,0)" />
-      <stop offset="40%" stop-color="rgba(26,86,219,0.5)" />
-      <stop offset="50%" stop-color="rgba(59,130,246,0.8)" />
-      <stop offset="60%" stop-color="rgba(26,86,219,0.5)" />
-      <stop offset="100%" stop-color="rgba(26,86,219,0)" />
-    </linearGradient>
-    <filter id="ribbonGlow">
-      <feGaussianBlur stdDeviation="6" result="blur" />
-      <feMerge>
-        <feMergeNode in="blur" />
-        <feMergeNode in="SourceGraphic" />
-      </feMerge>
-    </filter>
-  </defs>
-  <path id="ribbonPath" class="ribbon-path" fill="none" stroke="url(#ribbonGrad)" stroke-width="2" filter="url(#ribbonGlow)" />
-  <path id="ribbonPathGlow" class="ribbon-path-glow" fill="none" stroke="url(#ribbonGrad)" stroke-width="6" filter="url(#ribbonGlow)" opacity="0.3" />
-</svg>
+<!-- Border Light Ribbon -->
+<div class="border-ribbon-container" id="borderRibbon" aria-hidden="true"></div>
+
+<!-- Floating Chat Bubbles (decorative) -->
+<div class="chat-bubbles-layer" id="chatBubblesLayer"></div>
 
 <!-- Navigation -->
 <header class="nav" id="nav">

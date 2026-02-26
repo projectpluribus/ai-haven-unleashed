@@ -619,22 +619,88 @@ section { padding: 100px 0; }
 /* ======== FINAL CTA EMOTIONAL ======== */
 .final-cta-emotional { font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 8px !important; position: relative; }
 
-/* ======== FLOWING LIGHT RIBBON ======== */
-.ribbon-svg {
-  position: fixed;
+/* ======== BORDER LIGHT RIBBON ======== */
+.border-ribbon-container {
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   pointer-events: none;
   z-index: 1;
-  overflow: visible;
+  overflow: hidden;
 }
-.ribbon-path,
-.ribbon-path-glow {
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  transition: none;
+.border-glow {
+  position: absolute;
+  width: 120px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(26,86,219,0.6), rgba(59,130,246,0.9), rgba(26,86,219,0.6), transparent);
+  border-radius: 2px;
+  filter: blur(1px);
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: 2;
+}
+.border-glow.active {
+  opacity: 1;
+}
+.border-glow::after {
+  content: '';
+  position: absolute;
+  inset: -4px -20px;
+  background: linear-gradient(90deg, transparent, rgba(26,86,219,0.15), rgba(59,130,246,0.3), rgba(26,86,219,0.15), transparent);
+  filter: blur(8px);
+  border-radius: 50%;
+}
+.border-glow-v {
+  width: 3px;
+  height: 120px;
+  background: linear-gradient(180deg, transparent, rgba(26,86,219,0.6), rgba(59,130,246,0.9), rgba(26,86,219,0.6), transparent);
+}
+.border-glow-v::after {
+  inset: -20px -4px;
+  background: linear-gradient(180deg, transparent, rgba(26,86,219,0.15), rgba(59,130,246,0.3), rgba(26,86,219,0.15), transparent);
+}
+
+/* ======== FLOATING CHAT BUBBLES ======== */
+.chat-bubbles-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.chat-bubble-deco {
+  position: absolute;
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(26,86,219,0.08);
+  border-radius: 16px 16px 16px 4px;
+  padding: 8px 14px;
+  font-size: 11px;
+  color: rgba(75,80,99,0.25);
+  font-family: var(--font-body);
+  white-space: nowrap;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: border-color 0.6s ease, color 0.6s ease, background 0.6s ease, box-shadow 0.6s ease;
+  transform: rotate(var(--bubble-rotate, 0deg));
+  opacity: 0.5;
+}
+.chat-bubble-deco.highlighted {
+  border-color: rgba(26,86,219,0.25);
+  color: rgba(75,80,99,0.45);
+  background: rgba(26,86,219,0.04);
+  box-shadow: 0 0 20px rgba(26,86,219,0.08);
+  opacity: 0.7;
+}
+.chat-bubble-deco.alt {
+  border-radius: 16px 16px 4px 16px;
 }
 
 /* ======== 3D TILT CARDS ======== */
