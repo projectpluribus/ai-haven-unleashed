@@ -53,16 +53,17 @@ body::before {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 0;
-  opacity: 0.09;
+  z-index: 1;
   background-image:
-    radial-gradient(ellipse 38px 38px at 24px 24px, rgba(200,200,210,0.5) 60%, transparent 100%),
-    radial-gradient(ellipse 38px 38px at 72px 24px, rgba(200,200,210,0.5) 60%, transparent 100%),
-    radial-gradient(ellipse 38px 38px at 24px 72px, rgba(200,200,210,0.5) 60%, transparent 100%),
-    radial-gradient(ellipse 38px 38px at 72px 72px, rgba(200,200,210,0.5) 60%, transparent 100%),
-    linear-gradient(180deg, rgba(220,218,215,0.15) 0%, rgba(230,228,225,0.08) 100%);
-  background-size: 96px 96px, 96px 96px, 96px 96px, 96px 96px, 100% 100%;
-  background-repeat: repeat, repeat, repeat, repeat, no-repeat;
+    radial-gradient(circle 30px at 32px 32px, rgba(180,178,175,0.35) 0%, rgba(200,198,195,0.12) 55%, transparent 70%),
+    radial-gradient(circle 30px at 96px 32px, rgba(180,178,175,0.35) 0%, rgba(200,198,195,0.12) 55%, transparent 70%),
+    radial-gradient(circle 30px at 32px 96px, rgba(180,178,175,0.35) 0%, rgba(200,198,195,0.12) 55%, transparent 70%),
+    radial-gradient(circle 30px at 96px 96px, rgba(180,178,175,0.35) 0%, rgba(200,198,195,0.12) 55%, transparent 70%),
+    linear-gradient(135deg, rgba(240,238,235,0.06) 25%, transparent 25%, transparent 50%, rgba(240,238,235,0.06) 50%, rgba(240,238,235,0.06) 75%, transparent 75%);
+  background-size: 128px 128px, 128px 128px, 128px 128px, 128px 128px, 128px 128px;
+  background-repeat: repeat;
+  opacity: 1;
+}
 }
 a { color: inherit; text-decoration: none; }
 button { font-family: var(--font-body); cursor: pointer; }
