@@ -650,22 +650,25 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   wrapper.className = 'bubble-zone';
   wrapper.setAttribute('aria-hidden', 'true');
 
-  // Bubbles scattered around the headline zone — left/right edges with good spacing
+  // Fewer bubbles, symmetrical, strictly on edges — never near center text
   const spots = [
-    // Far left column
-    { x: -1, y: 5, r: -5 },  { x: 1, y: 30, r: 4 },  { x: -1, y: 55, r: -7 }, { x: 2, y: 80, r: 3 },
-    // Left column
-    { x: 8, y: 0, r: -8 },   { x: 10, y: 25, r: 6 }, { x: 7, y: 50, r: -3 },  { x: 9, y: 78, r: 5 },
-    // Left-mid (close but not overlapping center)
-    { x: 18, y: 8, r: -4 },  { x: 20, y: 45, r: 7 }, { x: 17, y: 75, r: -6 },
-    // Top center (above headline)
-    { x: 32, y: -2, r: -3 }, { x: 48, y: -5, r: 2 }, { x: 62, y: -3, r: -4 },
-    // Right-mid
-    { x: 72, y: 10, r: 5 },  { x: 74, y: 48, r: -7 }, { x: 73, y: 78, r: 4 },
-    // Right column
-    { x: 82, y: 2, r: 8 },   { x: 84, y: 28, r: -5 }, { x: 83, y: 55, r: 3 },  { x: 85, y: 82, r: -6 },
-    // Far right column
-    { x: 91, y: 8, r: 6 },   { x: 93, y: 35, r: -4 }, { x: 90, y: 60, r: 7 },  { x: 92, y: 85, r: -3 },
+    // Left edge (3 bubbles, evenly spaced vertically)
+    { x: -1, y: 5, r: -5 },
+    { x: 0, y: 42, r: 4 },
+    { x: -1, y: 80, r: -6 },
+    // Left-inner (2 bubbles)
+    { x: 9, y: 18, r: 6 },
+    { x: 8, y: 65, r: -4 },
+    // Right-inner (2 bubbles, mirror)
+    { x: 78, y: 18, r: -6 },
+    { x: 79, y: 65, r: 4 },
+    // Right edge (3 bubbles, mirror of left)
+    { x: 88, y: 5, r: 5 },
+    { x: 89, y: 42, r: -4 },
+    { x: 88, y: 80, r: 6 },
+    // Top center (2 above headline)
+    { x: 35, y: -4, r: -3 },
+    { x: 58, y: -4, r: 3 },
   ];
 
   spots.forEach((s, i) => {
