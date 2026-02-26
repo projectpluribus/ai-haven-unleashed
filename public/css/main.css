@@ -45,7 +45,7 @@
 
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
-body { font-family: var(--font-body); background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
+body { font-family: var(--font-body); background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; position: relative; }
 a { color: inherit; text-decoration: none; }
 button { font-family: var(--font-body); cursor: pointer; }
 ::selection { background: var(--accent); color: #fff; }
@@ -621,25 +621,25 @@ section { padding: 100px 0; }
 
 /* ======== BORDER LIGHT RIBBON ======== */
 .border-ribbon-container {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 1;
-  overflow: hidden;
+  z-index: 99;
+  overflow: visible;
 }
 .border-glow {
-  position: absolute;
-  width: 120px;
+  position: fixed;
+  width: 220px;
   height: 3px;
-  background: linear-gradient(90deg, transparent, rgba(26,86,219,0.6), rgba(59,130,246,0.9), rgba(26,86,219,0.6), transparent);
+  background: linear-gradient(90deg, transparent, rgba(26,86,219,0.5), rgba(59,130,246,1), rgba(26,86,219,0.5), transparent);
   border-radius: 2px;
-  filter: blur(1px);
   opacity: 0;
-  transition: opacity 0.3s;
-  z-index: 2;
+  transition: opacity 0.4s;
+  z-index: 99;
+  pointer-events: none;
 }
 .border-glow.active {
   opacity: 1;
@@ -647,60 +647,46 @@ section { padding: 100px 0; }
 .border-glow::after {
   content: '';
   position: absolute;
-  inset: -4px -20px;
-  background: linear-gradient(90deg, transparent, rgba(26,86,219,0.15), rgba(59,130,246,0.3), rgba(26,86,219,0.15), transparent);
-  filter: blur(8px);
+  inset: -6px -30px;
+  background: linear-gradient(90deg, transparent, rgba(26,86,219,0.2), rgba(59,130,246,0.4), rgba(26,86,219,0.2), transparent);
+  filter: blur(12px);
   border-radius: 50%;
-}
-.border-glow-v {
-  width: 3px;
-  height: 120px;
-  background: linear-gradient(180deg, transparent, rgba(26,86,219,0.6), rgba(59,130,246,0.9), rgba(26,86,219,0.6), transparent);
-}
-.border-glow-v::after {
-  inset: -20px -4px;
-  background: linear-gradient(180deg, transparent, rgba(26,86,219,0.15), rgba(59,130,246,0.3), rgba(26,86,219,0.15), transparent);
 }
 
 /* ======== FLOATING CHAT BUBBLES ======== */
-.chat-bubbles-layer {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 0;
-  overflow: hidden;
+section, .hero, .footer {
+  position: relative;
 }
 .chat-bubble-deco {
   position: absolute;
-  background: rgba(255,255,255,0.04);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(26,86,219,0.08);
-  border-radius: 16px 16px 16px 4px;
-  padding: 8px 14px;
+  background: rgba(235,240,255,0.75);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(26,86,219,0.1);
+  border-radius: 14px 14px 14px 4px;
+  padding: 7px 13px;
   font-size: 11px;
-  color: rgba(75,80,99,0.25);
+  color: rgba(75,80,99,0.35);
   font-family: var(--font-body);
   white-space: nowrap;
-  max-width: 220px;
+  max-width: 210px;
   overflow: hidden;
   text-overflow: ellipsis;
-  transition: border-color 0.6s ease, color 0.6s ease, background 0.6s ease, box-shadow 0.6s ease;
+  transition: border-color 0.5s, color 0.5s, background 0.5s, box-shadow 0.5s, opacity 0.5s;
   transform: rotate(var(--bubble-rotate, 0deg));
-  opacity: 0.5;
+  opacity: 0.45;
+  z-index: 0;
+  pointer-events: none;
 }
 .chat-bubble-deco.highlighted {
-  border-color: rgba(26,86,219,0.25);
-  color: rgba(75,80,99,0.45);
-  background: rgba(26,86,219,0.04);
-  box-shadow: 0 0 20px rgba(26,86,219,0.08);
-  opacity: 0.7;
+  border-color: rgba(26,86,219,0.3);
+  color: rgba(26,86,219,0.55);
+  background: rgba(235,240,255,0.9);
+  box-shadow: 0 2px 16px rgba(26,86,219,0.1);
+  opacity: 0.75;
 }
 .chat-bubble-deco.alt {
-  border-radius: 16px 16px 4px 16px;
+  border-radius: 14px 14px 4px 14px;
 }
 
 /* ======== 3D TILT CARDS ======== */

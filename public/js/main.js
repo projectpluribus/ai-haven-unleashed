@@ -574,160 +574,135 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   const container = document.getElementById('borderRibbon');
   if (!container) return;
 
-  // Find all section borders to trace
-  function createGlows() {
-    container.innerHTML = '';
-    const sections = document.querySelectorAll('section, .hero, .before-after, .how-section, .wizard-section, .comparison-section, .features-section, .demo-section, .industries-section, .pricing-section, .testimonials-section, .faq-section, .final-cta, .footer');
-    const glows = [];
-
-    sections.forEach((sec) => {
-      const rect = sec.getBoundingClientRect();
-      const scrollTop = window.scrollY;
-      const top = rect.top + scrollTop;
-      const width = rect.width;
-
-      // Top border glow
-      const gTop = document.createElement('div');
-      gTop.className = 'border-glow';
-      gTop.style.top = top + 'px';
-      gTop.style.left = '0';
-      gTop.style.width = '180px';
-      gTop.dataset.baseY = top;
-      gTop.dataset.dir = 'h';
-      gTop.dataset.maxX = width;
-      container.appendChild(gTop);
-      glows.push(gTop);
-
-      // Bottom border glow
-      const gBot = document.createElement('div');
-      gBot.className = 'border-glow';
-      gBot.style.top = (top + rect.height) + 'px';
-      gBot.style.left = width + 'px';
-      gBot.style.width = '180px';
-      gBot.dataset.baseY = top + rect.height;
-      gBot.dataset.dir = 'h-rev';
-      gBot.dataset.maxX = width;
-      container.appendChild(gBot);
-      glows.push(gBot);
-    });
-
-    return glows;
+  const glowCount = 6;
+  const glowEls = [];
+  for (let i = 0; i < glowCount; i++) {
+    const g = document.createElement('div');
+    g.className = 'border-glow';
+    g.style.opacity = '0';
+    container.appendChild(g);
+    glowEls.push(g);
   }
 
-  let glows = createGlows();
-  let animFrame;
-
-  function animateGlows() {
+  function animate() {
     const scrollY = window.scrollY;
     const vh = window.innerHeight;
-    const centerY = scrollY + vh * 0.45;
+    const sections = document.querySelectorAll('section, .footer');
+    const borders = [];
 
-    glows.forEach(g => {
-      const baseY = parseFloat(g.dataset.baseY);
-      const dist = Math.abs(baseY - centerY);
-      const maxX = parseFloat(g.dataset.maxX);
-      
-      if (dist < vh * 0.6) {
-        g.classList.add('active');
-        // Animate position along border based on scroll proximity
-        const progress = 1 - (dist / (vh * 0.6));
-        const dir = g.dataset.dir;
-        if (dir === 'h') {
-          g.style.left = (progress * (maxX - 180)) + 'px';
-        } else {
-          g.style.left = ((1 - progress) * (maxX - 180)) + 'px';
-        }
-      } else {
-        g.classList.remove('active');
+    sections.forEach(sec => {
+      const rect = sec.getBoundingClientRect();
+      if (rect.bottom > -100 && rect.top < vh + 100) {
+        borders.push({ y: rect.top, width: rect.width });
+        borders.push({ y: rect.bottom, width: rect.width });
       }
     });
 
-    animFrame = requestAnimationFrame(animateGlows);
+    const centerY = vh * 0.5;
+    borders.sort((a, b) => Math.abs(a.y - centerY) - Math.abs(b.y - centerY));
+
+    glowEls.forEach((g, i) => {
+      if (i < borders.length) {
+        const b = borders[i];
+        const dist = Math.abs(b.y - centerY);
+        if (dist < vh * 0.7) {
+          const progress = 1 - dist / (vh * 0.7);
+          g.style.opacity = (progress * 0.9).toFixed(2);
+          g.style.top = b.y + 'px';
+          const scrollPhase = (scrollY * 0.5 + i * 200) % (b.width + 200) - 100;
+          g.style.left = Math.max(0, Math.min(b.width - 220, scrollPhase)) + 'px';
+          g.style.width = '220px';
+        } else {
+          g.style.opacity = '0';
+        }
+      } else {
+        g.style.opacity = '0';
+      }
+    });
+
+    requestAnimationFrame(animate);
   }
 
-  animateGlows();
-  window.addEventListener('resize', () => { glows = createGlows(); });
+  animate();
 })();
 
 // ============ FLOATING CHAT BUBBLES ============
 (function() {
-  const layer = document.getElementById('chatBubblesLayer');
-  if (!layer) return;
-
   const questions = [
+    // FAQ
     "What are your business hours?", "Where are you located?", "Do you offer refunds?",
     "How long does shipping take?", "Do you ship internationally?", "How can I contact support?",
+    "Do you offer discounts for bulk orders?", "Is there a warranty on your products?",
+    // Leads
     "Can someone call me back?", "Can I get a quote?", "Do you offer a free consultation?",
-    "Can I schedule a demo?", "What's the best package for my needs?",
+    "Can I speak with a sales representative?", "Can I schedule a demo?",
+    // Appointments
     "How do I book an appointment?", "Do you have availability this week?",
     "Can I reschedule my appointment?", "Do you offer virtual consultations?",
+    // Product
     "Which product is best for beginners?", "What's the difference between Plan A and Plan B?",
-    "Is this product in stock?", "Does this work with my existing system?",
+    "Is this product in stock?", "What size should I choose?",
+    // Support
     "Where is my order?", "How do I return an item?", "My payment failed — can you help?",
-    "I received a damaged product — what now?", "Can I change my shipping address?",
+    "I received a damaged product", "Can I change my shipping address?",
+    // Qualify
     "Do you work with small businesses?", "Is this suitable for my industry?",
     "How quickly can I see results?", "Do you integrate with Shopify?",
-    "What kind of results have others seen?", "What makes you different from competitors?",
-    "Do you offer discounts for bulk orders?", "Is there a warranty on your products?",
-    "Can I speak with a sales representative?", "Do you have a brochure?",
-    "How long are your sessions?", "Can I book for multiple people?",
-    "What size should I choose?", "Are there any hidden fees?",
-    "Can I see customer reviews?", "Why was I charged twice?",
-    "How many users does your plan support?", "Can this scale as my business grows?",
-    "Is this compliant with GDPR?", "What's the minimum contract length?",
-    "Do you send reminders?", "What happens if I cancel last minute?"
+    "What makes you different from competitors?", "Can this scale as my business grows?"
   ];
 
-  const docH = document.documentElement.scrollHeight;
-  const pageW = window.innerWidth;
+  // Inject bubbles directly into sections so they appear above backgrounds
+  const sections = document.querySelectorAll('section');
+  if (!sections.length) return;
 
-  // Place bubbles along both sides and scattered throughout
-  questions.forEach((q, i) => {
-    const bubble = document.createElement('div');
-    bubble.className = 'chat-bubble-deco' + (i % 3 === 0 ? ' alt' : '');
-    bubble.textContent = q;
-    
-    // Position: alternate left and right margins, spread vertically
-    const yPercent = (i / questions.length) * 90 + 5; // 5% to 95%
-    const isLeft = i % 2 === 0;
-    
-    bubble.style.top = yPercent + '%';
-    if (isLeft) {
-      bubble.style.left = (2 + Math.random() * 8) + '%';
-    } else {
-      bubble.style.right = (2 + Math.random() * 8) + '%';
+  let qIndex = 0;
+  sections.forEach((sec, sIdx) => {
+    // Skip sections that are too narrow for bubbles (wizard, demo)
+    const secWidth = sec.offsetWidth;
+    // Add 2 bubbles per section
+    const count = 2;
+    for (let j = 0; j < count && qIndex < questions.length; j++, qIndex++) {
+      const bubble = document.createElement('div');
+      bubble.className = 'chat-bubble-deco' + (qIndex % 3 === 0 ? ' alt' : '');
+      bubble.textContent = questions[qIndex];
+      
+      // Position on the outer edges only, not overlapping center content
+      const topPercent = 15 + Math.random() * 60;
+      const isLeft = j % 2 === 0;
+      
+      bubble.style.top = topPercent + '%';
+      if (isLeft) {
+        bubble.style.left = '0.5%';
+      } else {
+        bubble.style.right = '0.5%';
+      }
+      
+      bubble.style.setProperty('--bubble-rotate', ((Math.random() - 0.5) * 4) + 'deg');
+      sec.appendChild(bubble);
     }
-    
-    bubble.style.setProperty('--bubble-rotate', ((Math.random() - 0.5) * 6) + 'deg');
-    
-    layer.appendChild(bubble);
   });
 
   // Scroll-driven highlight
-  const bubbles = layer.querySelectorAll('.chat-bubble-deco');
-  
-  function updateBubbleHighlights() {
+  const allBubbles = document.querySelectorAll('.chat-bubble-deco');
+
+  function updateHighlights() {
     const scrollY = window.scrollY;
     const vh = window.innerHeight;
-    const centerY = scrollY + vh * 0.5;
-    const docHeight = document.documentElement.scrollHeight;
 
-    bubbles.forEach(b => {
-      const bTop = b.offsetTop;
-      const bCenter = (bTop / docHeight) * docHeight;
-      const dist = Math.abs(bCenter - centerY);
-      
+    allBubbles.forEach(b => {
+      const rect = b.getBoundingClientRect();
+      const bubbleCenterY = rect.top + rect.height / 2;
+      const dist = Math.abs(bubbleCenterY - vh * 0.5);
       if (dist < vh * 0.4) {
         b.classList.add('highlighted');
       } else {
         b.classList.remove('highlighted');
       }
     });
-
-    requestAnimationFrame(updateBubbleHighlights);
+    requestAnimationFrame(updateHighlights);
   }
 
-  updateBubbleHighlights();
+  updateHighlights();
 })();
 
 // ============ 3D TILT ON CARDS ============
