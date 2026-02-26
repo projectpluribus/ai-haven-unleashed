@@ -677,7 +677,10 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
         bubble.style.right = '0.5%';
       }
       
-      bubble.style.setProperty('--bubble-rotate', ((Math.random() - 0.5) * 4) + 'deg');
+      const angle = (Math.random() - 0.5) * 16; // wider rotation range: -8 to +8 deg
+      bubble.style.setProperty('--bubble-rotate', angle + 'deg');
+      bubble.style.setProperty('--bounce-duration', (3 + Math.random() * 4) + 's');
+      bubble.style.setProperty('--bounce-delay', (Math.random() * 3) + 's');
       sec.appendChild(bubble);
     }
   });

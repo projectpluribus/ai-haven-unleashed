@@ -45,7 +45,25 @@
 
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
-body { font-family: var(--font-body); background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; position: relative; }
+body {
+  font-family: var(--font-body); background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; position: relative;
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.09;
+  background-image:
+    radial-gradient(ellipse 38px 38px at 24px 24px, rgba(200,200,210,0.5) 60%, transparent 100%),
+    radial-gradient(ellipse 38px 38px at 72px 24px, rgba(200,200,210,0.5) 60%, transparent 100%),
+    radial-gradient(ellipse 38px 38px at 24px 72px, rgba(200,200,210,0.5) 60%, transparent 100%),
+    radial-gradient(ellipse 38px 38px at 72px 72px, rgba(200,200,210,0.5) 60%, transparent 100%),
+    linear-gradient(180deg, rgba(220,218,215,0.15) 0%, rgba(230,228,225,0.08) 100%);
+  background-size: 96px 96px, 96px 96px, 96px 96px, 96px 96px, 100% 100%;
+  background-repeat: repeat, repeat, repeat, repeat, no-repeat;
+}
 a { color: inherit; text-decoration: none; }
 button { font-family: var(--font-body); cursor: pointer; }
 ::selection { background: var(--accent); color: #fff; }
@@ -677,6 +695,8 @@ section, .hero, .footer {
   opacity: 0.45;
   z-index: 0;
   pointer-events: none;
+  animation: bubbleBounce var(--bounce-duration, 4s) ease-in-out infinite;
+  animation-delay: var(--bounce-delay, 0s);
 }
 .chat-bubble-deco.highlighted {
   border-color: rgba(26,86,219,0.3);
@@ -687,6 +707,12 @@ section, .hero, .footer {
 }
 .chat-bubble-deco.alt {
   border-radius: 14px 14px 4px 14px;
+}
+@keyframes bubbleBounce {
+  0%, 100% { transform: rotate(var(--bubble-rotate, 0deg)) translateY(0); }
+  30% { transform: rotate(var(--bubble-rotate, 0deg)) translateY(-6px); }
+  50% { transform: rotate(var(--bubble-rotate, 0deg)) translateY(2px); }
+  70% { transform: rotate(var(--bubble-rotate, 0deg)) translateY(-3px); }
 }
 
 /* ======== 3D TILT CARDS ======== */
