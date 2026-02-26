@@ -569,74 +569,165 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   });
 });
 
-// ============ FLOWING LIGHT RIBBON ============
+// ============ BORDER LIGHT RIBBON ============
 (function() {
-  const svg = document.getElementById('ribbonSvg');
-  const path = document.getElementById('ribbonPath');
-  const pathGlow = document.getElementById('ribbonPathGlow');
-  if (!svg || !path) return;
+  const container = document.getElementById('borderRibbon');
+  if (!container) return;
 
-  function buildRibbonPath() {
-    const w = window.innerWidth;
-    const docH = document.documentElement.scrollHeight;
-    svg.setAttribute('viewBox', `0 0 ${w} ${docH}`);
-    svg.style.height = docH + 'px';
-    svg.style.position = 'absolute';
-    svg.style.top = '0';
+  // Find all section borders to trace
+  function createGlows() {
+    container.innerHTML = '';
+    const sections = document.querySelectorAll('section, .hero, .before-after, .how-section, .wizard-section, .comparison-section, .features-section, .demo-section, .industries-section, .pricing-section, .testimonials-section, .faq-section, .final-cta, .footer');
+    const glows = [];
 
-    const segments = 20;
-    const segH = docH / segments;
-    let d = `M ${w * 0.1} 0`;
+    sections.forEach((sec) => {
+      const rect = sec.getBoundingClientRect();
+      const scrollTop = window.scrollY;
+      const top = rect.top + scrollTop;
+      const width = rect.width;
 
-    for (let i = 0; i < segments; i++) {
-      const y = i * segH;
-      const nextY = (i + 1) * segH;
-      const midY = y + segH / 2;
-      // Alternate wave direction with loops
-      const isEven = i % 2 === 0;
-      const amplitude = w * (0.25 + Math.sin(i * 0.7) * 0.15);
-      const cx1 = isEven ? w * 0.5 + amplitude * 0.6 : w * 0.5 - amplitude * 0.6;
-      const cx2 = isEven ? w * 0.5 - amplitude * 0.4 : w * 0.5 + amplitude * 0.4;
+      // Top border glow
+      const gTop = document.createElement('div');
+      gTop.className = 'border-glow';
+      gTop.style.top = top + 'px';
+      gTop.style.left = '0';
+      gTop.style.width = '180px';
+      gTop.dataset.baseY = top;
+      gTop.dataset.dir = 'h';
+      gTop.dataset.maxX = width;
+      container.appendChild(gTop);
+      glows.push(gTop);
+
+      // Bottom border glow
+      const gBot = document.createElement('div');
+      gBot.className = 'border-glow';
+      gBot.style.top = (top + rect.height) + 'px';
+      gBot.style.left = width + 'px';
+      gBot.style.width = '180px';
+      gBot.dataset.baseY = top + rect.height;
+      gBot.dataset.dir = 'h-rev';
+      gBot.dataset.maxX = width;
+      container.appendChild(gBot);
+      glows.push(gBot);
+    });
+
+    return glows;
+  }
+
+  let glows = createGlows();
+  let animFrame;
+
+  function animateGlows() {
+    const scrollY = window.scrollY;
+    const vh = window.innerHeight;
+    const centerY = scrollY + vh * 0.45;
+
+    glows.forEach(g => {
+      const baseY = parseFloat(g.dataset.baseY);
+      const dist = Math.abs(baseY - centerY);
+      const maxX = parseFloat(g.dataset.maxX);
       
-      // Create wave with loop effect every 4th segment
-      if (i % 4 === 2) {
-        // Loop — a small curl
-        const loopR = segH * 0.25;
-        const loopX = isEven ? w * 0.7 : w * 0.3;
-        d += ` C ${cx1} ${midY - segH * 0.1}, ${loopX + loopR} ${midY - loopR}, ${loopX} ${midY}`;
-        d += ` C ${loopX - loopR} ${midY + loopR * 0.5}, ${loopX - loopR * 0.3} ${midY + loopR * 1.2}, ${loopX + loopR * 0.5} ${midY + loopR * 0.8}`;
-        d += ` C ${cx2} ${nextY - segH * 0.15}, ${isEven ? w * 0.25 : w * 0.75} ${nextY}, ${w * 0.5 + (isEven ? -1 : 1) * w * 0.15} ${nextY}`;
+      if (dist < vh * 0.6) {
+        g.classList.add('active');
+        // Animate position along border based on scroll proximity
+        const progress = 1 - (dist / (vh * 0.6));
+        const dir = g.dataset.dir;
+        if (dir === 'h') {
+          g.style.left = (progress * (maxX - 180)) + 'px';
+        } else {
+          g.style.left = ((1 - progress) * (maxX - 180)) + 'px';
+        }
       } else {
-        d += ` C ${cx1} ${midY}, ${cx2} ${midY}, ${w * 0.5 + (isEven ? -1 : 1) * w * 0.2} ${nextY}`;
+        g.classList.remove('active');
       }
+    });
+
+    animFrame = requestAnimationFrame(animateGlows);
+  }
+
+  animateGlows();
+  window.addEventListener('resize', () => { glows = createGlows(); });
+})();
+
+// ============ FLOATING CHAT BUBBLES ============
+(function() {
+  const layer = document.getElementById('chatBubblesLayer');
+  if (!layer) return;
+
+  const questions = [
+    "What are your business hours?", "Where are you located?", "Do you offer refunds?",
+    "How long does shipping take?", "Do you ship internationally?", "How can I contact support?",
+    "Can someone call me back?", "Can I get a quote?", "Do you offer a free consultation?",
+    "Can I schedule a demo?", "What's the best package for my needs?",
+    "How do I book an appointment?", "Do you have availability this week?",
+    "Can I reschedule my appointment?", "Do you offer virtual consultations?",
+    "Which product is best for beginners?", "What's the difference between Plan A and Plan B?",
+    "Is this product in stock?", "Does this work with my existing system?",
+    "Where is my order?", "How do I return an item?", "My payment failed — can you help?",
+    "I received a damaged product — what now?", "Can I change my shipping address?",
+    "Do you work with small businesses?", "Is this suitable for my industry?",
+    "How quickly can I see results?", "Do you integrate with Shopify?",
+    "What kind of results have others seen?", "What makes you different from competitors?",
+    "Do you offer discounts for bulk orders?", "Is there a warranty on your products?",
+    "Can I speak with a sales representative?", "Do you have a brochure?",
+    "How long are your sessions?", "Can I book for multiple people?",
+    "What size should I choose?", "Are there any hidden fees?",
+    "Can I see customer reviews?", "Why was I charged twice?",
+    "How many users does your plan support?", "Can this scale as my business grows?",
+    "Is this compliant with GDPR?", "What's the minimum contract length?",
+    "Do you send reminders?", "What happens if I cancel last minute?"
+  ];
+
+  const docH = document.documentElement.scrollHeight;
+  const pageW = window.innerWidth;
+
+  // Place bubbles along both sides and scattered throughout
+  questions.forEach((q, i) => {
+    const bubble = document.createElement('div');
+    bubble.className = 'chat-bubble-deco' + (i % 3 === 0 ? ' alt' : '');
+    bubble.textContent = q;
+    
+    // Position: alternate left and right margins, spread vertically
+    const yPercent = (i / questions.length) * 90 + 5; // 5% to 95%
+    const isLeft = i % 2 === 0;
+    
+    bubble.style.top = yPercent + '%';
+    if (isLeft) {
+      bubble.style.left = (2 + Math.random() * 8) + '%';
+    } else {
+      bubble.style.right = (2 + Math.random() * 8) + '%';
     }
+    
+    bubble.style.setProperty('--bubble-rotate', ((Math.random() - 0.5) * 6) + 'deg');
+    
+    layer.appendChild(bubble);
+  });
 
-    path.setAttribute('d', d);
-    pathGlow.setAttribute('d', d);
+  // Scroll-driven highlight
+  const bubbles = layer.querySelectorAll('.chat-bubble-deco');
+  
+  function updateBubbleHighlights() {
+    const scrollY = window.scrollY;
+    const vh = window.innerHeight;
+    const centerY = scrollY + vh * 0.5;
+    const docHeight = document.documentElement.scrollHeight;
 
-    const pathLen = path.getTotalLength();
-    const dashLen = pathLen * 0.15; // visible portion
+    bubbles.forEach(b => {
+      const bTop = b.offsetTop;
+      const bCenter = (bTop / docHeight) * docHeight;
+      const dist = Math.abs(bCenter - centerY);
+      
+      if (dist < vh * 0.4) {
+        b.classList.add('highlighted');
+      } else {
+        b.classList.remove('highlighted');
+      }
+    });
 
-    path.style.strokeDasharray = `${dashLen} ${pathLen - dashLen}`;
-    path.style.strokeDashoffset = pathLen;
-    pathGlow.style.strokeDasharray = `${dashLen * 0.6} ${pathLen - dashLen * 0.6}`;
-    pathGlow.style.strokeDashoffset = pathLen;
-
-    return pathLen;
+    requestAnimationFrame(updateBubbleHighlights);
   }
 
-  let pathLen = buildRibbonPath();
-
-  function onScroll() {
-    const scrollFrac = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
-    const offset = pathLen - (scrollFrac * pathLen * 1.15);
-    path.style.strokeDashoffset = offset;
-    pathGlow.style.strokeDashoffset = offset + pathLen * 0.02;
-  }
-
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', () => { pathLen = buildRibbonPath(); onScroll(); });
-  onScroll();
+  updateBubbleHighlights();
 })();
 
 // ============ 3D TILT ON CARDS ============
