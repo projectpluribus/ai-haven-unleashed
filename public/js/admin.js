@@ -2,78 +2,211 @@
    AI bloop Admin — JavaScript
    ======================================== */
 
+const API_BASE = 'https://api.aibloop.com/api/admin';
+let lastFetchTime = null;
+let refreshInterval = null;
+
+function getAdminKey() {
+  return sessionStorage.getItem('abloop_key') || '';
+}
+
+function handle401() {
+  sessionStorage.removeItem('abloop_admin');
+  sessionStorage.removeItem('abloop_key');
+  document.getElementById('adminLoginOverlay').style.display = '';
+  document.getElementById('loginError').style.display = 'none';
+  if (refreshInterval) clearInterval(refreshInterval);
+}
+
+async function apiFetch(endpoint) {
+  const res = await fetch(API_BASE + endpoint, {
+    headers: { 'X-Admin-Key': getAdminKey() }
+  });
+  if (res.status === 401) { handle401(); throw new Error('Unauthorized'); }
+  if (!res.ok) throw new Error('API error ' + res.status);
+  return res.json();
+}
+
+// ============ DASHBOARD DATA ============
+
+function updateTimestamp() {
+  const el = document.getElementById('dashLastUpdated');
+  if (!el || !lastFetchTime) return;
+  const secs = Math.floor((Date.now() - lastFetchTime) / 1000);
+  if (secs < 5) el.textContent = 'All systems operational · Last updated just now';
+  else if (secs < 60) el.textContent = `All systems operational · Last updated ${secs}s ago`;
+  else el.textContent = `All systems operational · Last updated ${Math.floor(secs/60)}m ago`;
+}
+
+async function fetchStats() {
+  try {
+    const stats = await apiFetch('/stats');
+    lastFetchTime = Date.now();
+
+    // Active bots
+    const el1 = document.getElementById('statBots');
+    const el1c = document.getElementById('statBotsChange');
+    if (el1) el1.textContent = (stats.active_bots || 0).toLocaleString();
+    if (el1c && stats.paid_bots !== undefined) {
+      el1c.className = 'stat-change';
+      el1c.textContent = `${stats.paid_bots || 0} paid · ${stats.free_bots || 0} free`;
+    }
+
+    // Conversations today
+    const el2 = document.getElementById('statConvos');
+    const el2c = document.getElementById('statConvosChange');
+    if (el2) el2.textContent = (stats.conversations_today || 0).toLocaleString();
+    if (el2c) {
+      if (stats.conversations_yesterday && stats.conversations_yesterday > 0) {
+        const pct = (((stats.conversations_today - stats.conversations_yesterday) / stats.conversations_yesterday) * 100).toFixed(1);
+        const up = pct >= 0;
+        el2c.className = 'stat-change ' + (up ? 'up' : '');
+        el2c.textContent = `${up ? '↑' : '↓'} ${Math.abs(pct)}% vs yesterday`;
+      } else {
+        el2c.textContent = '';
+      }
+    }
+
+    // Revenue
+    const el3 = document.getElementById('statRevenue');
+    const el3c = document.getElementById('statRevenueChange');
+    if (el3) {
+      const rev = stats.monthly_revenue || 0;
+      el3.textContent = rev >= 1000 ? '$' + (rev / 1000).toFixed(1) + 'K' : '$' + rev;
+    }
+    if (el3c) el3c.textContent = '';
+
+    updateTimestamp();
+  } catch (e) {
+    console.error('Stats fetch error:', e);
+  }
+}
+
+async function fetchBots() {
+  try {
+    const bots = await apiFetch('/bots');
+    const tbody = document.getElementById('botsTableBody');
+    const badge = document.getElementById('botCountBadge');
+    if (badge) badge.textContent = `${bots.length} total`;
+    if (!tbody) return;
+
+    if (!bots.length) {
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--muted);">No bots yet</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = bots.map(b => {
+      const status = b.status || 'active';
+      const dotColor = status === 'active' ? 'green' : status === 'training' ? 'yellow' : 'blue';
+      const created = b.created_at ? new Date(b.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—';
+      return `<tr>
+        <td>${esc(b.business_name || b.name || '—')}</td>
+        <td>${esc(b.email || '—')}</td>
+        <td>${esc(b.industry || '—')}</td>
+        <td><span class="badge-label">${esc(b.plan || 'free')}</span></td>
+        <td>${(b.messages_used || b.message_count || 0).toLocaleString()}</td>
+        <td><span class="status-dot ${dotColor}"></span> ${esc(status.charAt(0).toUpperCase() + status.slice(1))}</td>
+        <td>${created}</td>
+      </tr>`;
+    }).join('');
+  } catch (e) {
+    console.error('Bots fetch error:', e);
+  }
+}
+
+async function fetchLeads() {
+  try {
+    const leads = await apiFetch('/leads');
+    const tbody = document.getElementById('leadsTableBody');
+    const badge = document.getElementById('leadCountBadge');
+    if (badge) badge.textContent = `${leads.length} total`;
+    if (!tbody) return;
+
+    if (!leads.length) {
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--muted);">No leads yet</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = leads.map(l => {
+      const date = l.created_at ? new Date(l.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '—';
+      return `<tr>
+        <td>${esc(l.name || '—')}</td>
+        <td>${esc(l.email || '—')}</td>
+        <td>${esc(l.company || '—')}</td>
+        <td style="max-width:300px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(l.message || '—')}</td>
+        <td>${date}</td>
+      </tr>`;
+    }).join('');
+  } catch (e) {
+    console.error('Leads fetch error:', e);
+  }
+}
+
+function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+async function initDashboard() {
+  if (!getAdminKey()) return;
+  await Promise.all([fetchStats(), fetchBots(), fetchLeads()]);
+  // auto-refresh stats every 60s
+  if (refreshInterval) clearInterval(refreshInterval);
+  refreshInterval = setInterval(() => {
+    fetchStats();
+    fetchBots();
+    fetchLeads();
+  }, 60000);
+  // update timestamp every 10s
+  setInterval(updateTimestamp, 10000);
+}
+
+// Auto-init if already logged in
+if (sessionStorage.getItem('abloop_admin') === '1') {
+  initDashboard();
+}
+
 // ============ AGENTS DATA ============
 const agents = [
   { id:'seo', name:'SEO Scout', role:'Search Engine Optimization', emoji:'🔍', color:'var(--accent)', bg:'var(--accent-light)', status:'Active', statusColor:'var(--accent)',
     tasks:['Keyword research & tracking','On-page optimization','Competitor analysis'],
     responses:[
-      "Just finished the weekly keyword audit. We moved up to #3 for 'custom ai chatbot for business' — that's 2 spots this week. I've also identified 47 new long-tail opportunities worth targeting. The healthcare vertical keywords are performing exceptionally well.",
-      "Technical SEO score is 92/100. I fixed 3 broken internal links and resubmitted the sitemap. Our Core Web Vitals are all green. Largest Contentful Paint dropped to 1.2s after the image optimization I ran yesterday.",
-      "Competitor alert: Chatbase just published a comparison page ranking for our brand terms. I recommend we create our own 'AI bloop vs Competitors' page — I've already drafted a content brief for the Content Writer agent."
+      "Just finished the weekly keyword audit. We moved up to #3 for 'custom ai chatbot for business' — that's 2 spots this week.",
+      "Technical SEO score is 92/100. I fixed 3 broken internal links and resubmitted the sitemap.",
+      "Competitor alert: Chatbase just published a comparison page ranking for our brand terms."
     ]},
   { id:'content', name:'Content Writer', role:'Blog, Copy & Content Strategy', emoji:'✍️', color:'var(--blue)', bg:'rgba(26,86,219,0.08)', status:'Writing', statusColor:'var(--blue)',
     tasks:['Blog post creation','Landing page copy','Email sequences'],
     responses:[
-      "Just published the healthcare chatbot article — 2,400 words with embedded case studies from NovaDental and two other clients. SEO Scout already optimized meta tags. Organic impressions should pick up within 48 hours based on our publishing pattern.",
-      "Working on a 5-part email onboarding sequence. Email 1 (welcome + quick start) is done. The sequence covers: setup guide → first week tips → ROI calculator → case studies → upgrade prompt. Want me to share the drafts?",
-      "The competitor comparison landing page is in research phase. I'm analyzing messaging, pricing, and feature gaps from the top 5 competitors. Early takeaway: we're the only one offering truly flat pricing — that's a huge differentiator worth highlighting."
+      "Just published the healthcare chatbot article — 2,400 words with embedded case studies.",
+      "Working on a 5-part email onboarding sequence. Email 1 is done.",
+      "The competitor comparison landing page is in research phase."
     ]},
   { id:'analytics', name:'Analytics Brain', role:'Data Analysis & Reporting', emoji:'📊', color:'#a78bfa', bg:'rgba(124,58,237,0.08)', status:'Active', statusColor:'var(--accent)',
     tasks:['Daily metrics tracking','Anomaly detection','Monthly reports'],
     responses:[
-      "Interesting pattern: healthcare vertical clients have 23% higher retention and 31% higher conversation volume than average. I strongly recommend doubling down on healthcare marketing — the data supports it unambiguously.",
-      "Traffic anomaly detected: 340% spike from Reddit yesterday. Traced it to a post in r/smallbusiness where a user recommended us. That traffic has a 2.1x higher engagement rate than organic. I've flagged this for Social Maven to amplify.",
-      "Monthly report highlights: MRR up 15.2%, churn down to 2.1%, avg conversations per bot up 18%. Our strongest growth segments are real estate (+28%) and healthcare (+22%). I'll have the full PDF ready by end of day."
+      "Healthcare vertical clients have 23% higher retention than average.",
+      "Traffic anomaly detected: 340% spike from Reddit yesterday.",
+      "Monthly report highlights: MRR up 15.2%, churn down to 2.1%."
     ]},
   { id:'uptime', name:'Uptime Guardian', role:'Infrastructure & Reliability', emoji:'🛡️', color:'#2dd4bf', bg:'rgba(5,150,105,0.08)', status:'Monitoring', statusColor:'var(--accent)',
     tasks:['Server monitoring 24/7','Auto-scaling','Incident response'],
-    responses:[
-      "All systems nominal. 99.97% uptime this month across US-East, US-West, and EU-West regions. Auto-scaled the EU cluster during today's peak — handled 3.2x normal traffic with zero latency impact. Infrastructure costs actually went down 4% this week.",
-      "Resolved a database query bottleneck at 3:42 AM — response times were creeping up to 1.2s on complex queries. Optimized the index and added a cache layer. Back to 0.8s average, zero client-facing impact. Nobody noticed.",
-      "Predictive scaling model is working well. Based on historical patterns, I pre-scale resources 15 minutes before expected traffic surges. This saved us about 18% on compute costs while maintaining sub-second response times everywhere."
-    ]},
+    responses:["All systems nominal. 99.97% uptime this month.","Resolved a database query bottleneck at 3:42 AM.","Predictive scaling model is working well."]},
   { id:'growth', name:'Growth Hacker', role:'Conversion & A/B Testing', emoji:'🚀', color:'#f5c542', bg:'rgba(217,119,6,0.08)', status:'Testing', statusColor:'#f5c542',
     tasks:['A/B test management','Funnel optimization','CRO'],
-    responses:[
-      "Big win! The hero headline A/B test concluded — 'Stop losing customers to unanswered questions' outperformed the control by 22% CTR. Already deployed to production. Next test: pricing page layout variations.",
-      "Currently running 3 experiments: (1) wizard step order, (2) CTA button color, (3) testimonial placement. Early data on #1 is promising — moving industry selection to step 1 increased wizard completion by 15%. I'll let it run 48 more hours for significance.",
-      "Funnel analysis complete: 34% drop-off at the business description step in the wizard. Hypothesis: it's too open-ended. Testing a version with pre-filled templates by industry. If this works, it could add 200+ signups per month."
-    ]},
+    responses:["Hero headline A/B test concluded — +22% CTR.","Running 3 experiments currently.","Funnel analysis complete: 34% drop-off at business description step."]},
   { id:'onboarder', name:'Client Onboarder', role:'Automated Setup & Training', emoji:'🎯', color:'#ff5c5c', bg:'rgba(220,38,38,0.08)', status:'Active', statusColor:'var(--accent)',
     tasks:['Bot provisioning','Training data prep','Widget deployment'],
-    responses:[
-      "Provisioned 12 new client bots today. Average time from form submission to live widget: 47 seconds. The healthcare template remains our most popular at 34% of new signups. I've also improved the auto-training pipeline — bot accuracy on first deploy is up to 91%.",
-      "New workflow improvement: clients now get a pre-trained bot based on their industry template within seconds, then I fine-tune with their specific data within 2 hours. Client feedback on this process is 96% positive.",
-      "Building a WordPress plugin and Shopify app for one-click installation. The embed code works everywhere, but one-click reduces friction for the 40% of clients on those platforms. Estimated launch: next week."
-    ]},
+    responses:["Provisioned 12 new client bots today.","New workflow improvement: pre-trained bots within seconds.","Building a WordPress plugin for one-click install."]},
   { id:'social', name:'Social Maven', role:'Social Media & Community', emoji:'📱', color:'#f472b6', bg:'rgba(219,39,119,0.08)', status:'Scheduled', statusColor:'#f5c542',
     tasks:['Content scheduling','Community management','Trend monitoring'],
-    responses:[
-      "Scheduled 14 posts this week across LinkedIn, Twitter, and Instagram. The LinkedIn carousel about 'chatbot ROI by industry' hit 12K impressions in 4 hours — our best-performing organic post this month. Engagement rate: 8.4%.",
-      "Monitoring a trending Twitter thread about AI replacing customer service. Great opportunity to position AI bloop as 'human-augmenting, not human-replacing.' I've drafted a thread response and a longer LinkedIn article on the topic.",
-      "Community Discord hit 2,000 members! Running a weekly 'Bot Showcase' where clients share their best interactions. Great for testimonials, retention, and word-of-mouth. Three clients from last week's showcase are now willing to do case studies."
-    ]},
+    responses:["Scheduled 14 posts this week across LinkedIn, Twitter, and Instagram.","Monitoring a trending Twitter thread about AI replacing customer service.","Community Discord hit 2,000 members!"]},
   { id:'support', name:'Support Ninja', role:'Customer Support & Escalation', emoji:'🥷', color:'#fb923c', bg:'rgba(234,88,12,0.08)', status:'Active', statusColor:'var(--accent)',
     tasks:['Ticket resolution','Troubleshooting','Knowledge base'],
-    responses:[
-      "Handled 23 tickets today, average resolution time: 14 minutes. Most common issue: clients wanting to update their bot's knowledge base. I added a self-service tutorial and a 'Quick Update' button in the dashboard — should reduce these tickets by 40%.",
-      "Escalation from LegalEdge Partners: their bot was citing outdated pricing. Root cause: they updated their website but didn't retrain. I've retrained the bot, set up auto-sync for their content, and confirmed the client is happy.",
-      "Knowledge base updated with 8 new articles this week. Self-service resolution rate is up to 67% — that means 2 out of 3 issues are resolved without a ticket. Win for clients, win for us."
-    ]},
+    responses:["Handled 23 tickets today, average resolution time: 14 minutes.","Escalation resolved for LegalEdge Partners.","Knowledge base updated with 8 new articles."]},
   { id:'revenue', name:'Revenue Tracker', role:'Billing, Churn & Upsells', emoji:'💰', color:'var(--accent)', bg:'var(--accent-light)', status:'Active', statusColor:'var(--accent)',
     tasks:['Payment processing','Churn prediction','Revenue optimization'],
-    responses:[
-      "MRR at $243,700. Identified 8 at-risk accounts showing churn signals (declining usage, no dashboard logins in 14+ days). Triggered re-engagement emails with personalized usage stats and flagged them for Support Ninja outreach.",
-      "Revenue update: 12 new clients this week (+$1,200 MRR), 2 churned (-$200 MRR). Net positive. Of the 8 at-risk accounts from last week, 6 were successfully retained after personalized outreach — that's $600/mo saved.",
-      "Upsell opportunity: 34% of clients are hitting high conversation volumes. Recommending a premium tier at $250/mo with advanced analytics, priority training, and dedicated account management. Revenue model projects +$47K MRR within 90 days."
-    ]},
+    responses:["Identified 8 at-risk accounts showing churn signals.","12 new clients this week (+$1,200 MRR).","34% of clients hitting high conversation volumes."]},
   { id:'security', name:'Security Sentinel', role:'Security & Compliance', emoji:'🔐', color:'var(--blue)', bg:'rgba(26,86,219,0.08)', status:'Scanning', statusColor:'var(--accent)',
     tasks:['Vulnerability scanning','Compliance monitoring','Encryption audits'],
-    responses:[
-      "Weekly security scan complete. Zero vulnerabilities detected. All SSL certificates valid across client widgets. Updated WAF rules to block a new bot pattern — credential stuffing attempt from a botnet in Eastern Europe. Blocked before any impact.",
-      "Compliance update: HIPAA documentation current, SOC 2 Type II audit prep on track for Q2, GDPR DPA auto-generated for all EU clients. We passed our latest penetration test with zero critical or high findings.",
-      "Blocked 1,247 suspicious requests today — mostly automated scanning and credential stuffing. Rate limiting and IP reputation scoring working well. Zero successful breaches since launch. Our security posture is in the top 5% for SaaS companies our size."
-    ]}
+    responses:["Weekly security scan complete. Zero vulnerabilities.","Compliance update: HIPAA documentation current.","Blocked 1,247 suspicious requests today."]}
 ];
 
 let selectedAgent = null;
@@ -109,7 +242,7 @@ function selectAgent(id) {
   msgs.innerHTML = `
     <div class="acm bot">
       <div class="acm-label">${selectedAgent.emoji} ${selectedAgent.name}</div>
-      <div class="acm-bubble">Hey! I'm ${selectedAgent.name}, your ${selectedAgent.role.toLowerCase()} agent. Ask me anything about what I'm working on, request a report, or give me a new task.</div>
+      <div class="acm-bubble">Hey! I'm ${selectedAgent.name}, your ${selectedAgent.role.toLowerCase()} agent. Ask me anything about what I'm working on.</div>
     </div>`;
   document.getElementById('agentChatCard').scrollIntoView({ behavior:'smooth', block:'center' });
 }
@@ -123,11 +256,9 @@ function sendAgentMsg() {
   const msgs = document.getElementById('agentChatMsgs');
   msgs.innerHTML += `<div class="acm user"><div class="acm-label">You 👤</div><div class="acm-bubble">${msg.replace(/</g,'&lt;')}</div></div>`;
   msgs.scrollTop = msgs.scrollHeight;
-
   if (!agentMsgCounters[selectedAgent.id]) agentMsgCounters[selectedAgent.id] = 0;
   const idx = agentMsgCounters[selectedAgent.id] % selectedAgent.responses.length;
   agentMsgCounters[selectedAgent.id]++;
-
   setTimeout(() => {
     msgs.innerHTML += `<div class="acm bot"><div class="acm-label">${selectedAgent.emoji} ${selectedAgent.name}</div><div class="acm-bubble">${selectedAgent.responses[idx]}</div></div>`;
     msgs.scrollTop = msgs.scrollHeight;
