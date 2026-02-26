@@ -2,6 +2,17 @@
    AI bloop Admin — Styles
    ======================================== */
 
+.admin-login-overlay {
+  position: fixed; inset: 0; z-index: 9999;
+  background: rgba(10,12,20,0.85); backdrop-filter: blur(12px);
+  display: flex; align-items: center; justify-content: center;
+}
+.admin-login-card {
+  background: var(--bg-alt); border: 1px solid var(--border);
+  border-radius: 16px; padding: 40px 36px; width: 380px; max-width: 92vw;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+}
+
 .admin-body { display: flex; min-height: 100vh; }
 
 /* Sidebar */

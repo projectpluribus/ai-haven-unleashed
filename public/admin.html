@@ -19,6 +19,19 @@
 </head>
 <body class="admin-body">
 
+<!-- LOGIN OVERLAY -->
+<div class="admin-login-overlay" id="adminLoginOverlay">
+  <div class="admin-login-card">
+    <div class="logo" style="justify-content:center;margin-bottom:24px;"><div class="logo-mark">A</div>AI bloop</div>
+    <h2 style="text-align:center;font-family:var(--font-head);font-size:1.4rem;margin-bottom:4px;">Admin Access</h2>
+    <p style="text-align:center;color:var(--muted);font-size:0.85rem;margin-bottom:24px;">Enter your credentials to continue</p>
+    <div class="settings-field" style="margin-bottom:12px;"><label>Admin ID</label><input type="text" id="loginId" class="wiz-input" placeholder="Enter admin ID" autocomplete="username"></div>
+    <div class="settings-field" style="margin-bottom:20px;"><label>Password</label><input type="password" id="loginPass" class="wiz-input" placeholder="Enter password" autocomplete="current-password" onkeydown="if(event.key==='Enter')attemptLogin()"></div>
+    <p id="loginError" style="color:#ef4444;font-size:0.8rem;text-align:center;margin-bottom:12px;display:none;">Invalid credentials. Try again.</p>
+    <button class="abtn abtn-accent" style="width:100%;" onclick="attemptLogin()">Sign In →</button>
+  </div>
+</div>
+
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-logo">
     <div class="logo"><div class="logo-mark">A</div>AI bloop</div>
@@ -261,6 +274,19 @@
 
 </main>
 
+<script>
+function attemptLogin(){
+  var id=document.getElementById('loginId').value;
+  var pw=document.getElementById('loginPass').value;
+  if(id==='Saksham Rana'&&pw==='Saksham123$'){
+    document.getElementById('adminLoginOverlay').style.display='none';
+    sessionStorage.setItem('abloop_admin','1');
+  } else {
+    document.getElementById('loginError').style.display='block';
+  }
+}
+(function(){if(sessionStorage.getItem('abloop_admin')==='1'){document.getElementById('adminLoginOverlay').style.display='none';}})();
+</script>
 <script src="js/admin.js"></script>
 </body>
 </html>
