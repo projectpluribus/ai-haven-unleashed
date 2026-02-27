@@ -668,58 +668,6 @@ section { padding: 100px 0; }
   border-radius: 50%;
 }
 
-/* ======== FLOATING CHAT BUBBLES ======== */
-.bubble-zone {
-  position: absolute;
-  top: 70px;
-  left: 0;
-  right: 0;
-  height: 420px;
-  pointer-events: none;
-  z-index: 1;
-}
-section, .hero, .footer {
-  position: relative;
-}
-.chat-bubble-deco {
-  position: absolute;
-  background: rgba(235,240,255,0.75);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  border: 1px solid rgba(26,86,219,0.1);
-  border-radius: 14px 14px 14px 4px;
-  padding: 7px 13px;
-  font-size: 11px;
-  color: rgba(75,80,99,0.35);
-  font-family: var(--font-body);
-  white-space: nowrap;
-  max-width: 210px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  transition: border-color 0.5s, color 0.5s, background 0.5s, box-shadow 0.5s, opacity 0.5s;
-  transform: rotate(var(--bubble-rotate, 0deg));
-  opacity: 0.45;
-  z-index: 0;
-  pointer-events: none;
-  animation: bubbleBounce var(--bounce-duration, 4s) ease-in-out infinite;
-  animation-delay: var(--bounce-delay, 0s);
-}
-.chat-bubble-deco.highlighted {
-  border-color: rgba(26,86,219,0.3);
-  color: rgba(26,86,219,0.55);
-  background: rgba(235,240,255,0.9);
-  box-shadow: 0 2px 16px rgba(26,86,219,0.1);
-  opacity: 0.75;
-}
-.chat-bubble-deco.alt {
-  border-radius: 14px 14px 4px 14px;
-}
-@keyframes bubbleBounce {
-  0%, 100% { transform: rotate(var(--bubble-rotate, 0deg)) translateY(0); }
-  30% { transform: rotate(var(--bubble-rotate, 0deg)) translateY(-6px); }
-  50% { transform: rotate(var(--bubble-rotate, 0deg)) translateY(2px); }
-  70% { transform: rotate(var(--bubble-rotate, 0deg)) translateY(-3px); }
-}
 
 /* ======== 3D TILT CARDS ======== */
 .tilt-card {
