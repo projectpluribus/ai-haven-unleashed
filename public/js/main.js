@@ -448,7 +448,11 @@ function wizNext() {
             </div>
           </div>
 
-          <div style="margin-top:24px;text-align:center;">
+          <div style="margin-top:18px;text-align:center;">
+            <a href="install.html?bot_id=${data.bot_id}" class="btn btn-ghost" style="font-size:14px;padding:10px 24px;display:inline-flex;align-items:center;gap:8px;text-decoration:none;border:1.5px solid var(--border);border-radius:10px;margin-bottom:12px;width:100%;justify-content:center;">📦 Add to Your Website →</a>
+          </div>
+
+          <div style="text-align:center;">
             <a href="https://buy.stripe.com/8x228s1em7jp8LHbv63ks00" class="btn btn-accent" style="font-size:15px;padding:12px 32px;display:inline-block;text-decoration:none;" target="_blank">Activate Full Access — $100/mo</a>
           </div>
 
