@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Install AI Bloop on Your Website — Step-by-Step Guide</title>
+<meta name="description" content="Add your AI Bloop chatbot to WordPress, GoDaddy, Wix, Squarespace, Shopify, or any website. Free guided installation wizard.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #ffffff;
+  --bg-alt: #f7f8fa;
+  --surface: #ffffff;
+  --border: #e5e7ec;
+  --border-light: #eef0f4;
+  --text: #1a1d26;
+  --text-secondary: #4b5063;
+  --text-muted: #8b90a0;
+  --accent: #1a56db;
+  --accent-hover: #1648b8;
+  --accent-light: #ebf0ff;
+  --accent-text: #ffffff;
+  --green: #059669;
+  --green-light: #ecfdf5;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.08);
+  --font-display: 'Fraunces', serif;
+  --font-body: 'Manrope', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; -webkit-font-smoothing:antialiased; }
+body { font-family:var(--font-body); background:var(--bg); color:var(--text); line-height:1.6; }
+
+/* Nav */
+.inst-nav { position:fixed; top:0; left:0; right:0; z-index:100; background:rgba(255,255,255,0.92); backdrop-filter:blur(12px); border-bottom:1px solid var(--border-light); }
+.inst-nav-inner { max-width:900px; margin:0 auto; padding:0 24px; height:56px; display:flex; align-items:center; justify-content:space-between; }
+.inst-logo { font-family:var(--font-body); font-weight:800; font-size:18px; color:var(--text); text-decoration:none; display:flex; align-items:center; gap:8px; }
+.inst-logo-mark { width:28px; height:28px; background:var(--accent); color:#fff; border-radius:8px; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; }
+.inst-nav-links { display:flex; gap:20px; }
+.inst-nav-links a { font-size:13px; color:var(--text-muted); text-decoration:none; font-weight:500; }
+.inst-nav-links a:hover { color:var(--text); }
+
+/* Layout */
+.inst-container { max-width:680px; margin:0 auto; padding:100px 24px 60px; }
+
+/* Progress */
+.inst-progress-wrap { margin-bottom:40px; }
+.inst-progress-meta { display:flex; justify-content:space-between; font-size:12px; color:var(--text-muted); margin-bottom:8px; font-weight:500; }
+.inst-progress-bar { height:6px; background:var(--bg-alt); border-radius:99px; overflow:hidden; }
+.inst-progress-fill { height:100%; background:var(--accent); border-radius:99px; transition:width 0.4s ease; }
+
+/* Steps */
+.inst-step { animation:fadeIn 0.3s ease; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+
+.inst-step h1 { font-family:var(--font-display); font-size:32px; font-weight:600; margin-bottom:6px; line-height:1.2; }
+.inst-step h1 em { font-style:italic; color:var(--accent); }
+.inst-step .inst-desc { color:var(--text-secondary); font-size:15px; margin-bottom:28px; }
+
+/* Fields */
+.inst-label { display:block; font-size:13px; font-weight:600; margin-bottom:6px; color:var(--text); }
+.inst-input { width:100%; height:44px; padding:0 14px; border:1.5px solid var(--border); border-radius:var(--radius-md); font-family:var(--font-body); font-size:14px; color:var(--text); background:var(--surface); transition:border 0.2s; outline:none; }
+.inst-input:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(26,86,219,0.1); }
+.inst-input.mono { font-family:var(--font-mono); font-size:13px; }
+.inst-field { margin-bottom:20px; }
+.inst-row { display:flex; gap:12px; align-items:flex-end; }
+.inst-row .inst-field { flex:1; }
+
+/* Buttons */
+.inst-btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:12px 24px; border-radius:var(--radius-md); font-family:var(--font-body); font-size:14px; font-weight:600; cursor:pointer; border:none; transition:all 0.2s; text-decoration:none; }
+.inst-btn-primary { background:var(--accent); color:var(--accent-text); }
+.inst-btn-primary:hover { background:var(--accent-hover); }
+.inst-btn-primary:disabled { opacity:0.5; cursor:not-allowed; }
+.inst-btn-outline { background:transparent; color:var(--text-secondary); border:1.5px solid var(--border); }
+.inst-btn-outline:hover { border-color:var(--text-muted); color:var(--text); }
+.inst-btn-block { width:100%; }
+.inst-btn-sm { padding:8px 16px; font-size:13px; }
+.inst-actions { display:flex; gap:12px; margin-top:32px; }
+.inst-actions .inst-btn-primary { flex:1; }
+
+/* Detect msg */
+.inst-detect-msg { font-size:13px; margin-top:8px; }
+.inst-detect-msg.success { color:var(--green); }
+.inst-detect-msg.neutral { color:var(--text-muted); }
+
+/* Platform grid */
+.inst-platforms { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+@media(max-width:500px) { .inst-platforms { grid-template-columns:repeat(2,1fr); } }
+.inst-platform { padding:24px 16px; border:2px solid var(--border-light); border-radius:var(--radius-lg); text-align:center; cursor:pointer; transition:all 0.2s; background:var(--surface); }
+.inst-platform:hover { border-color:var(--border); box-shadow:var(--shadow-sm); }
+.inst-platform.selected { border-color:var(--accent); background:var(--accent-light); box-shadow:0 0 0 3px rgba(26,86,219,0.12); }
+.inst-platform-emoji { font-size:32px; margin-bottom:8px; }
+.inst-platform-name { font-size:13px; font-weight:600; }
+
+/* Code box */
+.inst-code-box { background:var(--bg-alt); border:1.5px solid var(--border-light); border-radius:var(--radius-lg); padding:16px; margin-bottom:28px; }
+.inst-code-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+.inst-code-label { font-size:12px; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; }
+.inst-copy-btn { display:inline-flex; align-items:center; gap:4px; padding:5px 12px; font-size:12px; font-weight:600; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--surface); cursor:pointer; color:var(--text-secondary); transition:all 0.2s; }
+.inst-copy-btn:hover { border-color:var(--accent); color:var(--accent); }
+.inst-copy-btn.copied { background:var(--green-light); border-color:var(--green); color:var(--green); }
+.inst-code-pre { font-family:var(--font-mono); font-size:13px; color:var(--accent); background:var(--surface); border-radius:var(--radius-md); padding:12px 14px; overflow-x:auto; white-space:pre-wrap; word-break:break-all; user-select:all; line-height:1.5; }
+
+/* Instructions sections */
+.inst-section { background:var(--surface); border:1.5px solid var(--border-light); border-radius:var(--radius-lg); padding:20px; margin-bottom:16px; }
+.inst-section h3 { font-family:var(--font-body); font-size:15px; font-weight:700; margin-bottom:14px; }
+.inst-steps-list { counter-reset:step; }
+.inst-steps-list li { display:flex; gap:12px; font-size:14px; color:var(--text-secondary); margin-bottom:10px; line-height:1.5; }
+.inst-steps-list li:last-child { margin-bottom:0; }
+.inst-step-num { flex-shrink:0; width:22px; height:22px; background:var(--accent-light); color:var(--accent); border-radius:50%; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; margin-top:1px; }
+
+/* Success */
+.inst-success { text-align:center; }
+.inst-success-badge { width:72px; height:72px; border-radius:50%; background:var(--green-light); display:flex; align-items:center; justify-content:center; margin:0 auto 20px; }
+.inst-success-badge svg { width:36px; height:36px; color:var(--green); }
+.inst-tips { text-align:left; background:var(--bg-alt); border:1.5px solid var(--border-light); border-radius:var(--radius-lg); padding:20px; margin:28px 0; }
+.inst-tips h3 { font-size:14px; font-weight:700; margin-bottom:12px; }
+.inst-tips li { display:flex; gap:10px; font-size:13px; color:var(--text-secondary); margin-bottom:8px; line-height:1.5; }
+.inst-tips li:last-child { margin-bottom:0; }
+.inst-tip-check { flex-shrink:0; color:var(--green); font-weight:700; }
+.inst-success-actions { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+
+/* Footer */
+.inst-footer { text-align:center; margin-top:48px; padding-top:32px; border-top:1px solid var(--border-light); font-size:13px; color:var(--text-muted); }
+.inst-footer a { color:var(--accent); text-decoration:none; font-weight:500; }
+.inst-footer a:hover { text-decoration:underline; }
+
+/* Toast */
+.inst-toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px); background:var(--text); color:#fff; padding:12px 24px; border-radius:var(--radius-md); font-size:13px; font-weight:600; opacity:0; transition:all 0.3s ease; z-index:200; pointer-events:none; }
+.inst-toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="inst-nav">
+  <div class="inst-nav-inner">
+    <a href="/" class="inst-logo"><div class="inst-logo-mark">A</div>AI bloop</a>
+    <div class="inst-nav-links">
+      <a href="/#features">Features</a>
+      <a href="/#pricing">Pricing</a>
+      <a href="/#configure">Build a Bot</a>
+    </div>
+  </div>
+</nav>
+
+<div class="inst-container">
+  <!-- Progress -->
+  <div class="inst-progress-wrap">
+    <div class="inst-progress-meta">
+      <span id="stepLabel">Step 1 of 4</span>
+      <span id="stepPercent">25%</span>
+    </div>
+    <div class="inst-progress-bar">
+      <div class="inst-progress-fill" id="progressFill" style="width:25%"></div>
+    </div>
+  </div>
+
+  <!-- Step container -->
+  <div id="stepContainer"></div>
+
+  <!-- Footer -->
+  <div class="inst-footer">
+    Stuck? Email <a href="mailto:aibloop@proton.me">aibloop@proton.me</a> — we'll install it for you, free.
+  </div>
+</div>
+
+<div class="inst-toast" id="toast"></div>
+
+<script>
+const PLATFORMS = [
+  { id:'wordpress', name:'WordPress', emoji:'🔵' },
+  { id:'godaddy', name:'GoDaddy', emoji:'🟢' },
+  { id:'wix', name:'Wix', emoji:'🟡' },
+  { id:'squarespace', name:'Squarespace', emoji:'⬛' },
+  { id:'shopify', name:'Shopify', emoji:'🟩' },
+  { id:'html', name:'HTML / Other', emoji:'🧑‍💻' }
+];
+
+let step = 1;
+let botId = new URLSearchParams(window.location.search).get('bot_id') || '';
+let websiteUrl = '';
+let detectedPlatform = null;
+let selectedPlatform = null;
+
+function esc(s) { const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+
+function updateProgress() {
+  const pct = Math.round((step/4)*100);
+  document.getElementById('stepLabel').textContent = 'Step '+step+' of 4';
+  document.getElementById('stepPercent').textContent = pct+'%';
+  document.getElementById('progressFill').style.width = pct+'%';
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function detectPlatform(url) {
+  const l = url.toLowerCase();
+  if (l.includes('.wixsite.com')) return 'wix';
+  if (l.includes('.godaddysites.com')) return 'godaddy';
+  if (l.includes('.squarespace.com')) return 'squarespace';
+  if (l.includes('.myshopify.com')) return 'shopify';
+  if (l.includes('.wordpress.com')) return 'wordpress';
+  return null;
+}
+
+function handleDetect() {
+  websiteUrl = document.getElementById('instUrl').value.trim();
+  const p = detectPlatform(websiteUrl);
+  const msgEl = document.getElementById('detectMsg');
+  if (p) {
+    detectedPlatform = p;
+    selectedPlatform = p;
+    const name = PLATFORMS.find(x=>x.id===p).name;
+    msgEl.textContent = '✓ Detected: '+name+'!';
+    msgEl.className = 'inst-detect-msg success';
+  } else {
+    detectedPlatform = null;
+    msgEl.textContent = "Couldn't auto-detect — you'll pick in the next step.";
+    msgEl.className = 'inst-detect-msg neutral';
+  }
+}
+
+function getInstructions(platform) {
+  switch(platform) {
+    case 'wordpress': return [
+      { title:'Option A — AI Bloop Plugin (easiest)', steps:['In your WordPress dashboard, go to Plugins → Add New.','Search for "AI Bloop".','Install and Activate the plugin.','Go to Settings → AI Bloop and paste your Bot ID.','Save — you\'re done!'] },
+      { title:'Option B — WPCode Plugin', steps:['Install the free WPCode plugin from Plugins → Add New.','Go to Code Snippets → Header & Footer.','Paste the embed code into the Footer section.','Click Save Changes.'] },
+      { title:'Option C — Theme File Editor', steps:['Go to Appearance → Theme File Editor.','Open footer.php.','Paste the embed code just before the </body> tag.','Click Update File.'] }
+    ];
+    case 'godaddy': return [
+      { title:'GoDaddy Website Builder', steps:['Open your GoDaddy Website Builder.','Click the ⊕ button to add a new section.','Choose HTML / Embed Code.','Paste the embed code.','Click Publish to go live.'] }
+    ];
+    case 'wix': return [
+      { title:'Wix Custom Code', steps:['In your Wix dashboard, go to Settings → Custom Code.','Click "+ Add Custom Code".','Paste the embed code.','Set placement to "Body - end" and apply to "All pages".','Click Apply.'] }
+    ];
+    case 'squarespace': return [
+      { title:'Squarespace Code Injection (requires Business plan)', steps:['Go to Settings → Advanced → Code Injection.','Paste the embed code in the Footer field.','Click Save.'] }
+    ];
+    case 'shopify': return [
+      { title:'Shopify Theme Editor', steps:['Go to Online Store → Themes.','Click Actions → Edit Code.','Open Layout → theme.liquid.','Paste the embed code just before the </body> tag.','Click Save.'] }
+    ];
+    default: return [
+      { title:'Manual Installation', steps:['Open your website\'s main HTML file (usually index.html).','Paste the embed code just before the closing </body> tag.','Save the file and deploy your site.'] }
+    ];
+  }
+}
+
+function render() {
+  updateProgress();
+  const c = document.getElementById('stepContainer');
+  let html = '';
+
+  if (step===1) {
+    html = `<div class="inst-step">
+      <h1>Enter your <em>Bot ID</em></h1>
+      <p class="inst-desc">We'll use this to generate your embed code.</p>
+      <div class="inst-field">
+        <label class="inst-label">Bot ID</label>
+        <input class="inst-input mono" id="instBotId" placeholder="e.g. abc123def456" value="${esc(botId)}">
+      </div>
+      <div class="inst-field">
+        <label class="inst-label">Website URL</label>
+        <div class="inst-row">
+          <div class="inst-field" style="margin-bottom:0">
+            <input class="inst-input" id="instUrl" placeholder="https://yoursite.com" value="${esc(websiteUrl)}">
+          </div>
+          <button class="inst-btn inst-btn-outline inst-btn-sm" onclick="handleDetect()" style="height:44px;white-space:nowrap">🔍 Detect</button>
+        </div>
+        <div id="detectMsg" class="inst-detect-msg"></div>
+      </div>
+      <div class="inst-actions">
+        <button class="inst-btn inst-btn-primary inst-btn-block" onclick="goStep2()">Continue →</button>
+      </div>
+    </div>`;
+  } else if (step===2) {
+    html = `<div class="inst-step">
+      <h1>Where is your website <em>hosted</em>?</h1>
+      <p class="inst-desc">Select your platform for tailored instructions.</p>
+      <div class="inst-platforms">
+        ${PLATFORMS.map(p => `<div class="inst-platform ${selectedPlatform===p.id?'selected':''}" onclick="selectPlatform('${p.id}')">
+          <div class="inst-platform-emoji">${p.emoji}</div>
+          <div class="inst-platform-name">${p.name}</div>
+        </div>`).join('')}
+      </div>
+      <div class="inst-actions">
+        <button class="inst-btn inst-btn-outline" onclick="goBack(1)">← Back</button>
+        <button class="inst-btn inst-btn-primary" id="step2Next" onclick="goStep3()" ${!selectedPlatform?'disabled':''}>Continue →</button>
+      </div>
+    </div>`;
+  } else if (step===3) {
+    const embedCode = '<script src="https://api.aibloop.com/api/widget/'+esc(botId)+'"><\/script>';
+    const sections = getInstructions(selectedPlatform);
+    html = `<div class="inst-step">
+      <h1>Installation <em>Instructions</em></h1>
+      <p class="inst-desc">Copy the code below and follow the steps for your platform.</p>
+      <div class="inst-code-box">
+        <div class="inst-code-header">
+          <span class="inst-code-label">Embed Code</span>
+          <button class="inst-copy-btn" id="copyBtn" onclick="copyCode()">📋 Copy</button>
+        </div>
+        <pre class="inst-code-pre" id="embedCode">${esc(embedCode)}</pre>
+      </div>
+      ${sections.map(s => `<div class="inst-section">
+        <h3>${s.title}</h3>
+        <ol class="inst-steps-list">
+          ${s.steps.map((st,i) => `<li><span class="inst-step-num">${i+1}</span><span>${st}</span></li>`).join('')}
+        </ol>
+      </div>`).join('')}
+      <div class="inst-actions">
+        <button class="inst-btn inst-btn-outline" onclick="goBack(2)">← Back</button>
+        <button class="inst-btn inst-btn-primary" onclick="goStep4()">✓ I've added the code</button>
+      </div>
+    </div>`;
+  } else if (step===4) {
+    const siteLink = websiteUrl ? (websiteUrl.startsWith('http')?websiteUrl:'https://'+websiteUrl) : '';
+    html = `<div class="inst-step inst-success">
+      <div class="inst-success-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+      </div>
+      <h1>You're <em>all set!</em></h1>
+      <p class="inst-desc">Your AI Bloop chatbot should now appear on your website.</p>
+      <div class="inst-tips">
+        <h3>💡 Tips</h3>
+        <ul>
+          <li><span class="inst-tip-check">✓</span><span>If the chatbot doesn't appear, try a <strong>hard refresh</strong> (Ctrl+Shift+R or Cmd+Shift+R).</span></li>
+          <li><span class="inst-tip-check">✓</span><span>Your plan includes <strong>50 free messages</strong> to get started.</span></li>
+          <li><span class="inst-tip-check">✓</span><span>Need more? Upgrade anytime from your dashboard for unlimited messages at $100/mo.</span></li>
+        </ul>
+      </div>
+      <div class="inst-success-actions">
+        ${siteLink ? `<a href="${esc(siteLink)}" target="_blank" class="inst-btn inst-btn-primary">Open my website →</a>` : ''}
+        <a href="/" class="inst-btn inst-btn-outline">Back to AI Bloop</a>
+      </div>
+    </div>`;
+  }
+
+  c.innerHTML = html;
+}
+
+function selectPlatform(id) {
+  selectedPlatform = id;
+  document.querySelectorAll('.inst-platform').forEach(el => el.classList.remove('selected'));
+  document.querySelector('.inst-platform[onclick*="\''+id+'\'"]').classList.add('selected');
+  document.getElementById('step2Next').disabled = false;
+}
+
+function goStep2() {
+  botId = document.getElementById('instBotId').value.trim();
+  websiteUrl = document.getElementById('instUrl').value.trim();
+  if (!botId) { document.getElementById('instBotId').style.borderColor='#dc2626'; document.getElementById('instBotId').focus(); return; }
+  if (!websiteUrl) { document.getElementById('instUrl').style.borderColor='#dc2626'; document.getElementById('instUrl').focus(); return; }
+  step = 2;
+  render();
+}
+
+function goStep3() {
+  if (!selectedPlatform) return;
+  step = 3;
+  render();
+}
+
+function goStep4() {
+  step = 4;
+  render();
+}
+
+function goBack(s) {
+  step = s;
+  render();
+}
+
+function copyCode() {
+  const code = document.getElementById('embedCode').textContent;
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '📋 Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+// Init
+render();
+</script>
+</body>
+</html>
