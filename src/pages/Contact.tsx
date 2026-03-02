@@ -16,15 +16,27 @@ const contactInfo = [
 const Contact = () => {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [company, setCompany] = useState("");
+  const [message, setMessage] = useState("");
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
+
+    const subject = encodeURIComponent(`Contact from ${firstName} ${lastName}${company ? ` - ${company}` : ""}`);
+    const body = encodeURIComponent(
+      `Name: ${firstName} ${lastName}\nEmail: ${email}\nCompany: ${company || "N/A"}\n\nMessage:\n${message}`
+    );
+
+    window.location.href = `mailto:aibloop@proton.me?subject=${subject}&body=${body}`;
+
     setTimeout(() => {
       setLoading(false);
-      toast({ title: "Message sent!", description: "We'll get back to you within 24 hours." });
-      (e.target as HTMLFormElement).reset();
-    }, 1000);
+      toast({ title: "Email client opened!", description: "Please send the email from your mail app." });
+    }, 500);
   };
 
   return (
@@ -54,24 +66,24 @@ const Contact = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="text-sm text-muted-foreground mb-2 block">First Name</label>
-                    <Input placeholder="John" required className="bg-secondary/50 border-border" />
+                    <Input placeholder="John" required className="bg-secondary/50 border-border" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
                   </div>
                   <div>
                     <label className="text-sm text-muted-foreground mb-2 block">Last Name</label>
-                    <Input placeholder="Doe" required className="bg-secondary/50 border-border" />
+                    <Input placeholder="Doe" required className="bg-secondary/50 border-border" value={lastName} onChange={(e) => setLastName(e.target.value)} />
                   </div>
                 </div>
                 <div>
                   <label className="text-sm text-muted-foreground mb-2 block">Work Email</label>
-                  <Input type="email" placeholder="john@company.com" required className="bg-secondary/50 border-border" />
+                  <Input type="email" placeholder="john@company.com" required className="bg-secondary/50 border-border" value={email} onChange={(e) => setEmail(e.target.value)} />
                 </div>
                 <div>
                   <label className="text-sm text-muted-foreground mb-2 block">Company</label>
-                  <Input placeholder="Acme Corp" className="bg-secondary/50 border-border" />
+                  <Input placeholder="Acme Corp" className="bg-secondary/50 border-border" value={company} onChange={(e) => setCompany(e.target.value)} />
                 </div>
                 <div>
                   <label className="text-sm text-muted-foreground mb-2 block">How can we help?</label>
-                  <Textarea placeholder="Tell us about your project and which AI solutions you're interested in..." rows={5} required className="bg-secondary/50 border-border" />
+                  <Textarea placeholder="Tell us about your project and which AI solutions you're interested in..." rows={5} required className="bg-secondary/50 border-border" value={message} onChange={(e) => setMessage(e.target.value)} />
                 </div>
                 <Button type="submit" className="w-full glow-sm" disabled={loading}>
                   {loading ? "Sending..." : "Send Message"} <Send className="ml-2 w-4 h-4" />
