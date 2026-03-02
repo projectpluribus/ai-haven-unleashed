@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Install Your Chatbot — AI bloop</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700;9..144,800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --surface-2: #1a2236;
+    --surface-3: #222d42;
+    --border: #2a3550;
+    --border-hover: #3b4a6b;
+    --accent: #3b82f6;
+    --accent-dim: #2563eb;
+    --accent-glow: rgba(59, 130, 246, 0.12);
+    --green: #22c55e;
+    --green-bg: rgba(34, 197, 94, 0.08);
+    --green-border: rgba(34, 197, 94, 0.2);
+    --orange: #f59e0b;
+    --orange-bg: rgba(245, 158, 11, 0.08);
+    --red: #ef4444;
+    --text: #f1f5f9;
+    --text-dim: #94a3b8;
+    --text-muted: #64748b;
+    --radius: 12px;
+    --radius-sm: 8px;
+    --font: 'Manrope', sans-serif;
+    --font-display: 'Fraunces', serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* ─── HEADER ─── */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 32px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  .logo {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 800;
+    text-decoration: none;
+    color: var(--text);
+    letter-spacing: -0.5px;
+  }
+
+  .logo span { color: var(--accent); }
+
+  .header-badge {
+    font-size: 11px;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--accent);
+    background: var(--accent-glow);
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(59, 130, 246, 0.2);
+  }
+
+  /* ─── MAIN LAYOUT ─── */
+  .main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  .page-title {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+  }
+
+  .page-subtitle {
+    color: var(--text-dim);
+    font-size: 16px;
+    margin-bottom: 40px;
+  }
+
+  /* ─── STEP INDICATOR ─── */
+  .steps-progress {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 36px;
+  }
+
+  .step-node {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--surface-2);
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    color: var(--text-muted);
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+  }
+
+  .step-node.active {
+    border-color: var(--accent);
+    background: var(--accent-glow);
+    color: var(--accent);
+    box-shadow: 0 0 16px rgba(59, 130, 246, 0.2);
+  }
+
+  .step-node.done {
+    border-color: var(--green);
+    background: var(--green-bg);
+    color: var(--green);
+  }
+
+  .step-line {
+    flex: 1;
+    height: 2px;
+    background: var(--border);
+    transition: background 0.3s ease;
+  }
+
+  .step-line.done {
+    background: var(--green);
+  }
+
+  /* ─── CARDS ─── */
+  .step-card {
+    display: none;
+    animation: fadeSlideIn 0.35s ease;
+  }
+
+  .step-card.active { display: block; }
+
+  @keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    margin-bottom: 20px;
+  }
+
+  .card h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .card p {
+    color: var(--text-dim);
+    font-size: 14px;
+    margin-bottom: 16px;
+  }
+
+  /* ─── BOT ID INPUT ─── */
+  .input-group {
+    margin-bottom: 20px;
+  }
+
+  .input-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    margin-bottom: 8px;
+  }
+
+  .input-row {
+    display: flex;
+    gap: 10px;
+  }
+
+  .input-row input {
+    flex: 1;
+    padding: 12px 16px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .input-row input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+  }
+
+  .input-row input::placeholder { color: var(--text-muted); }
+
+  /* ─── DOMAIN INPUT ─── */
+  .domain-input-wrap {
+    position: relative;
+  }
+
+  .domain-input-wrap input {
+    width: 100%;
+    padding: 12px 16px;
+    padding-right: 110px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .domain-input-wrap input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+  }
+
+  .domain-input-wrap input::placeholder { color: var(--text-muted); }
+
+  .detect-btn {
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 7px 14px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-family: var(--font);
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .detect-btn:hover { background: var(--accent-dim); }
+
+  .detect-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* ─── PLATFORM CARDS ─── */
+  .platform-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .platform-card {
+    background: var(--surface-2);
+    border: 2px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 18px 14px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .platform-card:hover {
+    border-color: var(--border-hover);
+    background: var(--surface-3);
+  }
+
+  .platform-card.selected {
+    border-color: var(--accent);
+    background: var(--accent-glow);
+  }
+
+  .platform-card .icon {
+    font-size: 28px;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .platform-card .name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  /* ─── DETECTION RESULT ─── */
+  .detection-result {
+    display: none;
+    padding: 16px 20px;
+    border-radius: var(--radius-sm);
+    margin-bottom: 20px;
+    font-size: 14px;
+    animation: fadeSlideIn 0.3s ease;
+  }
+
+  .detection-result.success {
+    display: block;
+    background: var(--green-bg);
+    border: 1px solid var(--green-border);
+    color: var(--green);
+  }
+
+  .detection-result.manual {
+    display: block;
+    background: var(--orange-bg);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    color: var(--orange);
+  }
+
+  .detection-result .detected-platform {
+    font-weight: 800;
+    font-size: 16px;
+  }
+
+  /* ─── INSTRUCTIONS ─── */
+  .instructions {
+    display: none;
+  }
+
+  .instructions.active { display: block; }
+
+  .instruction-step {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+    align-items: flex-start;
+  }
+
+  .step-num {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    border-radius: 50%;
+    background: var(--accent-glow);
+    border: 1.5px solid rgba(59, 130, 246, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    color: var(--accent);
+    margin-top: 2px;
+  }
+
+  .step-content h4 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .step-content p {
+    color: var(--text-dim);
+    font-size: 13px;
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  .step-content code {
+    display: inline;
+    background: var(--surface-2);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--accent);
+    border: 1px solid var(--border);
+  }
+
+  /* ─── EMBED CODE BOX ─── */
+  .embed-box {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    margin: 16px 0;
+    position: relative;
+  }
+
+  .embed-box code {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--green);
+    word-break: break-all;
+    display: block;
+    padding: 0;
+    background: none;
+    border: none;
+  }
+
+  .copy-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 5px 12px;
+    background: var(--surface-3);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text-dim);
+    font-size: 11px;
+    font-weight: 700;
+    font-family: var(--font);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .copy-btn:hover {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+
+  /* ─── BUTTONS ─── */
+  .btn {
+    padding: 12px 24px;
+    border-radius: var(--radius-sm);
+    font-family: var(--font);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  .btn-primary:hover { background: var(--accent-dim); }
+  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .btn-secondary {
+    background: var(--surface-2);
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--border-hover);
+    color: var(--text);
+  }
+
+  .btn-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  /* ─── SUCCESS STATE ─── */
+  .success-banner {
+    background: var(--green-bg);
+    border: 1px solid var(--green-border);
+    border-radius: var(--radius);
+    padding: 28px;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .success-banner .check-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba(34, 197, 94, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    margin: 0 auto 14px;
+  }
+
+  .success-banner h3 {
+    color: var(--green);
+    font-size: 20px;
+    margin-bottom: 6px;
+  }
+
+  .success-banner p {
+    color: var(--text-dim);
+    font-size: 14px;
+  }
+
+  /* ─── HELP LINK ─── */
+  .help-footer {
+    text-align: center;
+    margin-top: 40px;
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+
+  .help-footer a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .help-footer a:hover { text-decoration: underline; }
+
+  /* ─── LOADING SPINNER ─── */
+  .spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255,255,255,0.2);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 600px) {
+    .header { padding: 14px 16px; }
+    .main { padding: 28px 16px 60px; }
+    .page-title { font-size: 24px; }
+    .platform-grid { grid-template-columns: repeat(2, 1fr); }
+    .btn-row { flex-direction: column; }
+    .input-row { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<div class="header">
+  <a href="https://aibloop.com" class="logo">AI <span>bloop</span></a>
+  <div class="header-badge">Install Wizard</div>
+</div>
+
+<!-- ═══ MAIN ═══ -->
+<div class="main">
+  <h1 class="page-title">Add your chatbot to your site</h1>
+  <p class="page-subtitle">Follow these steps — takes under 2 minutes.</p>
+
+  <!-- STEPS PROGRESS -->
+  <div class="steps-progress">
+    <div class="step-node active" id="sn1">1</div>
+    <div class="step-line" id="sl1"></div>
+    <div class="step-node" id="sn2">2</div>
+    <div class="step-line" id="sl2"></div>
+    <div class="step-node" id="sn3">3</div>
+    <div class="step-line" id="sl3"></div>
+    <div class="step-node" id="sn4">4</div>
+  </div>
+
+  <!-- ═══ STEP 1: Bot ID ═══ -->
+  <div class="step-card active" id="step1">
+    <div class="card">
+      <h3>🤖 Enter your Bot ID</h3>
+      <p>You got this after creating your bot at aibloop.com. Check your email if you're not sure.</p>
+
+      <div class="input-group">
+        <label>Bot ID</label>
+        <div class="input-row">
+          <input type="text" id="botIdInput" placeholder="e.g. a1b2c3d4-e5f6-7890-abcd-ef1234567890">
+        </div>
+      </div>
+
+      <div class="input-group" style="margin-bottom:0;">
+        <label>Your Website URL</label>
+        <div class="domain-input-wrap">
+          <input type="text" id="domainInput" placeholder="e.g. www.mantecadental.com">
+          <button class="detect-btn" id="detectBtn" onclick="detectPlatform()">Detect</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="detection-result" id="detectionResult"></div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" id="step1Next" onclick="goToStep(2)" disabled>Continue →</button>
+    </div>
+  </div>
+
+  <!-- ═══ STEP 2: Select Platform ═══ -->
+  <div class="step-card" id="step2">
+    <div class="card">
+      <h3>🌐 Where is your website hosted?</h3>
+      <p id="platformPrompt">Select your platform so we can give you the right instructions.</p>
+
+      <div class="platform-grid">
+        <div class="platform-card" data-platform="wordpress" onclick="selectPlatform('wordpress')">
+          <span class="icon">📝</span>
+          <span class="name">WordPress</span>
+        </div>
+        <div class="platform-card" data-platform="godaddy" onclick="selectPlatform('godaddy')">
+          <span class="icon">🟢</span>
+          <span class="name">GoDaddy</span>
+        </div>
+        <div class="platform-card" data-platform="wix" onclick="selectPlatform('wix')">
+          <span class="icon">✨</span>
+          <span class="name">Wix</span>
+        </div>
+        <div class="platform-card" data-platform="squarespace" onclick="selectPlatform('squarespace')">
+          <span class="icon">⬛</span>
+          <span class="name">Squarespace</span>
+        </div>
+        <div class="platform-card" data-platform="shopify" onclick="selectPlatform('shopify')">
+          <span class="icon">🛒</span>
+          <span class="name">Shopify</span>
+        </div>
+        <div class="platform-card" data-platform="html" onclick="selectPlatform('html')">
+          <span class="icon">💻</span>
+          <span class="name">HTML / Other</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goToStep(1)">← Back</button>
+      <button class="btn btn-primary" id="step2Next" onclick="goToStep(3)" disabled>Continue →</button>
+    </div>
+  </div>
+
+  <!-- ═══ STEP 3: Follow Instructions ═══ -->
+  <div class="step-card" id="step3">
+    <div class="card">
+      <h3 id="instructionsTitle">📋 Installation Instructions</h3>
+      <p id="instructionsSub">Follow these steps for your platform.</p>
+
+      <div class="embed-box">
+        <code id="embedCodeDisplay"></code>
+        <button class="copy-btn" onclick="copyEmbed()">Copy</button>
+      </div>
+
+      <!-- WORDPRESS INSTRUCTIONS -->
+      <div class="instructions" id="inst-wordpress">
+        <div class="instruction-step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h4>Install the AI Bloop plugin (easiest)</h4>
+            <p>Go to <strong>Plugins → Add New</strong> → search <strong>"AI Bloop"</strong> → Install → Activate. Then go to <strong>Settings → AI Bloop Chatbot</strong> and paste your Bot ID. Done!</p>
+          </div>
+        </div>
+        <div class="instruction-step">
+          <div class="step-num">—</div>
+          <div class="step-content">
+            <h4>OR: Use WPCode plugin</h4>
+            <p>Install <strong>"WPCode — Insert Headers and Footers"</strong> plugin. Go to <strong>Code Snippets → Header & Footer</strong>. Paste the embed code above in the <strong>Footer</strong> section. Click Save.</p>
+          </div>
+        </div>
+        <div class="instruction-step">
+          <div class="step-num">—</div>
+          <div class="step-content">
+            <h4>OR: Theme Editor (no plugin)</h4>
+            <p>Go to <strong>Appearance → Theme File Editor</strong>. Find <code>footer.php</code>. Paste the embed code just BEFORE the closing <code>&lt;/body&gt;</code> tag. Click Update File.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- GODADDY INSTRUCTIONS -->
+      <div class="instructions" id="inst-godaddy">
+        <div class="instruction-step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h4>Open GoDaddy Website Builder</h4>
+            <p>Log in to your GoDaddy account and open the website editor for your site.</p>
+          </div>
+        </div>
+        <div class="instruction-step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h4>Add an HTML section</h4>
+            <p>Click the <strong>⊕</strong> icon to add a new section. Choose <strong>"HTML"</strong> or <strong>"Embed Code"</strong>.</p>
+          </div>
+        </div>
+        <div class="instruction-step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h4>Paste the embed code</h4>
+            <p>Paste the code shown above into the HTML block.</p>
+          </div>
+        </div>
+        <div class="instruction-step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <h4>Publish your site</h4>
+            <p>Click <strong>Publish</strong> — your chatbot is now live!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- WIX INSTRUCTIONS -->
+      <div class="instructions" id="inst-wix">
+        <div class="instruction-step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h4>Open Wix Dashboard</h4>
+            <p>Go to <strong>Settings → Custom Code</strong> (under "Advanced").</p>
+          </div>
+        </div>
+        <div class="instruction-step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h4>Add Custom Code</h4>
+            <p>Click <strong>"+ Add Custom Code"</strong> and paste the embed code above.</p>
+          </div>
+        </div>
+        <div class="instruction-step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h4>Set placement</h4>
+            <p>Set placement to <strong>"Body - end"</strong> and apply to <strong>"All pages"</strong>. Click Apply.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SQUARESPACE INSTRUCTIONS -->
+      <div class="instructions" id="inst-squarespace">
+        <div class="instruction-step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h4>Open Code Injection</h4>
+            <p>Go to <strong>Settings → Advanced → Code Injection</strong>.</p>
+          </div>
+        </div>
+        <div class="instruction-step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h4>Paste in Footer</h4>
+            <p>Paste the embed code in the <strong>"Footer"</strong> field.</p>
+          </div>
+        </div>
+        <div class="instruction-step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h4>Save</h4>
+            <p>Click <strong>Save</strong> — chatbot appears on all pages. <em>Note: requires Business plan or higher.</em></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SHOPIFY INSTRUCTIONS -->
+      <div class="instructions" id="inst-shopify">
+        <div class="instruction-step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h4>Open Theme Editor</h4>
+            <p>Go to <strong>Online Store → Themes → Actions → Edit Code</strong>.</p>
+          </div>
+        </div>
+        <div class="instruction-step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h4>Find theme.liquid</h4>
+            <p>In the <strong>Layout</strong> folder, open <code>theme.liquid</code>.</p>
+          </div>
+        </div>
+        <div class="instruction-step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h4>Paste before &lt;/body&gt;</h4>
+            <p>Paste the embed code just BEFORE the closing <code>&lt;/body&gt;</code> tag. Click Save.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- HTML / OTHER INSTRUCTIONS -->
+      <div class="instructions" id="inst-html">
+        <div class="instruction-step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h4>Open your HTML file</h4>
+            <p>Open your main HTML file (usually <code>index.html</code>) in any code editor.</p>
+          </div>
+        </div>
+        <div class="instruction-step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h4>Paste before &lt;/body&gt;</h4>
+            <p>Paste the embed code just BEFORE the closing <code>&lt;/body&gt;</code> tag.</p>
+          </div>
+        </div>
+        <div class="instruction-step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h4>Save & deploy</h4>
+            <p>Save the file and upload/deploy it to your hosting.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goToStep(2)">← Back</button>
+      <button class="btn btn-primary" onclick="goToStep(4)">I've added the code ✓</button>
+    </div>
+  </div>
+
+  <!-- ═══ STEP 4: Verify ═══ -->
+  <div class="step-card" id="step4">
+    <div class="success-banner">
+      <div class="check-icon">🎉</div>
+      <h3>You're all set!</h3>
+      <p>Your AI chatbot should now be live on your website.</p>
+    </div>
+
+    <div class="card">
+      <h3>✅ Final check</h3>
+      <p>Open your website in a new tab and look for the chat bubble in the bottom-right corner. Try sending a message!</p>
+
+      <div class="instruction-step">
+        <div class="step-num">💡</div>
+        <div class="step-content">
+          <h4>Don't see the chatbot?</h4>
+          <p>Try a hard refresh (<strong>Ctrl+Shift+R</strong> or <strong>Cmd+Shift+R</strong> on Mac). If it still doesn't appear, double-check that the embed code was saved and that your Bot ID is correct.</p>
+        </div>
+      </div>
+
+      <div class="instruction-step">
+        <div class="step-num">📊</div>
+        <div class="step-content">
+          <h4>What's next?</h4>
+          <p>Your chatbot will answer customer questions 24/7. When visitors share their name, email, or phone, you'll get an email notification. You have <strong>50 free messages</strong> — upgrade to unlimited for $100/mo when you're ready.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <a href="https://aibloop.com" class="btn btn-secondary" style="text-decoration:none;">← Back to AI Bloop</a>
+      <button class="btn btn-primary" onclick="window.open(websiteUrl, '_blank')">Open my website →</button>
+    </div>
+  </div>
+
+  <!-- HELP FOOTER -->
+  <div class="help-footer">
+    Stuck? Email <a href="mailto:aibloop@proton.me">aibloop@proton.me</a> — we'll install it for you, free.
+  </div>
+</div>
+
+<script>
+  let currentStep = 1;
+  let selectedPlatform = null;
+  let botId = '';
+  let websiteUrl = '';
+
+  // Check URL params for pre-filled bot_id
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('bot_id')) {
+    document.getElementById('botIdInput').value = params.get('bot_id');
+  }
+
+  // Input listeners
+  document.getElementById('botIdInput').addEventListener('input', validateStep1);
+  document.getElementById('domainInput').addEventListener('input', validateStep1);
+
+  function validateStep1() {
+    botId = document.getElementById('botIdInput').value.trim();
+    websiteUrl = document.getElementById('domainInput').value.trim();
+    const valid = botId.length > 8 && websiteUrl.length > 3;
+    document.getElementById('step1Next').disabled = !valid;
+  }
+
+  // Platform detection via headers/DNS lookup heuristics
+  async function detectPlatform() {
+    const domain = document.getElementById('domainInput').value.trim();
+    if (!domain) return;
+
+    const btn = document.getElementById('detectBtn');
+    const result = document.getElementById('detectionResult');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>';
+
+    // Normalize domain
+    let cleanDomain = domain.replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/\/.*$/, '');
+
+    // Simulate detection (in production this would call your backend which checks DNS/headers)
+    // For now we use common patterns
+    await new Promise(r => setTimeout(r, 1500));
+
+    let detected = null;
+
+    // Simple heuristic checks based on domain patterns
+    if (cleanDomain.includes('.godaddysites.com') || cleanDomain.includes('.mywebsite.com')) {
+      detected = 'godaddy';
+    } else if (cleanDomain.includes('.wixsite.com') || cleanDomain.includes('.wix.com')) {
+      detected = 'wix';
+    } else if (cleanDomain.includes('.squarespace.com')) {
+      detected = 'squarespace';
+    } else if (cleanDomain.includes('.myshopify.com') || cleanDomain.includes('.shopify.com')) {
+      detected = 'shopify';
+    } else if (cleanDomain.includes('.wordpress.com') || cleanDomain.includes('.wp.com')) {
+      detected = 'wordpress';
+    }
+
+    btn.disabled = false;
+    btn.textContent = 'Detect';
+
+    if (detected) {
+      const names = {
+        wordpress: 'WordPress',
+        godaddy: 'GoDaddy',
+        wix: 'Wix',
+        squarespace: 'Squarespace',
+        shopify: 'Shopify'
+      };
+      result.className = 'detection-result success';
+      result.innerHTML = '✅ Detected: <span class="detected-platform">' + names[detected] + '</span> — we\'ll auto-select this for you.';
+      result.style.display = 'block';
+
+      // Pre-select platform
+      selectedPlatform = detected;
+      document.querySelectorAll('.platform-card').forEach(c => c.classList.remove('selected'));
+      const card = document.querySelector('.platform-card[data-platform="' + detected + '"]');
+      if (card) card.classList.add('selected');
+      document.getElementById('step2Next').disabled = false;
+      document.getElementById('platformPrompt').innerHTML = 'We detected <strong>' + names[detected] + '</strong>. Confirm or choose a different platform.';
+    } else {
+      result.className = 'detection-result manual';
+      result.innerHTML = '⚠️ Couldn\'t auto-detect your platform. No worries — you\'ll pick it in the next step.';
+      result.style.display = 'block';
+    }
+
+    validateStep1();
+  }
+
+  function selectPlatform(platform) {
+    selectedPlatform = platform;
+    document.querySelectorAll('.platform-card').forEach(c => c.classList.remove('selected'));
+    document.querySelector('.platform-card[data-platform="' + platform + '"]').classList.add('selected');
+    document.getElementById('step2Next').disabled = false;
+  }
+
+  function goToStep(step) {
+    // Update embed code display
+    if (step === 3) {
+      botId = document.getElementById('botIdInput').value.trim();
+      websiteUrl = document.getElementById('domainInput').value.trim();
+      const embedCode = '<script src="https://api.aibloop.com/api/widget/' + botId + '"><\/script>';
+      document.getElementById('embedCodeDisplay').textContent = embedCode;
+
+      // Show correct instructions
+      document.querySelectorAll('.instructions').forEach(i => i.classList.remove('active'));
+      const inst = document.getElementById('inst-' + selectedPlatform);
+      if (inst) inst.classList.add('active');
+
+      const names = {
+        wordpress: 'WordPress',
+        godaddy: 'GoDaddy Website Builder',
+        wix: 'Wix',
+        squarespace: 'Squarespace',
+        shopify: 'Shopify',
+        html: 'HTML / Custom Website'
+      };
+      document.getElementById('instructionsTitle').textContent = '📋 Install on ' + (names[selectedPlatform] || 'Your Site');
+    }
+
+    // Hide all steps
+    document.querySelectorAll('.step-card').forEach(s => s.classList.remove('active'));
+    document.getElementById('step' + step).classList.add('active');
+
+    // Update progress
+    for (let i = 1; i <= 4; i++) {
+      const node = document.getElementById('sn' + i);
+      const line = document.getElementById('sl' + i);
+      node.classList.remove('active', 'done');
+      if (line) line.classList.remove('done');
+
+      if (i < step) {
+        node.classList.add('done');
+        node.textContent = '✓';
+        if (line) line.classList.add('done');
+      } else if (i === step) {
+        node.classList.add('active');
+        node.textContent = i;
+      } else {
+        node.textContent = i;
+      }
+    }
+
+    currentStep = step;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function copyEmbed() {
+    const code = document.getElementById('embedCodeDisplay').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      const btn = document.querySelector('.card .copy-btn');
+      btn.textContent = 'Copied!';
+      btn.style.background = 'var(--green)';
+      btn.style.borderColor = 'var(--green)';
+      btn.style.color = '#fff';
+      setTimeout(() => {
+        btn.textContent = 'Copy';
+        btn.style.background = '';
+        btn.style.borderColor = '';
+        btn.style.color = '';
+      }, 2000);
+    });
+  }
+</script>
+
+</body>
+</html>
