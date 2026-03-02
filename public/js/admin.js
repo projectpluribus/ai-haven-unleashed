@@ -161,6 +161,44 @@ async function fetchStats() {
   }
 }
 
+// ============ SITE VISITS ============
+
+async function fetchVisits() {
+  try {
+    const v = await adminFetch('/api/admin/visits');
+    if (!v) return;
+
+    const visitEl = document.getElementById('statVisits');
+    const visitSub = document.getElementById('statVisitsSub');
+    const total = v.totalVisits ?? v.total_visits ?? v.total ?? 0;
+    const today = v.visitsToday ?? v.visits_today ?? v.today ?? 0;
+    const yesterday = v.visitsYesterday ?? v.visits_yesterday ?? v.yesterday ?? 0;
+
+    visitEl.textContent = total.toLocaleString();
+    visitEl.classList.remove('skeleton-text');
+
+    if (today > 0) {
+      let sub = `${today.toLocaleString()} today`;
+      if (yesterday > 0) {
+        const pct = (((today - yesterday) / yesterday) * 100).toFixed(1);
+        const up = pct >= 0;
+        sub += ` · ${up ? '↑' : '↓'} ${Math.abs(pct)}% vs yesterday`;
+        visitSub.className = 'stat-sub ' + (up ? 'up' : 'down');
+      }
+      visitSub.textContent = sub;
+    } else {
+      visitSub.textContent = 'No visits today';
+    }
+  } catch (err) {
+    const visitEl = document.getElementById('statVisits');
+    const visitSub = document.getElementById('statVisitsSub');
+    visitEl.textContent = '—';
+    visitEl.classList.remove('skeleton-text');
+    visitSub.textContent = 'Endpoint unavailable';
+    console.error('Visits error:', err);
+  }
+}
+
 // ============ BOTS ============
 
 async function fetchBots() {
@@ -299,7 +337,7 @@ function updateTimestamp() {
 // ============ INIT ============
 
 async function refreshAll() {
-  await Promise.all([fetchStats(), fetchBots(), fetchLeads(), fetchConversations()]);
+  await Promise.all([fetchStats(), fetchVisits(), fetchBots(), fetchLeads(), fetchConversations()]);
 }
 
 async function initDashboard() {
