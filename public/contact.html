@@ -106,7 +106,7 @@
           <textarea id="message" name="message" required maxlength="2000"></textarea>
         </div>
 
-        <button class="btn btn-accent btn-block" type="submit">Send enquiry →</button>
+        <button class="btn btn-accent btn-block submit-btn" type="submit">Send enquiry →</button>
         <p class="contact-note">This opens your email app with all details pre-filled to send directly to our inbox.</p>
       </form>
     </article>
@@ -148,26 +148,33 @@
 
 <script>
   const form = document.getElementById('contactForm');
-  form.addEventListener('submit', function (e) {
+  form.addEventListener('submit', async function sendEnquiry(e) {
     e.preventDefault();
-
-    const firstName = document.getElementById('firstName').value.trim();
-    const lastName = document.getElementById('lastName').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const company = document.getElementById('company').value.trim();
-    const message = document.getElementById('message').value.trim();
-
-    if (!firstName || !lastName || !email || !message) {
-      alert('Please fill in all required fields.');
-      return;
+    const btn = document.querySelector('.submit-btn');
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+    try {
+      const res = await fetch('https://api.aibloop.com/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          firstName: document.getElementById('firstName').value,
+          lastName: document.getElementById('lastName').value,
+          email: document.getElementById('email').value,
+          company: document.getElementById('company').value,
+          message: document.getElementById('message').value
+        })
+      });
+      if (res.ok) {
+        btn.textContent = 'Sent! ✓';
+        document.querySelector('form').reset();
+      } else {
+        throw new Error('Failed');
+      }
+    } catch (err) {
+      btn.textContent = 'Failed — try again';
+      btn.disabled = false;
     }
-
-    const subject = encodeURIComponent(`Enquiry from ${firstName} ${lastName}${company ? ` - ${company}` : ''}`);
-    const body = encodeURIComponent(
-      `Name: ${firstName} ${lastName}\nEmail: ${email}\nCompany: ${company || 'N/A'}\n\nMessage:\n${message}`
-    );
-
-    window.location.href = `mailto:aibloop@proton.me?subject=${subject}&body=${body}`;
   });
 </script>
 
