@@ -7,6 +7,8 @@ let lastFetchTime = null;
 let refreshTimer = null;
 let timestampTimer = null;
 let allBots = []; // cached for filtering
+let pendingDeleteBotId = null;
+let pendingDeleteBotName = null;
 
 // ============ HELPERS ============
 
@@ -224,7 +226,7 @@ function renderBots(bots) {
   const tbody = document.getElementById('botsBody');
 
   if (!bots.length) {
-    tbody.innerHTML = '<tr><td colspan="7" class="table-empty">No bots yet</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="8" class="table-empty">No bots yet</td></tr>';
     return;
   }
 
@@ -237,9 +239,11 @@ function renderBots(bots) {
     const active = b.active !== false && b.status !== 'inactive';
     const dotClass = active ? 'green' : 'red';
     const statusLabel = active ? 'Active' : 'Inactive';
+    const botId = b.bot_id || b.id || '';
+    const name = b.business_name || b.name || '—';
 
-    return `<tr>
-      <td>${esc(b.business_name || b.name || '—')}</td>
+    return `<tr data-bot-id="${esc(botId)}">
+      <td>${esc(name)}</td>
       <td>${esc(b.email || '—')}</td>
       <td>${esc(b.industry || '—')}</td>
       <td><span class="plan-badge ${plan === 'paid' ? 'paid' : 'free'}">${esc(plan)}</span></td>
@@ -251,6 +255,7 @@ function renderBots(bots) {
       </td>
       <td><span class="status-indicator"><span class="status-dot ${dotClass}"></span>${statusLabel}</span></td>
       <td style="font-family:var(--font-mono);font-size:12px;">${formatDate(b.created_at)}</td>
+      <td><button class="btn-delete" onclick="openDeleteModal('${esc(botId)}','${esc(name.replace(/'/g, "\\'"))}')" title="Delete bot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg></button></td>
     </tr>`;
   }).join('');
 }
@@ -263,6 +268,68 @@ function filterBots() {
     (b.email || '').toLowerCase().includes(q)
   );
   renderBots(filtered);
+}
+
+// ============ DELETE BOT ============
+
+function openDeleteModal(botId, botName) {
+  pendingDeleteBotId = botId;
+  pendingDeleteBotName = botName;
+  document.getElementById('deleteModalBody').textContent =
+    `Delete ${botName}? This will permanently remove the bot and all its conversations and leads.`;
+  document.getElementById('deleteModal').style.display = '';
+}
+
+function closeDeleteModal() {
+  document.getElementById('deleteModal').style.display = 'none';
+  pendingDeleteBotId = null;
+  pendingDeleteBotName = null;
+}
+
+async function confirmDeleteBot() {
+  if (!pendingDeleteBotId) return;
+  const btn = document.getElementById('deleteConfirmBtn');
+  btn.disabled = true;
+  btn.textContent = 'Deleting...';
+
+  try {
+    const key = sessionStorage.getItem('adminKey');
+    if (!key) { showLogin(); return; }
+
+    const res = await fetch(`${API_BASE}/api/admin/bots/${pendingDeleteBotId}`, {
+      method: 'DELETE',
+      headers: { 'X-Admin-Key': key }
+    });
+
+    if (res.status === 401) {
+      sessionStorage.removeItem('adminKey');
+      showLogin();
+      return;
+    }
+
+    if (!res.ok) throw new Error(`API error: ${res.status}`);
+
+    // Remove from cached array
+    allBots = allBots.filter(b => (b.bot_id || b.id) !== pendingDeleteBotId);
+    renderBots(allBots);
+    closeDeleteModal();
+    showToast('Bot deleted', 'success');
+  } catch (err) {
+    console.error('Delete error:', err);
+    showToast('Failed to delete bot', 'error');
+    closeDeleteModal();
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Delete';
+  }
+}
+
+function showToast(msg, type) {
+  const el = document.getElementById('adminToast');
+  el.textContent = msg;
+  el.className = 'toast visible ' + (type || '');
+  clearTimeout(el._timer);
+  el._timer = setTimeout(() => { el.className = 'toast'; }, 3000);
 }
 
 // ============ LEADS ============
