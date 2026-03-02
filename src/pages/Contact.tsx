@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Mail, MapPin, Phone, Send, MessageSquare, Clock } from "lucide-react";
+import { Mail, Send, MessageSquare, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -9,9 +9,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 const contactInfo = [
-  { icon: Mail, label: "Email", value: "hello@neuralforge.ai" },
-  { icon: Phone, label: "Phone", value: "+1 (555) 234-5678" },
-  { icon: MapPin, label: "Office", value: "San Francisco, CA" },
+  { icon: Mail, label: "Email", value: "aibloop@proton.me" },
   { icon: Clock, label: "Response Time", value: "Under 24 hours" },
 ];
 
