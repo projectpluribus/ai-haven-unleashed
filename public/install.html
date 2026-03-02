@@ -135,6 +135,9 @@ body { font-family:var(--font-body); background:var(--bg); color:var(--text); li
 /* Toast */
 .inst-toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px); background:var(--text); color:#fff; padding:12px 24px; border-radius:var(--radius-md); font-size:13px; font-weight:600; opacity:0; transition:all 0.3s ease; z-index:200; pointer-events:none; }
 .inst-toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+.inst-section-featured { border-color:var(--accent); background:var(--accent-light); }
+.inst-section-featured h3 { color:var(--accent); }
+.inst-note { margin-top:12px; padding:10px 14px; background:rgba(26,86,219,0.06); border-radius:var(--radius-md); font-size:12px; color:var(--text-secondary); line-height:1.5; }
 </style>
 </head>
 <body>
@@ -236,7 +239,7 @@ function handleDetect() {
 function getInstructions(platform) {
   switch(platform) {
     case 'wordpress': return [
-      { title:'Option A — AI Bloop Plugin (easiest)', steps:['In your WordPress dashboard, go to Plugins → Add New.','Search for "AI Bloop".','Install and Activate the plugin.','Go to Settings → AI Bloop and paste your Bot ID.','Save — you\'re done!'] },
+      { title:'Option A — AI Bloop Plugin (recommended)', steps:['Search "AI Bloop" in your WordPress dashboard under Plugins → Add New.','Install and activate the plugin.','Go to Settings → AI Bloop Chatbot and paste your Bot ID.','That\'s it — your chatbot is live on every page.'], note:'Our official plugin is available in the WordPress Plugin Directory (slug: ai-bloop-chatbot).' },
       { title:'Option B — WPCode Plugin', steps:['Install the free WPCode plugin from Plugins → Add New.','Go to Code Snippets → Header & Footer.','Paste the embed code into the Footer section.','Click Save Changes.'] },
       { title:'Option C — Theme File Editor', steps:['Go to Appearance → Theme File Editor.','Open footer.php.','Paste the embed code just before the </body> tag.','Click Update File.'] }
     ];
@@ -313,11 +316,12 @@ function render() {
         </div>
         <pre class="inst-code-pre" id="embedCode">${esc(embedCode)}</pre>
       </div>
-      ${sections.map(s => `<div class="inst-section">
+      ${sections.map((s,idx) => `<div class="inst-section${idx===0 && selectedPlatform==='wordpress' ? ' inst-section-featured' : ''}">
         <h3>${s.title}</h3>
         <ol class="inst-steps-list">
           ${s.steps.map((st,i) => `<li><span class="inst-step-num">${i+1}</span><span>${st}</span></li>`).join('')}
         </ol>
+        ${s.note ? `<div class="inst-note">ℹ️ ${s.note}</div>` : ''}
       </div>`).join('')}
       <div class="inst-actions">
         <button class="inst-btn inst-btn-outline" onclick="goBack(2)">← Back</button>

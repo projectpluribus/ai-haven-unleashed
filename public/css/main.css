@@ -844,3 +844,10 @@ section { padding: 100px 0; }
   .footer-grid { grid-template-columns: 1fr; }
   .demo-fake-cards { grid-template-columns: 1fr; }
 }
+
+/* Works With Row */
+.works-with-row { margin-top:48px; text-align:center; }
+.works-with-label { font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:1px; color:var(--text-muted); margin-bottom:16px; }
+.works-with-logos { display:flex; flex-wrap:wrap; justify-content:center; gap:12px; }
+.works-with-item { display:inline-flex; align-items:center; gap:6px; padding:8px 16px; border:1.5px solid var(--border-light); border-radius:999px; font-size:13px; font-weight:500; color:var(--text-secondary); background:var(--surface); }
+.works-with-icon { font-size:16px; }

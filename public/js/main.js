@@ -436,6 +436,11 @@ function wizNext() {
           <div class="wiz-success-badge">✓ Successfully Created</div>
           <h3 class="wiz-title" style="-webkit-text-fill-color:unset;background:none;color:var(--text);">Your AI Chatbot is Ready!</h3>
 
+          <div style="text-align:center;margin:20px 0 8px;">
+            <a href="install.html?bot_id=${data.bot_id}" class="btn btn-accent" style="font-size:16px;padding:16px 36px;display:inline-flex;align-items:center;gap:10px;text-decoration:none;border-radius:12px;width:100%;justify-content:center;font-weight:700;">🚀 Publish to My Website</a>
+            <p style="margin:10px 0 0;font-size:13px;color:var(--text-muted);">One-click install for WordPress, GoDaddy, Wix, Squarespace, Shopify & more</p>
+          </div>
+
           <div style="background:rgba(245,185,60,0.12);border:1.5px solid rgba(245,185,60,0.45);border-radius:12px;padding:16px 20px;margin:18px 0 24px;text-align:left;">
             <p style="margin:0;font-size:14px;line-height:1.6;color:var(--text);">⚡ <strong>Free Trial:</strong> Your bot includes 50 free messages. After 50 messages, the bot will pause until you subscribe. Activate unlimited messages anytime for $100/mo.</p>
           </div>
@@ -446,10 +451,6 @@ function wizNext() {
               <button class="copy-btn" onclick="copyEmbed(this)">Copy Code</button>
               <code>${escapeHtml(embedCode)}</code>
             </div>
-          </div>
-
-          <div style="margin-top:18px;text-align:center;">
-            <a href="install.html?bot_id=${data.bot_id}" class="btn btn-ghost" style="font-size:14px;padding:10px 24px;display:inline-flex;align-items:center;gap:8px;text-decoration:none;border:1.5px solid var(--border);border-radius:10px;margin-bottom:12px;width:100%;justify-content:center;">📦 Add to Your Website →</a>
           </div>
 
           <div style="text-align:center;">
