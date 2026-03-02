@@ -92,10 +92,11 @@
             <th>Messages</th>
             <th>Status</th>
             <th>Created</th>
+            <th>Delete</th>
           </tr>
         </thead>
         <tbody id="botsBody">
-          <tr><td colspan="7" class="table-loading">Loading bots...</td></tr>
+          <tr><td colspan="8" class="table-loading">Loading bots...</td></tr>
         </tbody>
       </table>
     </div>
@@ -146,6 +147,21 @@
       </table>
     </div>
   </section>
+
+  <!-- Delete Confirmation Modal -->
+  <div class="modal-overlay" id="deleteModal" style="display:none;">
+    <div class="modal-card">
+      <h3 class="modal-title">Delete Bot</h3>
+      <p class="modal-body" id="deleteModalBody"></p>
+      <div class="modal-actions">
+        <button class="btn-outline btn-sm" onclick="closeDeleteModal()">Cancel</button>
+        <button class="btn-danger btn-sm" id="deleteConfirmBtn" onclick="confirmDeleteBot()">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="adminToast"></div>
 
   <footer class="dash-footer">
     <a href="index.html">← Back to Website</a>
